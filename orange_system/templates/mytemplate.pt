@@ -41,8 +41,6 @@
 			
            Content goes here!
            <br />
-           ${customers.firstName} <br />
-           ${customers.lastName}
                         
         </div>
 

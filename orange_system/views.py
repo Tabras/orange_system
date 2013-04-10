@@ -11,8 +11,7 @@ from .models import (
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
-    test = DBSession.query(Customers).filter(Customers.firstName == 'Test').first()
-    return {'customers': test, 'project': 'capstone_project'}
+    return {'project': 'capstone_project'}
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
