@@ -40,15 +40,6 @@
         <div id="content" style="background-color:FFFFFF; height:820px; width:90%; float:left;">
                         Content goes here!
                         <br />
-                        Hi.  I just want to test some crap here, don't mind me. <br />
-                        ${customers} <br />
-                        Did you also know we can format it all neat and pretty? <br />
-                        First Name: ${customers[0].firstName}<br/>
-                        Last  Name: ${customers[0].lastName}<br/>
-                        Address   : ${customers[0].address}<br/>
-                        City      : ${customers[0].city}<br/>
-                        State     : ${customers[0].stateCode}<br/>
-                        Zip       : ${customers[0].zipCode}
                 </div>
       </div>
     </div>
