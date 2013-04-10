@@ -28,6 +28,7 @@
       <div class="Main">
         <div id="menu" style="background-color:orange; height:820px; width:15%; float:left; text-align:center;">
                         <h2><b>Main Menu</b></h2><br>
+                        <b><a href="${request.route_url('search')}">Search</a></b><br>
                         <b>Customers</b><br>
                         <b>Orders</b><br>
                         <b>Services</b><br>
