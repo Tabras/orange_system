@@ -13,6 +13,18 @@ from .models import (
 def my_view(request):
     return {'project': 'capstone_project'}
 
+@view_config(route_name='search', renderer='templates/searchTemplate.pt')
+def search_view(request):
+    if request.POST:
+         search = request.POST.get('searchQ')
+         print search
+         if search:
+             q = []
+             q = DBSession.query(Customers).filter(Customers.firstName == search).all()
+             
+             for row in q:
+                 print row
+    return {'project': 'orange_system'}
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
