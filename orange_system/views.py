@@ -1,6 +1,6 @@
 from pyramid.response import Response
 from pyramid.view import view_config
-
+import locale
 from sqlalchemy.exc import DBAPIError
 
 from .models import (
@@ -17,13 +17,11 @@ def my_view(request):
 def search_view(request):
     if request.POST:
          search = request.POST.get('searchQ')
-         print search
          if search:
              q = []
-             q = DBSession.query(Customers).filter(Customers.firstName == search).all()
-             
-             for row in q:
-                 print row
+             q = DBSession.query(Customers).filter(Customers.firstName == search)
+    for row in q:
+        print row.firstName
     return {'project': 'orange_system'}
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
