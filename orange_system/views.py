@@ -12,12 +12,7 @@ from .models import (
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
     test = DBSession.query(Customers).filter(Customers.firstName == 'Test').first()
-    s = " SELECT * FROM tblCustomers"
-    test2 = DBSession.execute(s)
-    customerData = []
-    for row in test2:
-        customerData.append(row)
-    return {'customers': customerData, 'test': test, 'project': 'capstone_project'}
+    return {'customers': test, 'project': 'capstone_project'}
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem

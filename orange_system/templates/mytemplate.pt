@@ -41,8 +41,8 @@
 			
            Content goes here!
            <br />
-           ${customer.firstName} <br />
-           ${customer.lastName}
+           ${customers.firstName} <br />
+           ${customers.lastName}
                         
         </div>
 
