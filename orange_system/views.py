@@ -5,23 +5,25 @@ from sqlalchemy.exc import DBAPIError
 
 from .models import (
     DBSession,
-    MyModel,
+    Customers,
     )
 
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
-    try:
-        one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
-    except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'one': one, 'project': 'orange_system'}
+    test = DBSession.query(Customers).filter(Customers.firstName == 'Test').first()
+    s = " SELECT * FROM tblCustomers"
+    test2 = DBSession.execute(s)
+    customerData = []
+    for row in test2:
+        customerData.append(row)
+    return {'customers': customerData, 'test': test, 'project': 'capstone_project'}
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
 
-1.  You may need to run the "initialize_orange_system_db" script
+1.  You may need to run the "initialize_capstone_project_db" script
     to initialize your database tables.  Check your virtual 
     environment's "bin" directory for this script and try to run it.
 
