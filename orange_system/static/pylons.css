@@ -230,7 +230,8 @@ body h1, body h2, body h3, body h4, body h5, body h6
 {
   color: #000;
   height: 230px;
-  background: #fff url(headerbg.png) repeat-x 0 top;
+  background-color: orange;
+  /*background: #fff url(headerbg.png) repeat-x 0 top;*/
   position: relative;
 }
 
@@ -238,7 +239,8 @@ body h1, body h2, body h3, body h4, body h5, body h6
 {
   color: #000;
   height: 60px;
-  background: #fff url(headerbg.png) repeat-x 0 top;
+  background-color: orange;
+  /*background: #fff url(headerbg.png) repeat-x 0 top;*/
   position: relative;
 }
 

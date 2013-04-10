@@ -26,7 +26,7 @@
     
     <div id="Main">
       <div class="Main">
-        <div id="menu" style="background-color:orange; height:820px; width:10%; float:left; text-align:center;">
+        <div id="menu" style="background-color:orange; height:820px; width:15%; float:left; text-align:center;">
                         <h2><b>Main Menu</b></h2><br>
                         <b>Customers</b><br>
                         <b>Orders</b><br>
@@ -37,12 +37,22 @@
                         <b>To-Do</b><br>
                 </div>
         
+<<<<<<< HEAD
+        <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">
+			
+          <iframe src="http://www.hackaday.com" width="1000" height="1000">
+			<p>Your browser does not support iframes.</p>
+		  </iframe>
+                        
+        </div>
+=======
         <div id="content" style="background-color:FFFFFF; height:820px; width:90%; float:left;">
                         Content goes here!
                         <br />
                         ${customer.firstName} <br />
                         ${customer.lastName}
                 </div>
+>>>>>>> 46437e4a7ac448b2dce0e544c6c76216326efea3
       </div>
     </div>
   
