@@ -40,6 +40,8 @@
         <div id="content" style="background-color:FFFFFF; height:820px; width:90%; float:left;">
                         Content goes here!
                         <br />
+                        ${customer.firstName} <br />
+                        ${customer.lastName}
                 </div>
       </div>
     </div>
