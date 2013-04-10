@@ -42,18 +42,13 @@
            Content goes here!
                         
         </div>
-<<<<<<< HEAD
 
-=======
-=======
         <div id="content" style="background-color:FFFFFF; height:820px; width:90%; float:left;">
                         Content goes here!
                         <br />
                         ${customer.firstName} <br />
                         ${customer.lastName}
                 </div>
->>>>>>> 46437e4a7ac448b2dce0e544c6c76216326efea3
->>>>>>> 041ed6344e0917405dd21fcb6fd251a50a036902
       </div>
     </div>
   
