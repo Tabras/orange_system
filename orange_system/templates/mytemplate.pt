@@ -37,6 +37,7 @@
                         <b>To-Do</b><br>
                 </div>
         
+<<<<<<< HEAD
         <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">
 			
           <iframe src="http://www.hackaday.com" width="1000" height="1000">
@@ -44,6 +45,12 @@
 		  </iframe>
                         
         </div>
+=======
+        <div id="content" style="background-color:FFFFFF; height:820px; width:90%; float:left;">
+                        Content goes here!
+                        <br />
+                </div>
+>>>>>>> 46437e4a7ac448b2dce0e544c6c76216326efea3
       </div>
     </div>
   
