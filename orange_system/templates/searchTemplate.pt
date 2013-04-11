@@ -11,7 +11,11 @@
     
     <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
-    
+    <script type="text/javascript">
+         function printSearch(){
+           document.getElementById('printResults').innerHTML = "<li>test</li>";
+         };
+    </script>
   </head>
   
   <body>
@@ -57,14 +61,12 @@
         <div class="hero-unit">
           <p></p>
           <div class="container-fluid">
-            <input type="text" class="input-large" placeholder="Enter your search here #!">
+            <form method="POST" onSubmit="javascript:printSearch()" id="myForm">
+            <input type="text" class="input-large" placeholder="Enter your search here #!" name="searchQ" id="searchQ">
             <input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;" />
+            </form>
             <br />
-            <ol class="unstyled">
-				<li>Item 1</li>
-				<li>Item 2</li>
-				<li>Item 3</li>
-				<li>etc...</li>
+            <ol class="unstyled" id="printResults">
 			</ol>
             <br />
             
