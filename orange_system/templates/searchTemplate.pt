@@ -57,10 +57,10 @@
         <div class="hero-unit">
           <p></p>
           <div class="container-fluid">
-            <input type="text" class="input-large" placeholder="Enter your search here #!">
+            <input id="search" type="text" class="input-large" placeholder="Enter your search here #!">
             <input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;" />
             <br />
-            <ol class="unstyled">
+            <ol id="customerlistdisplay" class="unstyled">
 				<li>Item 1</li>
 				<li>Item 2</li>
 				<li>Item 3</li>
