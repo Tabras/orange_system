@@ -55,35 +55,36 @@
           <ul class="nav  nav-pills nav-stacked"></ul>
         </div>
         <div class="hero-unit">
-			<input type="text" class="input-large" placeholder="First Name #!">
-			<input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;">
+			<input id="firstname" type="text" class="input-large" placeholder="First Name #!">
 			<br>
-			<input type="text" class="input-large" placeholder="Last Name #!">
+			<input id="lastname" type="text" class="input-large" placeholder="Last Name #!">
 			<br>
-			<input type="text" class="input-large" placeholder="Address #!">
+			<input id="address" type="text" class="input-large" placeholder="Address #!">
 			<br>
-			<input type="text" class="input-large" placeholder="City #!">
-			<select>
+			<input id="city" type="text" class="input-large" placeholder="City #!">
+			<select id="state">
 				<option>Wisconsin</option>
 				<option>Iowa</option>
 				<option>Canada</option>
 			</select>
 			<br>
-			<input type="text" class="input-large" placeholder="ZipCode #!">
+			<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
 			<br>
-			<input type="text" class="input-large" placeholder="Phone #!">
-			<select>
+			<input id="phone" type="text" class="input-large" placeholder="Phone #!">
+			<select id="phonetype">
 				<option>Cell</option>
 				<option>Work</option>
 				<option>Home</option>
 			</select>
 			<br>
-			<input type="text" class="input-large" placeholder="E-Mail #!">
-			<select>
+			<input id="email" type="text" class="input-large" placeholder="E-Mail #!">
+			<select id="emailtype">
 				<option>Personal</option>
 				<option>Professional</option>
 				<option>Work</option>
 			</select>
+			<br>
+			<a class="btn" id="submit">Add Customer</a>
 		</div>
         <div class="row-fluid"></div>
       </div>
