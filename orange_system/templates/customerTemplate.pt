@@ -27,7 +27,7 @@
         <div id="menu" style="background-color:orange; height:820px; width:15%; float:left; text-align:center;">
                         <h2><b>Main Menu</b></h2><br>
                         <b><a href="${request.route_url('search')}">Search</a></b><br>
-                        <b><a href="${request.route_url('customer')}">Customers #</a></b><br>
+                        <b><a href="${request.route_url('customer')}">Customers #!</a></b><br>
                         <b><a href="${request.route_url('order')}">Orders</a></b><br>
                         <b><a href="${request.route_url('service')}">Services</a></b><br>
                         <b><a href="${request.route_url('part')}">Parts</a></b><br>
@@ -37,12 +37,139 @@
                 </div>
        
         <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">
+			<div id="content-top-left" style="float:left; width:46%; margin:20px;">
+			<form id="contact" method="post" action="">
+				
+				<table style="width:100%;">
+				<caption>Customer Add</caption>
+				<tbody>
+					<tr>
+						<th><label for="firstname">First Name </label></th>
+						<th><input type="text" name="firstname"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="lastname">Last Name </label></th>
+						<th><input type="text" name="lastname"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="address">Address </label></th>
+						<th><input type="text" name="address"></th>
+					</tr>
+					<tr>
+						<th><label for="city">City </label> </th>
+						<th><input type="text" name="city"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="state">State </label></th>
+						<th><select id = "state">
+							<option value = "1">Wisconsin</option>
+							<option value = "2">Iowa</option>
+							<option value = "3">Canada</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th><label for="zipcode">ZipCode </label></th>
+						<th><input type="text" name="zipcode"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="email">E-Mail </label></th>
+						<th><input type="email" name="email">
+							<select id = "emailtype">
+							<option value = "1">Personal</option>
+							<option value = "2">Professional</option>
+							<option value = "3">Work</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th><label for="phone">Phone </label></th>
+						<th><input type="text" name="phone">
+							<select id = "phonetype">
+							<option value = "1">Home</option>
+							<option value = "2">Cell</option>
+							<option value = "3">Work</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th><label for="notes">Notes </label></th>
+						<th><textarea name="message"></textarea></th>
+					</tr>
+				</tbody>
+				</table>
+				
+				<input type="submit" name="submit" id="submit" value="Add Customer"/>
+			</form>
+			</div><!-- /end #contact-form --> 
 			
-           Customer Add<br />
-           Customer Update<br />
-                        
+			<div id="content-top-left" style="float:right; width:46%; margin:20px;">
+			<form id="contact" method="post" action="">
+				
+				<table style="width:100%;">
+				<caption>Customer Update</caption>
+				<tbody>
+					<tr>
+						<th><label for="firstname">First Name </label></th>
+						<th><input type="text" name="firstname"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="lastname">Last Name </label></th>
+						<th><input type="text" name="lastname"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="address">Address </label></th>
+						<th><input type="text" name="address"></th>
+					</tr>
+					<tr>
+						<th><label for="city">City </label> </th>
+						<th><input type="text" name="city"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="state">State </label></th>
+						<th><select id = "state">
+							<option value = "1">Wisconsin</option>
+							<option value = "2">Iowa</option>
+							<option value = "3">Canada</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th><label for="zipcode">ZipCode </label></th>
+						<th><input type="text" name="zipcode"><br /></th>
+					</tr>
+					<tr>
+						<th><label for="email">E-Mail </label></th>
+						<th><input type="email" name="email">
+							<select id = "emailtype">
+							<option value = "1">Personal</option>
+							<option value = "2">Professional</option>
+							<option value = "3">Work</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th><label for="phone">Phone </label></th>
+						<th><input type="text" name="phone">
+							<select id = "phonetype">
+							<option value = "1">Home</option>
+							<option value = "2">Cell</option>
+							<option value = "3">Work</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th><label for="notes">Notes </label></th>
+						<th><textarea name="message"></textarea></th>
+					</tr>
+				</tbody>
+				</table>
+				
+				<input type="submit" name="submit" id="submit" value="Update Customer"/>
+			</form>
+			</div><!-- /end #contact-form --> 
+			              
         </div>
-
       </div>
     </div>
   

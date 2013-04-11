@@ -336,6 +336,7 @@ ul.links li
 form
 {
   border-style: none;
+  background-color: orange;
 }
 
 fieldset
