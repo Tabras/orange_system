@@ -29,7 +29,7 @@
                         <b><a href="${request.route_url('search')}">Search</a></b><br>
                         <b><a href="${request.route_url('customer')}">Customers</a></b><br>
                         <b><a href="${request.route_url('order')}">Orders</a></b><br>
-                        <b><a href="${request.route_url('service')}">Services #</a></b><br>
+                        <b><a href="${request.route_url('service')}">Services #!</a></b><br>
                         <b><a href="${request.route_url('part')}">Parts</a></b><br>
                         <b><a href="${request.route_url('report')}">Reports</a></b><br>
                         <br>
