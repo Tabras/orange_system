@@ -27,22 +27,22 @@
                 <a href="${request.route_url('search')}">Search #!</a> 
               </li>
               <li>
-                <a href="#">Customers</a> 
+                <a href="${request.route_url('customer')}">Customers</a> 
               </li>
               <li>
-                <a href="#">Orders</a> 
+                <a href="${request.route_url('order')}">Orders</a> 
               </li>
               <li>
-                <a href="#">Services</a> 
+                <a href="${request.route_url('service')}">Services</a> 
               </li>
               <li>
-                <a href="#">Parts</a> 
+                <a href="${request.route_url('part')}">Parts</a> 
               </li>
               <li>
-                <a href="#">Reports</a> 
+                <a href="${request.route_url('report')}">Reports</a> 
               </li>
               <li>
-                <a href="#">To-Do</a> 
+                <a href="${request.route_url('todo')}">To-Do</a> 
               </li>
             </ul>
           </div>
@@ -57,8 +57,17 @@
         <div class="hero-unit">
           <p></p>
           <div class="container-fluid">
-            <input type="text" class="input-large">
-            <a class="btn">Search</a> 
+            <input type="text" class="input-large" placeholder="Enter your search here #!">
+            <input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;" />
+            <br />
+            <ol class="unstyled">
+				<li>Item 1</li>
+				<li>Item 2</li>
+				<li>Item 3</li>
+				<li>etc...</li>
+			</ol>
+            <br />
+            
           </div>
         </div>
       </div>

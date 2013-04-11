@@ -1,181 +1,93 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
-<head>
-  <title>The Pyramid Web Application Development Framework</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-  <meta name="keywords" content="python web application" />
-  <meta name="description" content="pyramid web application" />
-  <link rel="shortcut icon" href="${request.static_url('orange_system:static/favicon.ico')}" />
-  <link rel="stylesheet" href="${request.static_url('orange_system:static/pylons.css')}" type="text/css" media="screen" charset="utf-8" />
-  <link rel="stylesheet" href="http://static.pylonsproject.org/fonts/nobile/stylesheet.css" media="screen" />
-  <link rel="stylesheet" href="http://static.pylonsproject.org/fonts/neuton/stylesheet.css" media="screen" />
-  <!--[if lte IE 6]>
-  <link rel="stylesheet" href="${request.static_url('orange_system:static/ie6.css')}" type="text/css" media="screen" charset="utf-8" />
-  <![endif]-->
-</head>
-<body>
-  <div id="wrap">
-          
-    <div id="top">
-      <div class="top align-center">
-          <div><img src="${request.static_url('orange_system:static/logo.png')}" width="360" height="193" alt="pyramid"/></div>
-      </div>
-    </div>
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title>MainPage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     
-    <div id="Main">
-      <div class="Main">
-        <div id="menu" style="background-color:orange; height:820px; width:15%; float:left; text-align:center;">
-                        <h2><b>Main Menu</b></h2><br>
-                        <b><a href="${request.route_url('search')}">Search</a></b><br>
-                        <b><a href="${request.route_url('customer')}">Customers #!</a></b><br>
-                        <b><a href="${request.route_url('order')}">Orders</a></b><br>
-                        <b><a href="${request.route_url('service')}">Services</a></b><br>
-                        <b><a href="${request.route_url('part')}">Parts</a></b><br>
-                        <b><a href="${request.route_url('report')}">Reports</a></b><br>
-                        <br>
-                        <b><a href="${request.route_url('todo')}">To-Do</a></b><br>
-                </div>
-       
-        <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">
-			<div id="content-top-left" style="float:left; width:46%; margin:20px;">
-			<form id="contact" method="post" action="">
-				
-				<table style="width:100%;">
-				<caption>Customer Add</caption>
-				<tbody>
-					<tr>
-						<th><label for="firstname">First Name </label></th>
-						<th><input type="text" name="firstname"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="lastname">Last Name </label></th>
-						<th><input type="text" name="lastname"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="address">Address </label></th>
-						<th><input type="text" name="address"></th>
-					</tr>
-					<tr>
-						<th><label for="city">City </label> </th>
-						<th><input type="text" name="city"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="state">State </label></th>
-						<th><select id = "state">
-							<option value = "1">Wisconsin</option>
-							<option value = "2">Iowa</option>
-							<option value = "3">Canada</option>
-							</select>
-						</th>
-					</tr>
-					<tr>
-						<th><label for="zipcode">ZipCode </label></th>
-						<th><input type="text" name="zipcode"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="email">E-Mail </label></th>
-						<th><input type="email" name="email">
-							<select id = "emailtype">
-							<option value = "1">Personal</option>
-							<option value = "2">Professional</option>
-							<option value = "3">Work</option>
-							</select>
-						</th>
-					</tr>
-					<tr>
-						<th><label for="phone">Phone </label></th>
-						<th><input type="text" name="phone">
-							<select id = "phonetype">
-							<option value = "1">Home</option>
-							<option value = "2">Cell</option>
-							<option value = "3">Work</option>
-							</select>
-						</th>
-					</tr>
-					<tr>
-						<th><label for="notes">Notes </label></th>
-						<th><textarea name="message"></textarea></th>
-					</tr>
-				</tbody>
-				</table>
-				
-				<input type="submit" name="submit" id="submit" value="Add Customer"/>
-			</form>
-			</div><!-- /end #contact-form --> 
-			
-			<div id="content-top-left" style="float:right; width:46%; margin:20px;">
-			<form id="contact" method="post" action="">
-				
-				<table style="width:100%;">
-				<caption>Customer Update</caption>
-				<tbody>
-					<tr>
-						<th><label for="firstname">First Name </label></th>
-						<th><input type="text" name="firstname"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="lastname">Last Name </label></th>
-						<th><input type="text" name="lastname"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="address">Address </label></th>
-						<th><input type="text" name="address"></th>
-					</tr>
-					<tr>
-						<th><label for="city">City </label> </th>
-						<th><input type="text" name="city"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="state">State </label></th>
-						<th><select id = "state">
-							<option value = "1">Wisconsin</option>
-							<option value = "2">Iowa</option>
-							<option value = "3">Canada</option>
-							</select>
-						</th>
-					</tr>
-					<tr>
-						<th><label for="zipcode">ZipCode </label></th>
-						<th><input type="text" name="zipcode"><br /></th>
-					</tr>
-					<tr>
-						<th><label for="email">E-Mail </label></th>
-						<th><input type="email" name="email">
-							<select id = "emailtype">
-							<option value = "1">Personal</option>
-							<option value = "2">Professional</option>
-							<option value = "3">Work</option>
-							</select>
-						</th>
-					</tr>
-					<tr>
-						<th><label for="phone">Phone </label></th>
-						<th><input type="text" name="phone">
-							<select id = "phonetype">
-							<option value = "1">Home</option>
-							<option value = "2">Cell</option>
-							<option value = "3">Work</option>
-							</select>
-						</th>
-					</tr>
-					<tr>
-						<th><label for="notes">Notes </label></th>
-						<th><textarea name="message"></textarea></th>
-					</tr>
-				</tbody>
-				</table>
-				
-				<input type="submit" name="submit" id="submit" value="Update Customer"/>
-			</form>
-			</div><!-- /end #contact-form --> 
-			              
+    <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
+    <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
+    
+    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
+    <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    
+  </head>
+  
+  <body>
+    <div class="navbar-inverse navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="navbar-content">
+            <ul class="nav">
+              <li>
+                <a href="${request.route_url('home')}">Home</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('search')}">Search</a> 
+              </li>
+              <li class="active">
+                <a href="${request.route_url('customer')}">Customers #!</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('order')}">Orders</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('service')}">Services</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('part')}">Parts</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('report')}">Reports</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('todo')}">To-Do</a> 
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  
-  </div>
-  <div id="footer">
-    <div class="footer">&copy; Orange Computers</div>
-  </div>
-</body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span4">
+          <ul class="nav  nav-pills nav-stacked"></ul>
+        </div>
+        <div class="hero-unit">
+			<input type="text" class="input-large" placeholder="First Name #!">
+			<input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;">
+			<br>
+			<input type="text" class="input-large" placeholder="Last Name #!">
+			<br>
+			<input type="text" class="input-large" placeholder="Address #!">
+			<br>
+			<input type="text" class="input-large" placeholder="City #!">
+			<select>
+				<option>Wisconsin</option>
+				<option>Iowa</option>
+				<option>Canada</option>
+			</select>
+			<br>
+			<input type="text" class="input-large" placeholder="ZipCode #!">
+			<br>
+			<input type="text" class="input-large" placeholder="Phone #!">
+			<select>
+				<option>Cell</option>
+				<option>Work</option>
+				<option>Home</option>
+			</select>
+			<br>
+			<input type="text" class="input-large" placeholder="E-Mail #!">
+			<select>
+				<option>Personal</option>
+				<option>Professional</option>
+				<option>Work</option>
+			</select>
+		</div>
+        <div class="row-fluid"></div>
+      </div>
+    </div>
+  </body>
+
 </html>

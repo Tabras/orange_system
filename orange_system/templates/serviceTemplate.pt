@@ -1,54 +1,67 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
-<head>
-  <title>The Pyramid Web Application Development Framework</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-  <meta name="keywords" content="python web application" />
-  <meta name="description" content="pyramid web application" />
-  <link rel="shortcut icon" href="${request.static_url('orange_system:static/favicon.ico')}" />
-  <link rel="stylesheet" href="${request.static_url('orange_system:static/pylons.css')}" type="text/css" media="screen" charset="utf-8" />
-  <link rel="stylesheet" href="http://static.pylonsproject.org/fonts/nobile/stylesheet.css" media="screen" />
-  <link rel="stylesheet" href="http://static.pylonsproject.org/fonts/neuton/stylesheet.css" media="screen" />
-  <!--[if lte IE 6]>
-  <link rel="stylesheet" href="${request.static_url('orange_system:static/ie6.css')}" type="text/css" media="screen" charset="utf-8" />
-  <![endif]-->
-</head>
-<body>
-  <div id="wrap">
-          
-    <div id="top">
-      <div class="top align-center">
-          <div><img src="${request.static_url('orange_system:static/logo.png')}" width="360" height="193" alt="pyramid"/></div>
-      </div>
-    </div>
-    
-    <div id="Main">
-      <div class="Main">
-        <div id="menu" style="background-color:orange; height:820px; width:15%; float:left; text-align:center;">
-                        <h2><b>Main Menu</b></h2><br>
-                        <b><a href="${request.route_url('search')}">Search</a></b><br>
-                        <b><a href="${request.route_url('customer')}">Customers</a></b><br>
-                        <b><a href="${request.route_url('order')}">Orders</a></b><br>
-                        <b><a href="${request.route_url('service')}">Services #!</a></b><br>
-                        <b><a href="${request.route_url('part')}">Parts</a></b><br>
-                        <b><a href="${request.route_url('report')}">Reports</a></b><br>
-                        <br>
-                        <b><a href="${request.route_url('todo')}">To-Do</a></b><br>
-                </div>
-       
-        <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">
-			
-           Service Add<br />
-           Service Update<br />
-                        
-        </div>
-
-      </div>
-    </div>
+<!DOCTYPE html>
+<html>
   
-  </div>
-  <div id="footer">
-    <div class="footer">&copy; Orange Computers</div>
-  </div>
-</body>
+  <head>
+    <title>MainPage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    
+    <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
+    <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
+    
+    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
+    <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    
+  </head>
+  
+  <body>
+    <div class="navbar-inverse navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="navbar-content">
+            <ul class="nav">
+              <li>
+                <a href="${request.route_url('home')}">Home</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('search')}">Search</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('customer')}">Customers</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('order')}">Orders</a> 
+              </li>
+              <li class="active">
+                <a href="${request.route_url('service')}">Services #!</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('part')}">Parts</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('report')}">Reports</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('todo')}">To-Do</a> 
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span4">
+          <ul class="nav  nav-pills nav-stacked"></ul>
+        </div>
+        <div class="hero-unit">
+          <h1>Orange Computers</h1>
+          <p>It makes orange juice with you!</p>
+          <p></p>
+        </div>
+        <div class="row-fluid"></div>
+      </div>
+    </div>
+  </body>
+
 </html>

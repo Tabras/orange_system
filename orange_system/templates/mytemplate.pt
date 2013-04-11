@@ -27,22 +27,22 @@
                 <a href="${request.route_url('search')}">Search</a> 
               </li>
               <li>
-                <a href="#">Customers</a> 
+                <a href="${request.route_url('customer')}">Customers</a> 
               </li>
               <li>
-                <a href="#">Orders</a> 
+                <a href="${request.route_url('order')}">Orders</a> 
               </li>
               <li>
-                <a href="#">Services</a> 
+                <a href="${request.route_url('service')}">Services</a> 
               </li>
               <li>
-                <a href="#">Parts</a> 
+                <a href="${request.route_url('part')}">Parts</a> 
               </li>
               <li>
-                <a href="#">Reports</a> 
+                <a href="${request.route_url('report')}">Reports</a> 
               </li>
               <li>
-                <a href="#">To-Do</a> 
+                <a href="${request.route_url('todo')}">To-Do</a> 
               </li>
             </ul>
           </div>
