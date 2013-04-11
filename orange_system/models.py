@@ -33,6 +33,9 @@ class States(Base):
     __tablename__ = 'tblStates'
     stateCode = Column(String(2), primary_key=True)
     stateName = Column(String(25), nullable=False)
+    def __init__(self, stateCode, stateName):
+        self.stateCode = stateCode
+        self.stateName = stateName
   
 class Progress(Base):
     __tablename__ = 'tblProgress'
@@ -64,7 +67,7 @@ class Services(Base):
     serviceCost = Column(String(5))
 
     def __init__(self, serviceID, serviceName, serviceDescription, serviceCost):
-	self.serviceID = serviceID
+ 	self.serviceID = serviceID
 	self.serviceName = serviceName
 	self.serviceDescription = serviceDescription
 	self.serviceCost = serviceCost
@@ -97,10 +100,11 @@ class Customers(Base):
     stateCode = Column(String(2), ForeignKey(States.stateCode), unique=False)
     zipCode   = Column(String(9), unique=False)
 
-    def __init__(self, custID, firstName, lastName, city, stateCode, zipCode):
+    def __init__(self, custID, firstName, lastName, address, city, stateCode, zipCode):
         self.custID = custID
         self.firstName = firstName
 	self.lastName  = lastName
+        self.address   = address
 	self.city      = city
 	self.stateCode = stateCode
 	self.zipCode   = zipCode
