@@ -29,7 +29,7 @@
                         <b><a href="${request.route_url('search')}">Search</a></b><br>
                         <b><a href="${request.route_url('customer')}">Customers</a></b><br>
                         <b><a href="${request.route_url('order')}">Orders</a></b><br>
-                        <b><a href="${request.route_url('service')}">Services</a></b><br>
+                        <b><a href="${request.route_url('service')}">Services #</a></b><br>
                         <b><a href="${request.route_url('part')}">Parts</a></b><br>
                         <b><a href="${request.route_url('report')}">Reports</a></b><br>
                         <br>
@@ -38,8 +38,8 @@
        
         <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">
 			
-           Home Page here!
-           <br />
+           Service Add<br />
+           Service Update<br />
                         
         </div>
 

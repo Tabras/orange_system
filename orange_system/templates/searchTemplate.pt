@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
 <head>
@@ -28,14 +26,14 @@
       <div class="Main">
         <div id="menu" style="background-color:orange; height:820px; width:15%; float:left; text-align:center;">
                         <h2><b>Main Menu</b></h2><br>
-                        <b><a href="${request.route_url('search')}">Search</a></b><br>
-                        <b>Customers</b><br>
-                        <b>Orders</b><br>
-                        <b>Services</b><br>
-                        <b>Parts</b><br>
-                        <b>Reports</b><br>
+                        <b><a href="${request.route_url('search')}">Search	#</a></b><br>
+                        <b><a href="${request.route_url('customer')}">Customers</a></b><br>
+                        <b><a href="${request.route_url('order')}">Orders</a></b><br>
+                        <b><a href="${request.route_url('service')}">Services</a></b><br>
+                        <b><a href="${request.route_url('part')}">Parts</a></b><br>
+                        <b><a href="${request.route_url('report')}">Reports</a></b><br>
                         <br>
-                        <b>To-Do</b><br>
+                        <b><a href="${request.route_url('todo')}">To-Do</a></b><br>
                 </div>
        
         <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">

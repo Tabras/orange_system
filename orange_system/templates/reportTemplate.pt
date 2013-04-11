@@ -31,15 +31,15 @@
                         <b><a href="${request.route_url('order')}">Orders</a></b><br>
                         <b><a href="${request.route_url('service')}">Services</a></b><br>
                         <b><a href="${request.route_url('part')}">Parts</a></b><br>
-                        <b><a href="${request.route_url('report')}">Reports</a></b><br>
+                        <b><a href="${request.route_url('report')}">Reports #</a></b><br>
                         <br>
                         <b><a href="${request.route_url('todo')}">To-Do</a></b><br>
                 </div>
        
         <div id="content" style="background-color:FFFFFF; height:820px; width:85%; float:left;">
 			
-           Home Page here!
-           <br />
+           Report Add<br />
+           Report Update<br />
                         
         </div>
 
