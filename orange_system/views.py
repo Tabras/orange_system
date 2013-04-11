@@ -15,13 +15,11 @@ def my_view(request):
 
 @view_config(route_name='search', renderer='templates/searchTemplate.pt')
 def search_view(request):
-    print request.POST
-    if 'submit' in request.POST:
+    if request.POST:
         search = request.POST.get('searchQ')
         q = []
         q = DBSession.query(Customers).filter(Customers.firstName == search)
-        for row in q:
-            print row.firstName
+        print q
     return {'project': 'orange_system'}
     
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
