@@ -15,13 +15,13 @@ def my_view(request):
 
 @view_config(route_name='search', renderer='templates/searchTemplate.pt')
 def search_view(request):
-    if request.POST:
-         search = request.POST.get('searchQ')
-         if search:
-             q = []
-             q = DBSession.query(Customers).filter(Customers.firstName == search)
-    for row in q:
-        print row.firstName
+    print request.POST
+    if 'submit' in request.POST:
+        search = request.POST.get('searchQ')
+        q = []
+        q = DBSession.query(Customers).filter(Customers.firstName == search)
+        for row in q:
+            print row.firstName
     return {'project': 'orange_system'}
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
