@@ -67,15 +67,12 @@
             <input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;" />
             </form>
             <br />
-<<<<<<< HEAD
             <ol class="unstyled" id="printResults">
-=======
             <ol id="customerlistdisplay" class="unstyled">
 				<li>Item 1</li>
 				<li>Item 2</li>
 				<li>Item 3</li>
 				<li>etc...</li>
->>>>>>> 146fddac229cfaa782cd98ee082f0b7e2cb0b581
 			</ol>
             <br />
             
