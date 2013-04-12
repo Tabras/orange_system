@@ -11,7 +11,6 @@
     
     <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
-    
   </head>
   
   <body>
@@ -49,46 +48,75 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="span4">
-          <ul class="nav  nav-pills nav-stacked"></ul>
-        </div>
-        <div class="hero-unit">
-			<input id="firstname" type="text" class="input-large" placeholder="First Name #!">
-			<br>
-			<input id="lastname" type="text" class="input-large" placeholder="Last Name #!">
-			<br>
-			<input id="address" type="text" class="input-large" placeholder="Address #!">
-			<br>
-			<input id="city" type="text" class="input-large" placeholder="City #!">
-			<select id="state">
-				<option>Wisconsin</option>
-				<option>Iowa</option>
-				<option>Canada</option>
-			</select>
-			<br>
-			<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
-			<br>
-			<input id="phone" type="text" class="input-large" placeholder="Phone #!">
-			<select id="phonetype">
-				<option>Cell</option>
-				<option>Work</option>
-				<option>Home</option>
-			</select>
-			<br>
-			<input id="email" type="text" class="input-large" placeholder="E-Mail #!">
-			<select id="emailtype">
-				<option>Personal</option>
-				<option>Professional</option>
-				<option>Work</option>
-			</select>
-			<br>
-			<a class="btn" id="submit">Add Customer</a>
-		</div>
-        <div class="row-fluid"></div>
-      </div>
-    </div>
+    
+    <div class="well pull-left" style="width:46%">
+	  <form method="GET" id="myForm">
+	    <input id="firstname" type="text" class="input-large" placeholder="First Name #!">
+		<br>
+		<input id="lastname" type="text" class="input-large" placeholder="Last Name #!">
+		<br>
+		<input id="address" type="text" class="input-large" placeholder="Address #!">
+		<br>
+		<input id="city" type="text" class="input-large" placeholder="City #!">
+		<select id="state">
+		  <option>Wisconsin</option>
+		  <option>Iowa</option>
+		  <option>Canada</option>
+		</select>
+		<br>
+		<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
+		<br>
+		<input id="phone" type="text" class="input-large" placeholder="Phone #!">
+		<select id="phonetype">
+		  <option>Cell</option>
+		  <option>Work</option>
+		  <option>Home</option>
+		</select>
+		<br>
+		<input id="email" type="text" class="input-large" placeholder="E-Mail #!">
+		<select id="emailtype">
+		  <option>Personal</option>
+		  <option>Professional</option>
+		  <option>Work</option>
+		</select>
+		<br>
+		<input type="submit" name="newcustomer" value="Add Customer #!"/>
+	  </form>
+	</div>
+		
+	<div class="well pull-right" style="width:46%">
+	  <form method="GET" id="myForm">
+		<input id="firstname" type="text" class="input-large" placeholder="First Name #!">
+		<br>
+		<input id="lastname" type="text" class="input-large" placeholder="Last Name #!">
+		<br>
+		<input id="address" type="text" class="input-large" placeholder="Address #!">
+		<br>
+		<input id="city" type="text" class="input-large" placeholder="City #!">
+		<select id="state">
+		  <option>Wisconsin</option>
+		  <option>Iowa</option>
+		  <option>Canada</option>
+		</select>
+		<br>
+		<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
+		<br>
+		<input id="phone" type="text" class="input-large" placeholder="Phone #!">
+		<select id="phonetype">
+		  <option>Cell</option>
+		  <option>Work</option>
+		  <option>Home</option>
+		</select>
+		<br>
+		<input id="email" type="text" class="input-large" placeholder="E-Mail #!">
+		<select id="emailtype">
+		  <option>Personal</option>
+		  <option>Professional</option>
+		  <option>Work</option>
+		</select>
+		<br>
+		<input type="submit" name="updatecustomer" value="Update Customer #!"/>
+	  </form>
+	</div>
   </body>
-
 </html>

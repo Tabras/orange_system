@@ -48,38 +48,29 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="span4">
-          <ul class="nav  nav-pills nav-stacked"></ul>
-        </div>
-        <div class="hero-unit">
-          <p></p>
-          <div class="container-fluid">
-            <br />
-            <form method="GET" id="myForm">
-            <input id="q" name="q" type="text" class="input-large" placeholder="Enter your search here #!">
-            <input type="submit" value="Submit #!"/>
-            </form>
-            <br />
-            <div tal:condition="result">
-                This will only print of result is not none.
-            <br/> Returned Data: <br/>
-            <table>
-               <tr tal:repeat="row result">
-                   <td>${row.firstName}</td>
-                   <td>${row.lastName}</td>
-                   <td>${row.address}</td>
-                   <td>${row.city}</td>
-                   <td>${row.stateCode}</td>
-                   <td>${row.zipCode}</td>
-               </tr>
-            </table>        
-            </div> 
-          </div>
-        </div>
+    
+    <div class="hero-unit">
+	  <div class="container-fluid">
+        <form method="GET" id="myForm">
+          <input id="q" name="q" type="text" class="input-large" placeholder="Enter your search here #!">
+          <input type="submit" value="Submit #!"/>
+        </form>
+        <br />
+        <div tal:condition="result">
+          This will only print of result is not none.
+          <br/> Returned Data: <br/>
+          <table>
+            <tr tal:repeat="row result">
+              <td>${row.firstName}</td>
+              <td>${row.lastName}</td>
+              <td>${row.address}</td>
+              <td>${row.city}</td>
+              <td>${row.stateCode}</td>
+              <td>${row.zipCode}</td>
+            </tr>
+          </table>
+        </div>    
       </div>
     </div>
   </body>
-
 </html>
