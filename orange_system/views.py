@@ -3,6 +3,7 @@ from pyramid.view import view_config
 import locale
 from sqlalchemy.exc import DBAPIError
 
+from pyramid.httpexceptions import HTTPFound
 from .models import (
     DBSession,
     Customers,
@@ -15,13 +16,20 @@ def my_view(request):
 
 @view_config(route_name='search', renderer='templates/searchTemplate.pt')
 def search_view(request):
-    if request.POST:
-        search = request.POST.get('searchQ')
-        q = []
-        q = DBSession.query(Customers).filter(Customers.firstName == search)
-        print q
-    return {'project': 'orange_system'}
-    
+    result = None
+    print result
+    if 'q' in request.GET:
+        print 'in GET'
+        search = request.GET.get('q')
+        result = DBSession.query(Customers).all()
+        print result
+        return {'project': 'orange_sytem', 'result': result}
+    return {'project': 'orange_system', 'result': result}
+
+@view_config(route_name='search', request_param="q=''")
+def search_display(request):
+    return {}
+
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
 def customer_view(request):
     return {'project': 'orange_system'}

@@ -11,11 +11,6 @@
     
     <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
-    <script type="text/javascript">
-         function printSearch(){
-           document.getElementById('printResults').innerHTML = "<li>test</li>";
-         };
-    </script>
   </head>
   
   <body>
@@ -61,21 +56,27 @@
         <div class="hero-unit">
           <p></p>
           <div class="container-fluid">
-            <form method="POST" onSubmit="javascript:printSearch()" id="myForm">
-            <input type="text" class="input-large" placeholder="Enter your search here #!" name="searchQ" id="searchQ">
-            <input id="search" type="text" class="input-large" placeholder="Enter your search here #!">
-            <input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;" />
+            <form method="GET" id="myForm">
+            <input type="text" class="input-large" placeholder="Enter your search here #!" name="q" id="q">
+            <input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;"">
             </form>
+           
             <br />
-            <ol class="unstyled" id="printResults">
-            <ol id="customerlistdisplay" class="unstyled">
-				<li>Item 1</li>
-				<li>Item 2</li>
-				<li>Item 3</li>
-				<li>etc...</li>
-			</ol>
             <br />
-            
+            <div tal:condition="result">
+                This will only print of result is not none.
+            <br/> Returned Data: <br/>
+            <table>
+               <tr tal:repeat="row result">
+                   <td>${row.firstName}</td>
+                   <td>${row.lastName}</td>
+                   <td>${row.address}</td>
+                   <td>${row.city}</td>
+                   <td>${row.stateCode}</td>
+                   <td>${row.zipCode}</td>
+               </tr>
+            </table>        
+            </div> 
           </div>
         </div>
       </div>
