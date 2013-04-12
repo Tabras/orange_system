@@ -56,12 +56,11 @@
         <div class="hero-unit">
           <p></p>
           <div class="container-fluid">
-            <form method="GET" id="myForm">
-            <input type="text" class="input-large" placeholder="Enter your search here #!" name="q" id="q">
-            <input type="submit" value="Submit the form!" style="position: absolute; top: 0; left: 0; z-index: 0; width: 1px; height: 1px; visibility: hidden;"">
-            </form>
-           
             <br />
+            <form method="GET" id="myForm">
+            <input id="q" name="q" type="text" class="input-large" placeholder="Enter your search here #!">
+            <input type="submit" value="Submit #!"/>
+            </form>
             <br />
             <div tal:condition="result">
                 This will only print of result is not none.
