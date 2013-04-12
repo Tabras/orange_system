@@ -2,6 +2,7 @@ from pyramid.response import Response
 from pyramid.view import view_config
 import locale
 from sqlalchemy.exc import DBAPIError
+from sqlalchemy import or_
 
 from pyramid.httpexceptions import HTTPFound
 from .models import (
@@ -21,7 +22,13 @@ def search_view(request):
     if 'q' in request.GET:
         print 'in GET'
         search = request.GET.get('q')
-        result = DBSession.query(Customers).all()
+        result = DBSession.query(Customers).filter(\
+        or_(Customers.firstName.like('%' + search + '%'),\
+          Customers.lastName.like('%' + search + '%'),\
+          Customers.address.like('%' + search + '%'),\
+          Customers.city.like('%' + search + '%'),\
+          Customers.stateCode.like('%' + search + '%'),\
+          Customers.zipCode.like('%' + search + '%')))
         print result
         return {'project': 'orange_sytem', 'result': result}
     return {'project': 'orange_system', 'result': result}
