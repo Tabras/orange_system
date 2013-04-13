@@ -12,7 +12,7 @@
     <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     
-  </head>
+  </head> 
   
   <body>
     <div class="navbar-inverse navbar">
@@ -62,10 +62,10 @@
             <thead>
               <tr>
                  <th>
-                    ID
+                    Order #
                  </th>
                  <th>
-                    Customer ID
+                    Customer #
                  </th>
                  <th>
                     Parts on Order
