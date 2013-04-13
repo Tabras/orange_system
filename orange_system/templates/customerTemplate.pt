@@ -85,7 +85,7 @@
 	</div>
 		
 	<div class="well pull-right" style="width:46%">
-	  <form method="GET" id="myForm">
+	  <form method="POST" id="myForm">
 		<input id="firstname" type="text" class="input-large" placeholder="First Name #!">
 		<br>
 		<input id="lastname" type="text" class="input-large" placeholder="Last Name #!">
@@ -101,19 +101,24 @@
 		<br>
 		<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
 		<br>
-		<input id="phone" type="text" class="input-large" placeholder="Phone #!">
-		<select id="phonetype">
+                <div tal:repeat="row customerPhone">
+                    <input type="text" id="phone${row.id}" class="input-large" placeholder="Phone Number #!" value="${row.phoneNumber}">
+		<select id="phonetype${row.id}">
 		  <option>Cell</option>
 		  <option>Work</option>
 		  <option>Home</option>
 		</select>
+                </div>
+                <label class="control-label">Add Phone Number  <a class="button"><i class="icon-plus" onclick="alert('Yay it worked!');"></i></a></label>
 		<br>
-		<input id="email" type="text" class="input-large" placeholder="E-Mail #!">
-		<select id="emailtype">
-		  <option>Personal</option>
-		  <option>Professional</option>
-		  <option>Work</option>
-		</select>
+                 <div tal:repeat="row customerEmail">
+                    <input type="text" id="email${row.id}" value="${row.emailAddress}">
+                  <select id="emailType${row.id}">
+                     <option>Personal</option>
+                     <option>Professional</option>
+                     <option>Work</option>
+                  </select>
+                 </div>
 		<br>
 		<input type="submit" name="updatecustomer" value="Update Customer #!"/>
 	  </form>

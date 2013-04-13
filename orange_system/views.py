@@ -9,6 +9,7 @@ from .models import (
     DBSession,
     Customers,
     Email,
+    Phone,
     )
 DBSession.execute('SELECT group_concat(emailAddress) FROM tblEmail')
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -21,7 +22,7 @@ def search_view(request):
     if 'q' in request.GET:
         search = request.GET.get('q')
         result = DBSession.execute(\
-        "SELECT c.firstName, c.lastName, c.address, c.city, c.stateCode,"+\
+        "SELECT c.id, c.firstName, c.lastName, c.address, c.city, c.stateCode,"+\
         " c.zipCode, group_concat(DISTINCT e.emailAddress) AS 'emails', "+\
         "group_concat(DISTINCT p.phoneNumber) AS 'Phone Number' "+\
         "FROM tblCustomers AS c "+\
@@ -44,7 +45,13 @@ def search_display(request):
 
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
 def customer_view(request):
-    return {'project': 'orange_system'}
+    # placeholder ID until the page is functional
+    custID = 1
+    customerInfo = DBSession.query(Customers).filter(Customers.id == custID).first()
+    customerEmail = DBSession.query(Email).filter(Email.custID == custID).all()
+    customerPhone = DBSession.query(Phone).filter(Phone.custID == custID).all()
+    
+    return {'project': 'orange_system', 'customerInfo': customerInfo, 'customerEmail': customerEmail, 'customerPhone': customerPhone}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
