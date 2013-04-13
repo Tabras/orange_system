@@ -49,18 +49,54 @@
         </div>
       </div>
     </div>
+    
+    <div class="span4">
+      <div class="well">
+		<label>** Customer name here **</label>
+		<label>** Customer phone here **</label>
+		<label>** Customer email here **</label>
+		<br>
+		<br>
+        <label><b>Model</b></label>
+        <input type="text" class="input-medium" placeholder="Model Name">
+        <br>
+        <label><b>Notes</b></label>
+        <textarea></textarea>
+        <br>
+        <button type="submit" class="btn btn-primary">Add Order</button>
+        <input type="reset" class="btn" value="Reset">
+      </div>
+    </div>
+    
+    <div class="span4">
+      <div class="well">
+        <label><b>Services</b></label>
+        <select>
+          <option>Install Linux</option>
+          <option>Tell me im wrong</option>
+          <option>Fix the "cup holder"</option>
+        </select>
+        <button><b>+</b></button>
+      </div>
+    </div>
+    <div class="span4">
+      <div class="well">
+        <label><b>Parts</b></label>
+        <select>
+          <option>Hard Drive</option>
+          <option>Optical Drive</option>
+          <option>Cup Holder</option>
+        </select>
+        <button><b>+</b></button>
+      </div>
+    </div>
+    
     <div class="container-fluid">
       <div class="row">
-        <div class="span4">
-          <ul class="nav  nav-pills nav-stacked"></ul>
-        </div>
-        <div class="hero-unit">
-          <h1>Orange Computers</h1>
-          <p>It makes orange juice with you!</p>
-          <p></p>
-           <table class="table table-striped">
-           <tr>
-              <th>ID</th>
+        <div class="well">
+          <table class="table table-striped">
+          <tr>
+            <th>ID</th>
               <th>Customer</th>
               <th>Model Name</th>
               <th>Notes</th>
@@ -69,7 +105,7 @@
               <th>Progress</th>
               <th>Completion Date</th>
             </tr>
-            <tr tal:repeat="row orders">
+          <tr tal:repeat="row orders">
             <td>${row.id}</td>
             <td>${row.custID}</td>
             <td>${row.modelName}</td>
@@ -78,12 +114,9 @@
             <td>${row.entryDate}</td>
             <td>${row.progressDescription}</td>
             <td>${row.completionDate}</td>
-            </tr>
+          </tr>
           </table>
-
         </div>
-        <div class="row-fluid">
-                  </div>
       </div>
     </div>
   </body>

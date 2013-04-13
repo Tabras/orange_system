@@ -60,8 +60,9 @@
       </div>
     </div>
     
-    <div class="hero-unit">
+    <div class="well">
 	  <div class="container-fluid">
+		<label style="font-size:26px;"><b>Customer Search</b></label>
         <form method="GET" id="myForm" class="well form-search">
           <div class="input-append">
           <input id="q" name="q" type="text" class="input-large search-query" placeholder="Enter your search here #!">
