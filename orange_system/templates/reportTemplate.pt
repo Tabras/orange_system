@@ -50,18 +50,9 @@
       </div>
     </div>
     <div class="container-fluid">
-      <div class="row">
-        <div class="span4">
-          <ul class="nav  nav-pills nav-stacked"></ul>
-        </div>
-        <div class="hero-unit">
-          <h1>Orange Computers</h1>
-          <p>It makes orange juice with you!</p>
-          <p></p>
-        </div>
-        <div class="row-fluid"></div>
-      </div>
+    <form name="frm">
+		<label>Reports here!</label>
+	</form>    
     </div>
   </body>
-
 </html>

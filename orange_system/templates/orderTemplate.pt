@@ -12,6 +12,27 @@
     <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     
+    <script>
+	  function addElement() {
+      // create a new select element
+      // and give it some content
+      newSel = document.createElement("select");
+      newOption = document.createElement("option");
+      newContent = document.createTextNode("Install Linux");
+      
+	  newOption.appendChild(newContent); //add text to the new option
+      newSel.appendChild(newOption); //add the text node to the newly created div.
+      
+      // add the newly created element and it's content into the DOM
+      insertpoint = document.getElementById("serviceselect");
+      // Get a reference to the parent element
+	  parentDiv = insertpoint.parentNode;
+      // now we use the information to place our select on the form
+	  parentDiv.insertBefore(newSel, insertpoint);
+	  }
+	  
+    </script>
+    
   </head>
   
   <body>
@@ -69,20 +90,20 @@
     </div>
     
     <div class="span4">
-      <div class="well">
-        <label><b>Services</b></label>
-        <select>
+      <div id="serviceswell" class="well">
+        <label id="test"><b>Services</b></label>
+        <select id="serviceselect" name="serviceselect">
           <option>Install Linux</option>
           <option>Tell me im wrong</option>
           <option>Fix the "cup holder"</option>
         </select>
-        <button><b>+</b></button>
+        <button onclick="addElement()"><b>+</b></button>
       </div>
     </div>
     <div class="span4">
       <div class="well">
         <label><b>Parts</b></label>
-        <select>
+        <select id="partselect" name="partselect">
           <option>Hard Drive</option>
           <option>Optical Drive</option>
           <option>Cup Holder</option>
