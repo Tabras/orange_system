@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
-    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
+    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}">
+     </script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
   </head>
   
@@ -51,27 +52,32 @@
     
     <div class="hero-unit">
 	  <div class="container-fluid">
-        <form method="GET" id="myForm">
-          <input id="q" name="q" type="text" class="input-large" placeholder="Enter your search here #!">
-          <input type="submit" value="Submit #!"/>
+        <form method="GET" id="myForm" class="well form-search">
+          <div class="input-append">
+          <input id="q" name="q" type="text" class="input-large search-query" placeholder="Enter your search here #!">
+          <button type="submit" value="Submit #!" class="btn">
+          <i class="icon-search"></i></button>
+          </div>
         </form>
-        <br />
         <div tal:condition="result">
-          This will only print of result is not none.
-          <br/> Returned Data: <br/>
-          <table class="table table-striped">
+          <table class="table table-striped" id="customerTable">
             <tr>
+                <th></th>
                 <th> Name </th>
                 <th> Address </th>
                 <th> Email Addresses </th>
                 <th> Phone Numbers</th>
+                <th></th>
             </tr>
             <tr tal:repeat="row result">
+               <td>
+                   ${row['id']}
+               </td>
                <td>
                    ${row['firstName']} ${row['lastName']}
                </td>
                <td>
-                   ${row['address']}, ${row['city']}, ${row['stateCode']},
+                   ${row['address']}<br> ${row['city']}, ${row['stateCode']}<br>
                    ${row['zipCode']} 
                </td>
                <td>
@@ -79,6 +85,8 @@
                </td>
                <td>
                    ${row['Phone Number']}
+               </td>
+               <td>
                </td>
              </tr>
           </table>

@@ -10,6 +10,7 @@ from .models import (
     Customers,
     Email,
     Phone,
+    Orders,
     )
 DBSession.execute('SELECT group_concat(emailAddress) FROM tblEmail')
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -55,7 +56,8 @@ def customer_view(request):
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
-    return {'project': 'orange_system'}
+    orders = DBSession.query(Orders).all()
+    return {'project': 'orange_system', 'orders': orders}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
 def service_view(request):
