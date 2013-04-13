@@ -2,15 +2,15 @@ from pyramid.response import Response
 from pyramid.view import view_config
 import locale
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy import or_
+from sqlalchemy import *
 
 from pyramid.httpexceptions import HTTPFound
 from .models import (
     DBSession,
     Customers,
+    Email,
     )
-
-
+DBSession.execute('SELECT group_concat(emailAddress) FROM tblEmail')
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
     return {'project': 'orange_system'}
@@ -18,19 +18,24 @@ def my_view(request):
 @view_config(route_name='search', renderer='templates/searchTemplate.pt')
 def search_view(request):
     result = None
-    print result
     if 'q' in request.GET:
-        print 'in GET'
         search = request.GET.get('q')
-        result = DBSession.query(Customers).filter(\
-        or_(Customers.firstName.like('%' + search + '%'),\
-          Customers.lastName.like('%' + search + '%'),\
-          Customers.address.like('%' + search + '%'),\
-          Customers.city.like('%' + search + '%'),\
-          Customers.stateCode.like('%' + search + '%'),\
-          Customers.zipCode.like('%' + search + '%')))
-        print result
-        return {'project': 'orange_sytem', 'result': result}
+        result = DBSession.execute(\
+        "SELECT c.firstName, c.lastName, c.address, c.city, c.stateCode,"+\
+        " c.zipCode, group_concat(DISTINCT e.emailAddress) AS 'emails', "+\
+        "group_concat(DISTINCT p.phoneNumber) AS 'Phone Number' "+\
+        "FROM tblCustomers AS c "+\
+        "JOIN tblEmail AS e ON c.id = e.custID "+\
+        "JOIN tblPhone AS p ON c.id = p.custID "+\
+        "WHERE c.firstName LIKE '%" + search + "%' OR "+\
+        "c.lastName LIKE '%" + search + "%' OR "+\
+        "c.address LIKE '%" + search + "%' OR "+\
+        "c.city LIKE '%" + search + "%' OR "+\
+        "c.stateCode LIKE '%" + search + "%' OR "+\
+        "c.zipCode LIKE '%" + search + "%' OR "+\
+        "e.emailAddress LIKE '%" + search + "%' OR "+\
+        "p.phoneNumber LIKE '%" + search + "%' "+\
+        "GROUP BY c.id")
     return {'project': 'orange_system', 'result': result}
 
 @view_config(route_name='search', request_param="q=''")

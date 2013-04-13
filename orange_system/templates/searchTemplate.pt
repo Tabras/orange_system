@@ -59,15 +59,28 @@
         <div tal:condition="result">
           This will only print of result is not none.
           <br/> Returned Data: <br/>
-          <table>
-            <tr tal:repeat="row result">
-              <td>${row.firstName}</td>
-              <td>${row.lastName}</td>
-              <td>${row.address}</td>
-              <td>${row.city}</td>
-              <td>${row.stateCode}</td>
-              <td>${row.zipCode}</td>
+          <table class="table table-striped">
+            <tr>
+                <th> Name </th>
+                <th> Address </th>
+                <th> Email Addresses </th>
+                <th> Phone Numbers</th>
             </tr>
+            <tr tal:repeat="row result">
+               <td>
+                   ${row['firstName']} ${row['lastName']}
+               </td>
+               <td>
+                   ${row['address']}, ${row['city']}, ${row['stateCode']},
+                   ${row['zipCode']} 
+               </td>
+               <td>
+                   ${row['emails']}
+               </td>
+               <td>
+                   ${row['Phone Number']}
+               </td>
+             </tr>
           </table>
         </div>    
       </div>
