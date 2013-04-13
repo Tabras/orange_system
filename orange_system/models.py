@@ -39,60 +39,48 @@ class States(Base):
   
 class Progress(Base):
     __tablename__ = 'tblProgress'
-    progressID = Column(String(10), primary_key=True)
-    progressDescription = Column(String(200))
+    progressDescription = Column(String(25), primary_key=True)
 
-    def __init__(self, progressID, progressDescription):
-        self.progressID = progressID
+    def __init__(self, progressDescription):
         self.progressDescription = progressDescription  
 
 class Parts(Base):
     __tablename__ = 'tblParts'
-    partID = Column(String(10), primary_key=True)
-    partName = Column(String(15))
-    partDescription = Column(String(200))
+    partName = Column(String(20), primary_key=True)
     partCost = Column(String(5))
 
-    def __init__(self, partID, partName, partDescription, partCost):
-	self.partID = partID
+    def __init__(self, partName, partCost):
 	self.partName = partName
-	self.partDescription = partDescription
 	self.partCost = partCost
 
 class Services(Base):
     __tablename__ = 'tblServices'
-    serviceID = Column(String(10), primary_key=True)
-    serviceName = Column(String(15))
-    serviceDescription = Column(String(200))
+    serviceName = Column(String(20), primary_key=True)
     serviceCost = Column(String(5))
 
-    def __init__(self, serviceID, serviceName, serviceDescription, serviceCost):
- 	self.serviceID = serviceID
+    def __init__(self, serviceName, serviceCost):
 	self.serviceName = serviceName
-	self.serviceDescription = serviceDescription
 	self.serviceCost = serviceCost
 	
 class EmailType(Base):
     __tablename__ = 'tblEmailType'
-    emailType = Column(String(10), primary_key=True)
-    emailTypeDescription = Column(String(15))
+    emailType = Column(String(20), primary_key=True)
 
-    def __init__(self, emailType, emailTypeDescription):
+    def __init__(self, emailType):
 	self.emailType = emailType
-	self.emailTypeDescription = emailTypeDescription
 
 class PhoneType(Base):
     __tablename__= 'tblPhoneType'
-    phoneType = Column(String(10), primary_key=True)
-    phoneTypeDescription = Column(String(15))
+    phoneType = Column(String(20), primary_key=True)
 
-    def __init__(self, phoneType, phoneTypeDescription):
+    def __init__(self, phoneType):
     	self.phoneType = phoneType
-	self.phoneTypeDescription = phoneTypeDescription
 
 class Customers(Base):
     __tablename__ = 'tblCustomers'
-    custID    = Column(String(10), primary_key=True, unique = True)
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    id    = Column(Integer, primary_key=True, unique = True)
     firstName = Column(String(15), unique=False)
     lastName  = Column(String(25), unique=False)
     address   = Column(String(50))
@@ -100,8 +88,7 @@ class Customers(Base):
     stateCode = Column(String(2), ForeignKey(States.stateCode), unique=False)
     zipCode   = Column(String(9), unique=False)
 
-    def __init__(self, custID, firstName, lastName, address, city, stateCode, zipCode):
-        self.custID = custID
+    def __init__(self, firstName, lastName, address, city, stateCode, zipCode):
         self.firstName = firstName
 	self.lastName  = lastName
         self.address   = address
@@ -111,50 +98,53 @@ class Customers(Base):
 
 class Orders(Base):
     __tablename__ = 'tblOrders'
-    orderID = Column(String(10), primary_key=True, unique=True)
-    custID  = Column(String(10), ForeignKey(Customers.custID))
+    __tableargs__ = ({
+    'sqlite_autoincrement': True})
+    id = Column(Integer, primary_key=True, unique=True)
+    custID  = Column(Integer(10), ForeignKey(Customers.id))
     modelName = Column(String(25))
     orderNotes = Column(String(200))
     orderCost = Column(String(10))
     entryDate = Column(String(10))
     completionDate = Column(String(10))
-    progressID = Column(String(10), ForeignKey(Progress.progressID))
+    progressDescription = Column(String(10), ForeignKey(Progress.progressDescription))
 
-    def __init__(self, orderID, custID, modelName, orderNotes, orderCost, entryDate, completionDate, progressID):
-        self.orderID = orderID
+    def __init__(self, custID, modelName, orderNotes, orderCost, entryDate, completionDate, progressDescription):
 	self.custID = custID
 	self.modelName = modelName
 	self.orderNotes = orderNotes
 	self.orderCost = orderCost
 	self.entryDate = entryDate
 	self.completionDate = completionDate
-	self.progressID = progressID
+	self.progressDescription = progressDescription
 
 
 
 
 class Email(Base):
     __tablename__ = 'tblEmail'
-    emailID = Column(String(5), primary_key=True)
-    custID = Column(String(10), ForeignKey(Customers.custID))
-    emailAddress = Column(String(254))
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    id = Column(Integer, primary_key=True)
+    custID = Column(String(10), ForeignKey(Customers.id))
+    emailAddress = Column(String(254), unique=True)
     emailType = Column(String(20), ForeignKey(EmailType.emailType))
 
-    def __init__(self, emailID, custID, emailAddress, emailType):
-        self.emailID = emailID
+    def __init__(self, custID, emailAddress, emailType):
         self.custID = custID
 	self.emailAddress = emailAddress
 	self.emailType = emailType
 
 class Phone(Base):
     __tablename__ = 'tblPhone'
-    phoneID = Column(String(5), primary_key=True)
-    custID = Column(String(10), ForeignKey(Customers.custID))
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    id = Column(Integer, primary_key=True)
+    custID = Column(String(10), ForeignKey(Customers.id))
     phoneNumber = Column(String(10))
     phoneType = Column(String(10), ForeignKey(PhoneType.phoneType))
 
-    def __init__(self, phoneID, custID, phoneNumber, phoneType):
-	self.phoneID = phoneID
+    def __init__(self, custID, phoneNumber, phoneType):
 	self.custID = custID
 	self.phoneNumber = phoneNumber
 	self.phoneType = phoneType
@@ -165,23 +155,26 @@ class Phone(Base):
 
 class PartsByOrder(Base):
     __tablename__ = 'tblPartsByOrder'
-    autoID = Column(Integer(1), primary_key=True)
-    partID = Column(String(10), ForeignKey(Parts.partID))
-    orderID = Column(String(10), ForeignKey(Orders.orderID))
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    id = Column(Integer, primary_key=True)
+    partID = Column(String(10), ForeignKey(Parts.partName))
+    orderID = Column(String(10), ForeignKey(Orders.id))
 
-    def __init__(self, autoID, partID, orderID):
-	self.autoID = autoID
+    def __init__(self,  partID, orderID):
 	self.partID = partID
 	self.orderID = orderID
 
 class ServicesByOrder(Base):
     __tablename__ = 'tblServicesByOrder'
-    autoID = Column(Integer(1), primary_key=True)
-    serviceID = Column(String(10), ForeignKey(Services.serviceID))
-    orderID = Column(String(10), ForeignKey(Orders.orderID))
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    id = Column(Integer, primary_key=True)
+    serviceName = Column(String(10), ForeignKey(Services.serviceName))
+    orderID = Column(String(10), ForeignKey(Orders.id))
 
-    def __init__(self, autoID, serviceID, orderID):
-	self.autoID = autoID
-	self.serviceID = serviceID
+    def __init__(self, serviceName, orderID):
+        
+	self.serviceName = serviceName
 	self.orderID = orderID
 
