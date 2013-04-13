@@ -29,6 +29,8 @@ in the bin folder of your venv.  This is not the only way of doing this, as you 
 in its own script if you like.  However, our database is small so we'll just throw all the tables in here.
 """
 
+
+
 class States(Base):
     __tablename__ = 'tblStates'
     stateCode = Column(String(2), primary_key=True)
@@ -78,6 +80,9 @@ class PhoneType(Base):
 
 class Customers(Base):
     __tablename__ = 'tblCustomers'
+# Here we use __tableargs__ to define certain properties
+# of a declarative table.
+# We will be using this frequently for relationships and autonumbers.
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
     id    = Column(Integer, primary_key=True, unique = True)
@@ -87,7 +92,8 @@ class Customers(Base):
     city      = Column(String(15), unique=False)
     stateCode = Column(String(2), ForeignKey(States.stateCode), unique=False)
     zipCode   = Column(String(9), unique=False)
-
+# We don't need to include id in __init__.  The DB Session will automatically 
+# assign an autonumber to this field, so we don't need to assign anything to it.
     def __init__(self, firstName, lastName, address, city, stateCode, zipCode):
         self.firstName = firstName
 	self.lastName  = lastName
