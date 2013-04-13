@@ -9,9 +9,19 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
-    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}">
+    <script src="http://code.jquery.com/jquery-1.9.1.js">
      </script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+     <script>
+        $(document).ready(function(){
+         
+          $("#q").blur(function(){
+             $('#myForm').submit();
+           });
+
+        }); 
+         
+     </script>
   </head>
   
   <body>
@@ -55,7 +65,7 @@
         <form method="GET" id="myForm" class="well form-search">
           <div class="input-append">
           <input id="q" name="q" type="text" class="input-large search-query" placeholder="Enter your search here #!">
-          <button type="submit" value="Submit #!" class="btn">
+          <button type="submit" value="Submit #!" class="btn" id="searchBtn">
           <i class="icon-search"></i></button>
           </div>
         </form>
