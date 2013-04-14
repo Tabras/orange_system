@@ -13,7 +13,7 @@
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     
     <script>
-	  function addElement() {
+	  function addService() {
       // create a new select element
       // and give it some content
       newSel = document.createElement("select");
@@ -31,6 +31,23 @@
 	  parentDiv.insertBefore(newSel, insertpoint);
 	  }
 	  
+	  function addPart() {
+      // create a new select element
+      // and give it some content
+      newSel = document.createElement("select");
+      newOption = document.createElement("option");
+      newContent = document.createTextNode("Hard Drive");
+      
+	  newOption.appendChild(newContent); //add text to the new option
+      newSel.appendChild(newOption); //add the text node to the newly created div.
+      
+      // add the newly created element and it's content into the DOM
+      insertpoint = document.getElementById("partselect");
+      // Get a reference to the parent element
+	  parentDiv = insertpoint.parentNode;
+      // now we use the information to place our select on the form
+	  parentDiv.insertBefore(newSel, insertpoint);
+	  }
     </script>
     
   </head>
@@ -82,7 +99,7 @@
         <input type="text" class="input-medium" placeholder="Model Name">
         <br>
         <label><b>Notes</b></label>
-        <textarea></textarea>
+        <textarea placeholder="Enter notes here"></textarea>
         <br>
         <button type="submit" class="btn btn-primary">Add Order</button>
         <input type="reset" class="btn" value="Reset">
@@ -90,14 +107,14 @@
     </div>
     
     <div class="span4">
-      <div id="serviceswell" class="well">
-        <label id="test"><b>Services</b></label>
+      <div class="well">
+        <label><b>Services</b></label>
         <select id="serviceselect" name="serviceselect">
           <option>Install Linux</option>
           <option>Tell me im wrong</option>
           <option>Fix the "cup holder"</option>
         </select>
-        <button onclick="addElement()"><b>+</b></button>
+        <button onclick="addService()"><b>+</b></button>
       </div>
     </div>
     <div class="span4">
@@ -108,7 +125,7 @@
           <option>Optical Drive</option>
           <option>Cup Holder</option>
         </select>
-        <button><b>+</b></button>
+        <button onclick="addPart()"><b>+</b></button>
       </div>
     </div>
     
@@ -140,6 +157,6 @@
         </div>
       </div>
     </div>
+    
   </body>
-
 </html>

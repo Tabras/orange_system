@@ -55,10 +55,12 @@
         </div>
       </div>
     </div>
-    
-    <div class="well pull-left" style="width:46%">
-	  <form method="GET" id="myForm">
-	    <input id="firstname" type="text" class="input-large" placeholder="First Name #!">
+    <div class="container-fluid">
+	<form id="customerinfo">
+    <div class="span4">
+      <div class="well">
+		<label><b>Customer Information</b></label>
+        <input id="firstname" type="text" class="input-large" placeholder="First Name #!">
 		<br>
 		<input id="lastname" type="text" class="input-large" placeholder="Last Name #!">
 		<br>
@@ -73,18 +75,27 @@
 		<br>
 		<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
 		<br>
-		<input id="phone" type="text" class="input-large" placeholder="Phone #!">
+		<br>
+		<button type="submit" class="btn btn-primary">Add Order</button>
+        <input type="reset" class="btn" value="Reset">
+      </div>
+    </div>
+    
+    <div class="span6">
+      <div class="well">
+		<label><b>Phone Number</b></label>
+        <input id="phone1" type="text" class="input-large" placeholder="Phone #1">
 		<select id="phonetype">
 		  <option>Cell</option>
 		  <option>Work</option>
 		  <option>Home</option>
 		</select>
 		<br>
-		<input id="email" type="text" class="input-large" placeholder="E-Mail #!">
-		<select id="emailtype">
-		  <option>Personal</option>
-		  <option>Professional</option>
+		<input id="phone2" type="text" class="input-large" placeholder="Phone #2">
+		<select id="phonetype">
+		  <option>Cell</option>
 		  <option>Work</option>
+		  <option>Home</option>
 		</select>
 		<br>
 		<input type="submit" name="newcustomer" value="Add Customer #!"/>
@@ -104,31 +115,72 @@
 		  <option>Wisconsin</option>
 		  <option>Iowa</option>
 		  <option>Canada</option>
+		<input id="phone3" type="text" class="input-large" placeholder="Phone #3">
+		<select id="phonetype">
+		  <option>Cell</option>
+		  <option>Work</option>
+		  <option>Home</option>
 		</select>
 		<br>
-		<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
 		<br>
                 <div tal:repeat="row customerPhone" id="phoneList">
                     <input type="text" id="phone${row.id}" class="input-large" placeholder="Phone Number #!" value="${row.phoneNumber}">
 		<select id="phonetype${row.id}">
 		  <option>Cell</option>
+		<label><b>E-mails</b></label>
+		<input id="email1" type="text" class="input-large" placeholder="E-Mail #1">
+		<select id="emailtype">
+		  <option>Personal</option>
+		  <option>Professional</option>
 		  <option>Work</option>
-		  <option>Home</option>
 		</select>
                 </div>
                 <span class="control-label" id="lblAddPhone">Add Phone Number  <a id="btnAddPhone"><i class="icon-plus"></i></a></span>
 		<br>
-                 <div tal:repeat="row customerEmail">
-                    <input type="text" id="email${row.id}" value="${row.emailAddress}">
-                  <select id="emailType${row.id}">
-                     <option>Personal</option>
-                     <option>Professional</option>
-                     <option>Work</option>
-                  </select>
-                 </div>
+		<input id="email2" type="text" class="input-large" placeholder="E-Mail #2">
+		<select id="emailtype">
+		  <option>Personal</option>
+		  <option>Professional</option>
+		  <option>Work</option>
+		</select>
 		<br>
-		<input type="submit" name="updatecustomer" value="Update Customer #!"/>
-	  </form>
-	</div>
+		<input id="email3" type="text" class="input-large" placeholder="E-Mail #3">
+		<select id="emailtype">
+		  <option>Personal</option>
+		  <option>Professional</option>
+		  <option>Work</option>
+		</select>
+      </div>
+    </div>
+    </form>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="well">
+		<label style="font-size:26;"><b>Customer Orders</b></label>
+          <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+              <th>Customer</th>
+              <th>Model Name</th>
+              <th>Notes</th>
+              <th>Cost</th>
+              <th>Entry Date</th>
+              <th>Progress</th>
+              <th>Completion Date</th>
+            </tr>
+          <tr tal:repeat="row orders">
+            <td>${row.id}</td>
+            <td>${row.custID}</td>
+            <td>${row.modelName}</td>
+            <td>${row.orderNotes}</td>
+            <td>${row.orderCost}</td>
+            <td>${row.entryDate}</td>
+            <td>${row.progressDescription}</td>
+            <td>${row.completionDate}</td>
+          </tr>
+          </table>
+        </div>
+    </div>
   </body>
 </html>
