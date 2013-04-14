@@ -75,7 +75,19 @@ def order_view(request):
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
 def service_view(request):
-    return {'project': 'orange_system'}
+	serviceList = None
+	serviceAdd = None
+	serviceList = DBSession.execute(\
+	"SELECT serviceID, serviceName, serviceCost "+\
+	"FROM tblServices")
+	
+	if 'servicename' in request.POST and 'servicecost' in request.POST:
+		name = request.POST.get('servicename')
+		cost = request.POST.get('servicecost')
+		serviceAdd = DBSession.execute(\
+		"INSERT INTO tblServices (serviceName, serviceCost) "+\
+		"VALUES ('" + name + "', '" + cost + "' )")
+	return {'project': 'orange_system', 'serviceList': serviceList}
     
 @view_config(route_name='part', renderer='templates/partTemplate.pt')
 def part_view(request):
