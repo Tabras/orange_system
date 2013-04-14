@@ -59,6 +59,7 @@
           <p>It makes orange juice with you!</p>
           <p></p>
           <table class="table table-striped">
+            <thead>
               <tr>
                  <th>
                     ID
@@ -78,8 +79,63 @@
                  <th>
                     Notes
                  </th>
+                 <th>
+                    Progress
+                 </th>
                </tr>
-                
+               </thead>
+             <tbody>
+                <tr tal:condition="priorityList" 
+                    tal:repeat="row priorityList"
+                    class="warning">
+                <td>
+                   ${row['id']}
+                </td>
+                <td>
+                   ${row['custID']}
+                </td>
+                <td>
+                   ${row['partsOnOrder']}
+                </td>
+                <td>
+                   ${row['servicesOnOrder']}
+                </td>
+                <td>
+                   ${row['entryDate']}
+                </td>
+                <td>
+                   ${row['orderNotes']}
+                </td>
+                <td>
+                   ${row['progressDescription']}
+                </td>
+                </tr>
+                <tr tal:condition="todoList" 
+                    tal:repeat="row todoList">
+                    <td>
+                     ${row['id']}
+                    </td>
+                    <td>
+                     ${row['custID']}
+                    </td>
+                    <td>
+                     ${row['partsOnOrder']}
+                    </td>
+                    <td>
+                     ${row['servicesOnOrder']}
+                    </td>
+                    <td>
+                     ${row['entryDate']}
+                    </td>
+                    <td>
+                     ${row['orderNotes']}
+                    </td>
+                    <td>
+                     ${row['progressDescription']}
+                    </td>
+                 </tr>
+              </tbody>
+                     
              </table>
         </div>
         <div class="row-fluid"></div>

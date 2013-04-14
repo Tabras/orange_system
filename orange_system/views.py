@@ -50,13 +50,6 @@ def search_view(request):
         "GROUP BY c.id")
     return {'project': 'orange_system', 'result': result}
 
-# This page doesn't actually return anything but an empty dictionary.
-# In fact, it's only called in a GET to send the request_param over to the search.
-# There's probably a better way to do this, but it works at least. :P
-@view_config(route_name='search', request_param="q=''")
-def search_display(request):
-    return {}
-
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
 def customer_view(request):
     # placeholder ID until the page is functional
@@ -110,9 +103,9 @@ def todo_view(request):
     # time for some list comprehension.
     # This first statement will iterate our todoList and add only rows that
     # contain a 'critical' tag in their progress description.
-    priorityList = [row for row in todoList if 'critical' in row['progressDescription']]
+    priorityList = [row for row in todoList if 'critical' in row['progressDescription'].lower()]
     # Next, we reverse the process for non-priority orders.
-    newToDoList = [row for row in todoList if 'critical' not in row['progressDescription']]
+    newToDoList = [row for row in todoList if 'critical' not in row['progressDescription'].lower()]
     # Fun, right? :)
     return {'project': 'orange_system', 'todoList': newToDoList, 'priorityList': priorityList}
     
