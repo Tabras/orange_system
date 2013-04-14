@@ -63,7 +63,9 @@ def customer_view(request):
     customerEmail = DBSession.query(Email).filter(Email.custID == custID).all()
     customerPhone = DBSession.query(Phone).filter(Phone.custID == custID).all()
     
-    return {'project': 'orange_system', 'customerInfo': customerInfo, 'customerEmail': customerEmail, 'customerPhone': customerPhone}
+    states = DBSession.query(States).all()
+    
+    return {'project': 'orange_system', 'customerInfo': customerInfo, 'customerEmail': customerEmail, 'customerPhone': customerPhone 'states': states}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):

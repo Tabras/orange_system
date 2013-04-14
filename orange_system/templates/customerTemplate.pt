@@ -9,8 +9,15 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
-    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script>
+      $(document).ready(function (){
+          $('#lblAddPhone').click(function (){
+              alert('success!');
+           });
+        });
+    </script>
   </head>
   
   <body>
@@ -85,7 +92,7 @@
 	</div>
 		
 	<div class="well pull-right" style="width:46%">
-	  <form method="POST" id="myForm">
+	  <form id="myForm">
 		<input id="firstname" type="text" class="input-large" placeholder="First Name #!">
 		<br>
 		<input id="lastname" type="text" class="input-large" placeholder="Last Name #!">
@@ -101,7 +108,7 @@
 		<br>
 		<input id="zipcode" type="text" class="input-large" placeholder="ZipCode #!">
 		<br>
-                <div tal:repeat="row customerPhone">
+                <div tal:repeat="row customerPhone" id="phoneList">
                     <input type="text" id="phone${row.id}" class="input-large" placeholder="Phone Number #!" value="${row.phoneNumber}">
 		<select id="phonetype${row.id}">
 		  <option>Cell</option>
@@ -109,7 +116,7 @@
 		  <option>Home</option>
 		</select>
                 </div>
-                <label class="control-label">Add Phone Number  <a class="button"><i class="icon-plus" onclick="alert('Yay it worked!');"></i></a></label>
+                <span class="control-label" id="lblAddPhone">Add Phone Number  <a id="btnAddPhone"><i class="icon-plus"></i></a></span>
 		<br>
                  <div tal:repeat="row customerEmail">
                     <input type="text" id="email${row.id}" value="${row.emailAddress}">
