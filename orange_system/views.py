@@ -55,6 +55,10 @@ def search_view(request):
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
 def customer_view(request):
     states = DBSession.query(States).all()
+    customer = None
+    print request.GET
+    if 'customerID' in request.GET:
+		customer = DBSession.query(Customers).filter(Customers.customerID == request.GET['customerID']).first()
     if request.POST:
 
         # Check to see if the post data is present
@@ -102,7 +106,7 @@ def customer_view(request):
                 request.POST['phonetype3'])
                 DBSession.add(phone3)
     
-    return {'project': 'orange_system', 'states': states}
+    return {'project': 'orange_system', 'states': states, 'customer': customer}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):

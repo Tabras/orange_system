@@ -18,7 +18,7 @@
           $("#q").blur(function(){
              $('#myForm').submit();
            });
-       
+         
 
         }); 
          
@@ -87,50 +87,21 @@
 				<b><a class="span2">Email Addresses</a> </b>
 			</li>
 			<li>
-				<b><a class="span2 offset2">Phone Number</a> </b>
-			</li>
-			<li>
-				<b><a class="span1 offset2 align-right">Edit</a> </b>
+				<b><a class="span2 offset1">Phone Number</a> </b>
 			</li>
 			</ul>
 			<hr> 
-			<form type="GET" action="${request.route_url('customer')}" tal:repeat="row result">
+			<form type="GET" action="${request.route_url('customer')}" tal:repeat="row result" id="form${row['customerID']}">
 				<!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
 				      Probably not the smoothest way to handle this, but it works gosh darn it!-->
 				<span class="span1">${row['customerID']}<input type="hidden" value="${row['customerID']}" name="customerID"> </span>
 				<span class="span2">${row['firstName']} ${row['lastName']}</span>
 				<span class="span2">${row['address']} ${row['city']}, ${row['stateCode']} ${row['zipCode']}</span>
-				<span class="span2">${row['emails']} </span>
-				<span class="span2 offset2">${row['Phone Number']}</span>
-				<span class="span1 offset2 align-right">
-				<input type="submit" class="button btn-submit" value="Edit"></span> <br><hr>
+				<span class="span2">${row['emails']}</span>
+				<span class="span2 offset1">${row['Phone Number']}</span>
+				<span class="span1 align-right">
+				<button class="btn btn-primary" type="submit">Edit</button></span> <br><hr>
 			</form>
-<!--!
-            <tr tal:repeat="row result">
-               <td id="customerID">
-                  <input type="hidden" name="customerID" value="${row['customerID']}>">
-               </td>
-               <td>
-                  value="${row['firstName']}
-                  value="${row['lastName']}
-               </td>
-               <td>
-                   ${row['address']}"><br>
-                   ${row['city']}, 
-                   ${row['stateCode']}<br>
-                   ${row['zipCode']}
-               </td>
-               <td>
-                   ${row['emails']}
-               </td>
-               <td>
-                   ${row['Phone Number']}
-               </td>
-               <td>
-                  <input type="submit" id="editCust" value="Edit Customer #!">
-               </td>
-             </tr>
--->
       
         </div>    
       </div>
