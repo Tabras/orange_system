@@ -12,6 +12,7 @@ from .models import (
     Email,
     Phone,
     Orders,
+    States,
     )
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -67,40 +68,40 @@ def customer_view(request):
         # Instruct the server to notify us that we created the object
             if customer:
                 DBSession.add(customer)
+                firstName = request.POST['firstname']
                 # Let's get the ID of our new customer
-                newID = DBSession.execute(
-                "SELECT id FROM tblCustomers WHERE "+\
-                "firstName = '" + request.POST['firstname']) + "'"
+                newCust = DBSession.query(Customers).filter(Customers.firstName == firstName).first()
+                newID = newCust.customerID
         # Check to see if there is email information in POST
             if request.POST['email1']:
             # Instantiate an email object with the fetched ID
                 email1 = Email(newID,request.POST['email1'],
                 request.POST['emailtype1'])
             # More debug logs..
-                print "Successfuly made email1 object"
+                DBSession.add(email1)
             if request.POST['email2']:
                 email2 = Email(newID,request.POST['email2'],
                 request.POST['emailtype2'])
-                print "Successfuly made object email2"
+                DBSession.add(email2)
             if request.POST['email3']:
                 email3 = Email(newID,request.POST['email3'],
                 request.POST['emailtype3'])
-                print "Successfuly made object email3"
+                DBSession.add(email3)
         # Let's do the same thing for phone numbers.
             if request.POST['phone1']:
                 phone1 = Phone(newID,request.POST['phone1'],
                 request.POST['phonetype1'])
-                print "successfuly made object phone1"
+                DBSession.add(phone1)
             if request.POST['phone2']:
                 phone2 = Phone(newID,request.POST['phone2'],
                 request.POST['phonetype2'])
-                print "Successfuly made object phone2"
+                DBSession.add(phone2)
             if request.POST['phone3']:
                 phone3 = Phone(newID,request.POST['phone3'],
                 request.POST['phonetype3'])
-                print "Successfuly made object phone3"
+                DBSession.add(phone3)
     
-    return {'project': 'orange_system', 'customerInfo': customerInfo, 'customerEmail': customerEmail, 'customerPhone': customerPhone, 'orders': orders, 'states': states}
+    return {'project': 'orange_system', 'states': states}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):

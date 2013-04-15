@@ -85,7 +85,7 @@ class Customers(Base):
 # We will be using this frequently for relationships and autonumbers.
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    id    = Column(Integer, primary_key=True, unique = True)
+    customerID    = Column(Integer, primary_key=True, unique = True)
     firstName = Column(String(15), unique=False)
     lastName  = Column(String(25), unique=False)
     address   = Column(String(50))
@@ -106,8 +106,8 @@ class Orders(Base):
     __tablename__ = 'tblOrders'
     __tableargs__ = ({
     'sqlite_autoincrement': True})
-    id = Column(Integer, primary_key=True, unique=True)
-    custID  = Column(Integer(10), ForeignKey(Customers.id))
+    orderID = Column(Integer, primary_key=True, unique=True)
+    custID  = Column(Integer(10), ForeignKey(Customers.customerID))
     modelName = Column(String(25))
     orderNotes = Column(String(200))
     orderCost = Column(String(10))
@@ -131,8 +131,8 @@ class Email(Base):
     __tablename__ = 'tblEmail'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    id = Column(Integer, primary_key=True)
-    custID = Column(String(10), ForeignKey(Customers.id))
+    emailID = Column(Integer, primary_key=True)
+    custID = Column(String(10), ForeignKey(Customers.customerID))
     emailAddress = Column(String(254), unique=True)
     emailType = Column(String(20), ForeignKey(EmailType.emailType))
 
@@ -145,8 +145,8 @@ class Phone(Base):
     __tablename__ = 'tblPhone'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    id = Column(Integer, primary_key=True)
-    custID = Column(String(10), ForeignKey(Customers.id))
+    phoneID = Column(Integer, primary_key=True)
+    custID = Column(String(10), ForeignKey(Customers.customerID))
     phoneNumber = Column(String(10))
     phoneType = Column(String(10), ForeignKey(PhoneType.phoneType))
 
@@ -165,7 +165,7 @@ class PartsByOrder(Base):
     'sqlite_autoincrement': True,})
     id = Column(Integer, primary_key=True)
     partID = Column(String(10), ForeignKey(Parts.partName))
-    orderID = Column(String(10), ForeignKey(Orders.id))
+    orderID = Column(String(10), ForeignKey(Orders.orderID))
 
     def __init__(self,  partID, orderID):
 	self.partID = partID
@@ -177,7 +177,7 @@ class ServicesByOrder(Base):
     'sqlite_autoincrement': True,})
     id = Column(Integer, primary_key=True)
     serviceName = Column(String(10), ForeignKey(Services.serviceName))
-    orderID = Column(String(10), ForeignKey(Orders.id))
+    orderID = Column(String(10), ForeignKey(Orders.orderID))
 
     def __init__(self, serviceName, orderID):
         
