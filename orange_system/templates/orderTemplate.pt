@@ -161,7 +161,7 @@
             <th>Completion Date</th>
           </tr>
         <tr tal:repeat="row orders">
-          <td>${row.id}</td>
+          <td>${row.orderID}</td>
           <td>${row.custID}</td>
           <td>${row.modelName}</td>
           <td>${row.orderNotes}</td>

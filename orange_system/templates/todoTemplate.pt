@@ -84,7 +84,7 @@
                     tal:repeat="row priorityList"
                     class="warning">
                 <td>
-                   ${row['id']}
+                   ${row['orderID']}
                 </td>
                 <td>
                    ${row['custID']}
@@ -108,7 +108,7 @@
                 <tr tal:condition="todoList" 
                     tal:repeat="row todoList">
                     <td>
-                     ${row['id']}
+                     ${row['orderID']}
                     </td>
                     <td>
                      ${row['custID']}
