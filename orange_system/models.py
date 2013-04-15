@@ -174,11 +174,11 @@ class PartsByOrder(Base):
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
     id = Column(Integer, primary_key=True)
-    partID = Column(String(10), ForeignKey(Parts.partName))
+    partName = Column(String(10), ForeignKey(Parts.partName))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
-    def __init__(self,  partID, orderID):
-	self.partID = partID
+    def __init__(self,  partName, orderID):
+	self.partName = partName
 	self.orderID = orderID
 
 class ServicesByOrder(Base):
