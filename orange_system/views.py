@@ -52,19 +52,53 @@ def search_view(request):
 
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
 def customer_view(request):
-    # placeholder ID until the page is functional
-    custID = 1
-    # This is an interesting one.  We want to pull in all information relevant to
-    # the customer, which means we want all phone numbers and email addresses.
-    # However, we want the phone numbers and emails stored in individual fields
-    # rather than concatenated like in the search.  So we just make a data source
-    # for customer, phone, and email and send that to the page! :)
-    customerInfo = DBSession.query(Customers).filter(Customers.id == custID).first()
-    customerEmail = DBSession.query(Email).filter(Email.custID == custID).all()
-    customerPhone = DBSession.query(Phone).filter(Phone.custID == custID).all()
-    orders = DBSession.query(Orders).all()
-    
     states = DBSession.query(States).all()
+    if request.POST:
+
+        # Check to see if the post data is present
+        if request.POST['firstname'] and request.POST['lastname'] \
+        and request.POST['address'] and request.POST['city'] \
+        and request.POST['state'] and request.POST['zipcode']:
+        # Create an instance of Customers with the post data
+            customer = Customers(
+            request.POST['firstname'], request.POST['lastname'],
+            request.POST['address'], request.POST['city'],
+            request.POST['state'], request.POST['zipcode'])
+        # Instruct the server to notify us that we created the object
+            if customer:
+                DBSession.add(customer)
+                # Let's get the ID of our new customer
+                newID = DBSession.execute(
+                "SELECT id FROM tblCustomers WHERE "+\
+                "firstName = '" + request.POST['firstname']) + "'"
+        # Check to see if there is email information in POST
+            if request.POST['email1']:
+            # Instantiate an email object with the fetched ID
+                email1 = Email(newID,request.POST['email1'],
+                request.POST['emailtype1'])
+            # More debug logs..
+                print "Successfuly made email1 object"
+            if request.POST['email2']:
+                email2 = Email(newID,request.POST['email2'],
+                request.POST['emailtype2'])
+                print "Successfuly made object email2"
+            if request.POST['email3']:
+                email3 = Email(newID,request.POST['email3'],
+                request.POST['emailtype3'])
+                print "Successfuly made object email3"
+        # Let's do the same thing for phone numbers.
+            if request.POST['phone1']:
+                phone1 = Phone(newID,request.POST['phone1'],
+                request.POST['phonetype1'])
+                print "successfuly made object phone1"
+            if request.POST['phone2']:
+                phone2 = Phone(newID,request.POST['phone2'],
+                request.POST['phonetype2'])
+                print "Successfuly made object phone2"
+            if request.POST['phone3']:
+                phone3 = Phone(newID,request.POST['phone3'],
+                request.POST['phonetype3'])
+                print "Successfuly made object phone3"
     
     return {'project': 'orange_system', 'customerInfo': customerInfo, 'customerEmail': customerEmail, 'customerPhone': customerPhone, 'orders': orders, 'states': states}
     
