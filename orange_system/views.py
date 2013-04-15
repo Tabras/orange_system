@@ -28,15 +28,15 @@ def search_view(request):
         # Sqlite syntax, so using the ORM would require us to extend it a bit.
         # For simplicity sake, let's just execute raw SQL :)
         result = DBSession.execute(\
-        "SELECT c.id, c.firstName, c.lastName, c.address, c.city, c.stateCode,"+\
+        "SELECT c.customerID, c.firstName, c.lastName, c.address, c.city, c.stateCode,"+\
         " c.zipCode, group_concat(DISTINCT e.emailAddress) AS 'emails', "+\
         "group_concat(DISTINCT p.phoneNumber) AS 'Phone Number' "+\
         "FROM tblCustomers AS c "+\
         # We're using a left join here because we need to pull in all
         # customers regardless of whether or not they have an email or phone
         # number.
-        "LEFT JOIN tblEmail AS e ON c.id = e.custID "+\
-        "LEFT JOIN tblPhone AS p ON c.id = p.custID "+\
+        "LEFT JOIN tblEmail AS e ON c.customerID = e.custID "+\
+        "LEFT JOIN tblPhone AS p ON c.customerID = p.custID "+\
         # Here's the magic of the query.  We're doing a wildcard search on all
         # fields we want to test against the search query.  This is how only
         # relevant data is extracted.
@@ -48,7 +48,8 @@ def search_view(request):
         "c.zipCode LIKE '%" + search + "%' OR "+\
         "e.emailAddress LIKE '%" + search + "%' OR "+\
         "p.phoneNumber LIKE '%" + search + "%' "+\
-        "GROUP BY c.id")
+        "GROUP BY c.customerID")
+        
     return {'project': 'orange_system', 'result': result}
 
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
@@ -77,7 +78,7 @@ def customer_view(request):
             # Instantiate an email object with the fetched ID
                 email1 = Email(newID,request.POST['email1'],
                 request.POST['emailtype1'])
-            # More debug logs..
+            # And add the new object to our database
                 DBSession.add(email1)
             if request.POST['email2']:
                 email2 = Email(newID,request.POST['email2'],
@@ -129,7 +130,7 @@ def part_view(request):
 	partList = None
 	partAdd = None
 	partList = DBSession.execute(\
-	"SELECT partID, partName, partCost "+\
+	"SELECT * "+\
 	"FROM tblParts")
 	
 	if 'partname' in request.POST and 'partcost' in request.POST:
@@ -151,15 +152,15 @@ def todo_view(request):
     # all parts/services to the order we use fetchall() here to bypass
     # the ORM and obtain our result as a generic list.  You'll see why down further.
     todoList = DBSession.execute(\
-    "SELECT o.id, o.custID, o.modelName, o.orderNotes, o.orderCost, o.entryDate, "+\
+    "SELECT o.orderID, o.custID, o.modelName, o.orderNotes, o.orderCost, o.entryDate, "+\
     "o.progressDescription, "+\
-    "group_concat(DISTINCT p.partID) AS partsOnOrder, "+\
+    "group_concat(DISTINCT p.partName) AS partsOnOrder, "+\
     "group_concat(DISTINCT s.serviceName) AS servicesOnOrder "+\
     "FROM tblOrders AS o "+\
-    "LEFT JOIN tblPartsByOrder AS p ON o.id = p.orderID "+\
-    "LEFT JOIN tblServicesByOrder AS s ON o.id = p.orderID "+\
+    "LEFT JOIN tblPartsByOrder AS p ON o.orderID = p.orderID "+\
+    "LEFT JOIN tblServicesByOrder AS s ON o.orderID = p.orderID "+\
     "WHERE o.progressDescription != 'Finished' "+\
-    "GROUP BY o.id").fetchall()
+    "GROUP BY o.orderID").fetchall()
     # We want to filter out the high priority orders so we can push them
     # to the top and give them some nice visuals.  Sounds like a perfect
     # time for some list comprehension.
