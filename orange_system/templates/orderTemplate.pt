@@ -121,9 +121,7 @@
         <div class="well">
           <label><b>Services</b></label>
           <select id="serviceselect" name="serviceselect">
-            <option>Install Linux</option>
-            <option>Tell me im wrong</option>
-            <option>Fix the "cup holder"</option>
+            <option tal:repeat="row services">${row.serviceName}</option>
           </select>
           <button onclick="addService()"><b>+</b></button>
           <br>
@@ -145,9 +143,7 @@
         <div class="well">
           <label><b>Parts</b></label>
           <select id="partselect" name="partselect">
-            <option>Hard Drive</option>
-            <option>Optical Drive</option>
-            <option>Cup Holder</option>
+            <option tal:repeat="row parts">${row.partName}</option>
           </select>
           <button onclick="addPart()"><b>+</b></button>
         </div>

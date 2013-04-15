@@ -14,8 +14,9 @@ from .models import (
     Orders,
     States,
     Services,
+    Parts,
     EmailType,
-    PhoneType
+    PhoneType,
     )
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -134,13 +135,18 @@ def customer_view(request):
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
-    orders = DBSession.query(Orders).all()
-    return {'project': 'orange_system', 'orders': orders}
+	orders = DBSession.query(Orders).all()
+	# We need to fetch service and part names for the select boxes
+	services = DBSession.query(Services).all()
+	parts = DBSession.query(Parts).all()
+	return {'project': 'orange_system', 'orders': orders, 'services':services, 'parts':parts}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
 def service_view(request):
 	serviceList = None
 	serviceAdd = None
+	name = None
+	cost = None
 	serviceList = DBSession.execute(\
 	"SELECT serviceID, serviceName, serviceCost "+\
 	"FROM tblServices")
@@ -148,11 +154,11 @@ def service_view(request):
 	if 'servicename' in request.POST and 'servicecost' in request.POST:
 		name = request.POST.get('servicename')
 		cost = request.POST.get('servicecost')
-                service = Services(name, cost)
-                DBSession.add(service)
+        service = Services(name, cost)
+        DBSession.add(service)
         #	serviceAdd = DBSession.execute(\
-	#	"INSERT INTO tblServices (serviceName, serviceCost) "+\
-	#	"VALUES ('" + name + "', '" + cost + "' )")
+		#	"INSERT INTO tblServices (serviceName, serviceCost) "+\
+		#	"VALUES ('" + name + "', '" + cost + "' )")
 	return {'project': 'orange_system', 'serviceList': serviceList}
     
 @view_config(route_name='part', renderer='templates/partTemplate.pt')
@@ -166,9 +172,11 @@ def part_view(request):
 	if 'partname' in request.POST and 'partcost' in request.POST:
 		name = request.POST.get('partname')
 		cost = request.POST.get('partcost')
-		partAdd = DBSession.execute(\
-		"INSERT INTO tblParts (partName, partCost) "+\
-		"VALUES ('" + name + "', '" + cost + "' )")
+		part = Parts(name, cost)
+		DBSession.add(part)
+		#	partAdd = DBSession.execute(\
+		#	"INSERT INTO tblParts (partName, partCost) "+\
+		#	"VALUES ('" + name + "', '" + cost + "' )")
 	return {'project': 'orange_system', 'partList': partList}
     
 @view_config(route_name='report', renderer='templates/reportTemplate.pt')
