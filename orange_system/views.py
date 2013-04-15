@@ -13,6 +13,7 @@ from .models import (
     Phone,
     Orders,
     States,
+    Services,
     )
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -124,9 +125,11 @@ def service_view(request):
 	if 'servicename' in request.POST and 'servicecost' in request.POST:
 		name = request.POST.get('servicename')
 		cost = request.POST.get('servicecost')
-		serviceAdd = DBSession.execute(\
-		"INSERT INTO tblServices (serviceName, serviceCost) "+\
-		"VALUES ('" + name + "', '" + cost + "' )")
+                service = Services(name, cost)
+                DBSession.add(service)
+        #	serviceAdd = DBSession.execute(\
+	#	"INSERT INTO tblServices (serviceName, serviceCost) "+\
+	#	"VALUES ('" + name + "', '" + cost + "' )")
 	return {'project': 'orange_system', 'serviceList': serviceList}
     
 @view_config(route_name='part', renderer='templates/partTemplate.pt')
