@@ -48,95 +48,116 @@
         </div>
       </div>
     </div>
-     <div class="container-fluid">
-  
-      <div>
-            <div class="well">
-			 <form method="POST" id="editCustomerForm" action="${request.route_url('customer')}" tal:condition="customer">
-			 <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!"
-              type="text" value="${customer.firstName}">
-              <br>
-              <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text" value="${customer.lastName}">
-              <br>
-              <input id="address" name="address" class="input-large" placeholder="Address #!" type="text" value="${customer.address}">
-              <br>
-              <input id="city" name="city" class="input-large" placeholder="City #!" type="text" value="${customer.city}">
-              <br>
-              <select id="state" name="state">
-                <option tal:repeat="state states" value="${state.stateCode}" name="stateName">${state.stateName}</option>
-              </select>
-              <br>
-              <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text" value="${customer.zipCode}">
-              <fieldset tal:repeat="row customerPhone">
-              <input id="phone1" name="phone{row.phoneID}" class="input-large" placeholder="Phone #1" type="text" value="${row.phoneNumber}">
-              <select id="phonetype1" name="phonetype1">
-                <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-              </select>
-              <br>
-              </fieldset>
-              <fieldset tal:repeat="row customerEmail">
-              <input id="email{row.emailID}" name="email{row.emailID}" class="input-large" placeholder="Email #1" type="text" value="${row.emailAddress}">
-              <select id="emailtype{row.emailID}" name="emailtype{row.emailID}">
-                <option tal:repeat="row emailTypes">${row.emailType}</option>
-              </select>
-              <br>
-              </fieldset>
-
-
-
-              <input type="submit" id="btnAdd" name="btnAdd" value="Edit Customer #!"> 
-			 </form>
-		     <form method="POST" id="addCustomerForm" action="${request.route_url('customer')}" tal:condition="not customer">
-              <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!"
-              type="text">
-              <br>
-              <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text">
-              <br>
-              <input id="address" name="address" class="input-large" placeholder="Address #!" type="text">
-              <br>
-              <input id="city" name="city" class="input-large" placeholder="City #!" type="text">
-              <br>
-              <select id="state" name="state">
-                <option tal:repeat="state states" value="${state.stateCode}" name="stateName">${state.stateName}</option>
-              </select>
-              <br>
-              <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text">
-              <input id="phone1" name="phone1" class="input-large" placeholder="Phone #1" type="text">
-              <select id="phonetype1" name="phonetype1">
-                <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-              </select>
-              <br>
-              <input id="phone2"  name="phone2" class="input-large" placeholder="Phone #1" type="text">
-              <select id="phonetype2" name="phonetype2">
-                <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-              </select>
-              <br>
-              <input id="phone3" name="phone3" class="input-large" placeholder="Phone #1" type="text">
-              <select id="phonetype3" name="phonetype3">
-                <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-              </select>
-              <br>
-              <input id="email1" name="email1" class="input-large" placeholder="Email #1" type="text">
-              <select id="emailtype1" name="emailtype1">
-                <option>Work</option>
-                <option>Home</option>
-              </select>
-              <br>
-              <input id="email2" name="email2" class="input-large" placeholder="Email #2" type="text">
-              <select id="emailtype2" name="emailtype2">
-                <option tal:repeat="row emailTypes">${row.emailType}</option>
-              </select>
-              <br>
-              <input id="email3" name="email3" class="input-large" placeholder="Email #3" type="text">
-              <select id="emailtype3" name="emailtype3">
-                <option tal:repeat="row emailTypes">${row.emailType}</option>
-              </select>
-              <br>
-
-
-
-              <input type="submit" id="btnAdd" name="btnAdd" value="Add Customer #!"> 
-              </form>
+    
+    <form method="POST" id="editCustomerForm" action="${request.route_url('customer')}" tal:condition="customer">
+    <div class="container-fluid">
+      <div class="span-4">
+        <div class="well">
+		  <h4>Customer Information</h4>
+		  <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!" type="text" value="${customer.firstName}">
+          <br>
+          <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text" value="${customer.lastName}">
+          <br>
+          <input id="address" name="address" class="input-large" placeholder="Address #!" type="text" value="${customer.address}">
+          <br>
+          <input id="city" name="city" class="input-large" placeholder="City #!" type="text" value="${customer.city}">
+          <br>
+          <select id="state" name="state">
+            <option tal:repeat="state states" value="${state.stateCode}" name="stateName">${state.stateName}</option>
+          </select>
+          <br>
+          <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text" value="${customer.zipCode}">
+          <br>
+          <br>
+          <button type="submit" id="btnEdit" name="btnEdit" class="btn btn-primary">Save Customer</button>
+        </div>
+      </div>
+ 
+      <div class="span-4">
+		<div class="well">
+		  <h4>Customer Contacts</h4>
+          <fieldset tal:repeat="row customerPhone">
+            <input id="phone1" name="phone{row.phoneID}" class="input-large" placeholder="Phone #1" type="text" value="${row.phoneNumber}">
+            <select id="phonetype1" name="phonetype1">
+              <option tal:repeat="row phoneTypes">${row.phoneType}</option>
+            </select>
+            <br>
+          </fieldset>
+          
+          <fieldset tal:repeat="row customerEmail">
+            <input id="email{row.emailID}" name="email{row.emailID}" class="input-large" placeholder="Email #1" type="text" value="${row.emailAddress}">
+            <select id="emailtype{row.emailID}" name="emailtype{row.emailID}">
+              <option tal:repeat="row emailTypes">${row.emailType}</option>
+            </select>
+            <br>
+          </fieldset>
+          
+        </div>
+      </div>
     </div>
+    </form>
+			  
+	<form method="POST" id="addCustomerForm" action="${request.route_url('customer')}" tal:condition="not customer">
+	  <div class="container-fluid">
+		<div class="span-6">
+		  <div class="well">
+			<h4>Customer Information</h4>
+            <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!" type="text">
+            <br>
+            <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text">
+            <br>
+            <input id="address" name="address" class="input-large" placeholder="Address #!" type="text">
+            <br>
+            <input id="city" name="city" class="input-large" placeholder="City #!" type="text">
+            <br>
+            <select id="state" name="state">
+              <option tal:repeat="state states" value="${state.stateCode}" name="stateName">${state.stateName}</option>
+            </select>
+            <br>
+            <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text">
+            <br>
+            <br>
+            <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary">Save Customer</button>
+          </div>
+        </div>
+		
+		<div class="span-4">
+		  <div class="well">
+			<h4>Customer Contacts</h4>
+            <input id="phone1" name="phone1" class="input-large" placeholder="Phone #1" type="text">
+            <select id="phonetype1" name="phonetype1">
+              <option tal:repeat="row phoneTypes">${row.phoneType}</option>
+            </select>
+            <br>
+            <input id="phone2"  name="phone2" class="input-large" placeholder="Phone #1" type="text">
+            <select id="phonetype2" name="phonetype2">
+              <option tal:repeat="row phoneTypes">${row.phoneType}</option>
+            </select>
+            <br>
+            <input id="phone3" name="phone3" class="input-large" placeholder="Phone #1" type="text">
+            <select id="phonetype3" name="phonetype3">
+              <option tal:repeat="row phoneTypes">${row.phoneType}</option>
+            </select>
+            <br>
+            <input id="email1" name="email1" class="input-large" placeholder="Email #1" type="text">
+            <select id="emailtype1" name="emailtype1">
+              <option>Work</option>
+              <option>Home</option>
+            </select>
+            <br>
+            <input id="email2" name="email2" class="input-large" placeholder="Email #2" type="text">
+            <select id="emailtype2" name="emailtype2">
+              <option tal:repeat="row emailTypes">${row.emailType}</option>
+            </select>
+            <br>
+            <input id="email3" name="email3" class="input-large" placeholder="Email #3" type="text">
+            <select id="emailtype3" name="emailtype3">
+              <option tal:repeat="row emailTypes">${row.emailType}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    
   </body>
 </html>

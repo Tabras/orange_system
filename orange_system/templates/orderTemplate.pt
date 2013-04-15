@@ -103,6 +103,15 @@
           <label><b>Notes</b></label>
           <textarea placeholder="Enter notes here"></textarea>
           <br>
+          <label><b>Status</b></label>
+          <select>
+			<option>In Progress</option>
+			<option>On Hold</option>
+			<option>Completed</option>
+			<option>Paid</option>
+          </select>
+          <br>
+          <br>
           <button type="submit" class="btn btn-primary">Save Order</button>
           <input type="reset" class="btn" value="Reset">
         </div>
