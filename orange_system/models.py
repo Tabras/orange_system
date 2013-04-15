@@ -41,14 +41,20 @@ class States(Base):
   
 class Progress(Base):
     __tablename__ = 'tblProgress'
-    progressDescription = Column(String(25), primary_key=True)
+    __tableargs__ = ({
+    'sqlite_autoincrement': True})
+    progressID = Column(Integer, primary_key=True)
+    progressDescription = Column(String(25), unique=True)
 
     def __init__(self, progressDescription):
         self.progressDescription = progressDescription  
 
 class Parts(Base):
     __tablename__ = 'tblParts'
-    partName = Column(String(20), primary_key=True)
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    partID   = Column(Integer, primary_key=True)
+    partName = Column(String(20), unique=True)
     partCost = Column(String(5))
 
     def __init__(self, partName, partCost):
@@ -57,7 +63,10 @@ class Parts(Base):
 
 class Services(Base):
     __tablename__ = 'tblServices'
-    serviceName = Column(String(20), primary_key=True)
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    serviceID   = Column(Integer, primary_key=True)
+    serviceName = Column(String(20), unique=True)
     serviceCost = Column(String(5))
 
     def __init__(self, serviceName, serviceCost):
@@ -66,23 +75,26 @@ class Services(Base):
 	
 class EmailType(Base):
     __tablename__ = 'tblEmailType'
-    emailType = Column(String(20), primary_key=True)
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    emailID   = Column(Integer, primary_key=True)
+    emailType = Column(String(20), unique=True)
 
     def __init__(self, emailType):
 	self.emailType = emailType
 
 class PhoneType(Base):
     __tablename__= 'tblPhoneType'
-    phoneType = Column(String(20), primary_key=True)
+    __tableargs__= ({
+    'sqlite_autoincrement': True})
+    phoneTypeID = Column(Integer, primary_key=True)
+    phoneType = Column(String(20), unique=True)
 
     def __init__(self, phoneType):
     	self.phoneType = phoneType
 
 class Customers(Base):
     __tablename__ = 'tblCustomers'
-# Here we use __tableargs__ to define certain properties
-# of a declarative table.
-# We will be using this frequently for relationships and autonumbers.
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
     customerID    = Column(Integer, primary_key=True, unique = True)
@@ -92,8 +104,6 @@ class Customers(Base):
     city      = Column(String(15), unique=False)
     stateCode = Column(String(2), ForeignKey(States.stateCode), unique=False)
     zipCode   = Column(String(9), unique=False)
-# We don't need to include id in __init__.  The DB Session will automatically 
-# assign an autonumber to this field, so we don't need to assign anything to it.
     def __init__(self, firstName, lastName, address, city, stateCode, zipCode):
         self.firstName = firstName
 	self.lastName  = lastName
