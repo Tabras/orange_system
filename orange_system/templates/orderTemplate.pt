@@ -88,74 +88,90 @@
       </div>
     </div>
     
-    <div class="span4">
-      <div class="well">
-		<label>** Customer name here **</label>
-		<label>** Customer phone here **</label>
-		<label>** Customer email here **</label>
-		<br>
-		<br>
-        <label><b>Model</b></label>
-        <input type="text" class="input-medium" placeholder="Model Name">
-        <br>
-        <label><b>Notes</b></label>
-        <textarea placeholder="Enter notes here"></textarea>
-        <br>
-        <button type="submit" class="btn btn-primary">Add Order</button>
-        <input type="reset" class="btn" value="Reset">
-      </div>
-    </div>
-    
-    <div class="span4">
-      <div class="well">
-        <label><b>Services</b></label>
-        <select id="serviceselect" name="serviceselect">
-          <option>Install Linux</option>
-          <option>Tell me im wrong</option>
-          <option>Fix the "cup holder"</option>
-        </select>
-        <button onclick="addService()"><b>+</b></button>
-      </div>
-    </div>
-    <div class="span4">
-      <div class="well">
-        <label><b>Parts</b></label>
-        <select id="partselect" name="partselect">
-          <option>Hard Drive</option>
-          <option>Optical Drive</option>
-          <option>Cup Holder</option>
-        </select>
-        <button onclick="addPart()"><b>+</b></button>
-      </div>
-    </div>
-    
     <div class="container-fluid">
-      <div class="row">
+      <div class="span4">
         <div class="well">
+		  <h2>Order Details</h2>
+		  <label>** Customer name here **</label>
+		  <label>** Customer phone here **</label>
+		  <label>** Customer email here **</label>
+		  <br>
+		  <br>
+          <label><b>Model</b></label>
+          <input type="text" class="input-medium" placeholder="Model Name">
+          <br>
+          <label><b>Notes</b></label>
+          <textarea placeholder="Enter notes here"></textarea>
+          <br>
+          <button type="submit" class="btn btn-primary">Save Order</button>
+          <input type="reset" class="btn" value="Reset">
+        </div>
+      </div>
+    
+      <div class="span4">
+        <div class="well">
+          <label><b>Services</b></label>
+          <select id="serviceselect" name="serviceselect">
+            <option>Install Linux</option>
+            <option>Tell me im wrong</option>
+            <option>Fix the "cup holder"</option>
+          </select>
+          <button onclick="addService()"><b>+</b></button>
+          <br>
+          <h4>Current</h4>
           <table class="table table-striped">
-          <tr>
-            <th>ID</th>
-              <th>Customer</th>
-              <th>Model Name</th>
-              <th>Notes</th>
-              <th>Cost</th>
-              <th>Entry Date</th>
-              <th>Progress</th>
-              <th>Completion Date</th>
+            <tr>
+              <th>ID</th>
+                <th>Service Name</th>
+                <th>Service Cost</th>
+              </tr>
+            <tr tal:repeat="row orders">
+              <td>${row.modelName}</td>
+              <td>${row.orderCost}</td>
             </tr>
-          <tr tal:repeat="row orders">
-            <td>${row.id}</td>
-            <td>${row.custID}</td>
-            <td>${row.modelName}</td>
-            <td>${row.orderNotes}</td>
-            <td>${row.orderCost}</td>
-            <td>${row.entryDate}</td>
-            <td>${row.progressDescription}</td>
-            <td>${row.completionDate}</td>
-          </tr>
           </table>
         </div>
       </div>
+      <div class="span4">
+        <div class="well">
+          <label><b>Parts</b></label>
+          <select id="partselect" name="partselect">
+            <option>Hard Drive</option>
+            <option>Optical Drive</option>
+            <option>Cup Holder</option>
+          </select>
+          <button onclick="addPart()"><b>+</b></button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="container-fluid">
+      <div class="well">
+		<br>
+		<h2>Orders List</h2>
+        <table class="table table-striped">
+        <tr>
+          <th>ID</th>
+            <th>Customer</th>
+            <th>Model Name</th>
+            <th>Notes</th>
+            <th>Cost</th>
+            <th>Entry Date</th>
+            <th>Progress</th>
+            <th>Completion Date</th>
+          </tr>
+        <tr tal:repeat="row orders">
+          <td>${row.id}</td>
+          <td>${row.custID}</td>
+          <td>${row.modelName}</td>
+          <td>${row.orderNotes}</td>
+          <td>${row.orderCost}</td>
+          <td>${row.entryDate}</td>
+          <td>${row.progressDescription}</td>
+          <td>${row.completionDate}</td>
+        </tr>
+        </table>
+        </div>
     </div>
     
   </body>

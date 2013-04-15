@@ -91,7 +91,19 @@ def service_view(request):
     
 @view_config(route_name='part', renderer='templates/partTemplate.pt')
 def part_view(request):
-    return {'project': 'orange_system'}
+	partList = None
+	partAdd = None
+	partList = DBSession.execute(\
+	"SELECT partID, partName, partCost "+\
+	"FROM tblParts")
+	
+	if 'partname' in request.POST and 'partcost' in request.POST:
+		name = request.POST.get('partname')
+		cost = request.POST.get('partcost')
+		partAdd = DBSession.execute(\
+		"INSERT INTO tblParts (partName, partCost) "+\
+		"VALUES ('" + name + "', '" + cost + "' )")
+	return {'project': 'orange_system', 'partList': partList}
     
 @view_config(route_name='report', renderer='templates/reportTemplate.pt')
 def report_view(request):
