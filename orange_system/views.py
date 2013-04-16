@@ -144,7 +144,45 @@ def customer_view(request):
                         newCust.city = request.POST['city']
                         newCust.stateCode = request.POST['state']
                         newCust.zipCode = request.POST['zipcode'] 
+                        # Here's the magical part.  When we add this customer, SQLAlchemy will know to use an update instead if the customer
+                        # already exists.
                         DBSession.add(newCust)
+                    
+                    # So now we need to process contact information ie; phone numbers and email addresses.
+                    if 'email1' in request.POST:
+                        # Basically, our customer has an email, so if we're in here then we're checking the email1 field.
+                        # By nesting this if here, we can assure we will not get a name error when we check email1.
+                        if request.POST['email1']:
+                            email1 = DBSession.query(Email).filter(Email.emailID == request.POST['emailID1']).one()
+                            email1.emailAddress = request.POST['email1']
+                            email1.emailType = request.POST['emailtype1']
+                            DBSession.add(email1)
+                    if 'email2' in request.POST:
+                        if request.POST['email2']:
+                            email2 = DBSession.query(Email).filter(Email.emailID == request.POST['emailID2']).one()
+                            email2.emailAddress = request.POST['email2']
+                            email2.emailType = request.POST['emailtype2']
+                    if 'email3' in request.POST:
+                        if request.POST['email3']:
+                            email3 = DBSession.query(Email).filter(Email.emailID == request.POST['emailID3']).one()
+                            email3.emailAddress = request.POST['emailtype3']
+                            email3.emailType = request.POST['emailtype2']
+                    if 'phone1' in request.POST:
+                        if request.POST['phone1']:
+                            phone1 = DBSession.query(Phone).filter(Phone.phoneID == request.POST['phoneID1']).one()
+                            phone1.phoneNumber = request.POST['phone1']
+                            phone1.phoneType = request.POST['phonetype1']
+                    if 'phone2' in request.POST:
+                        if request.POST['phone2']:
+                            phone2 = DBSession.query(Phone).filter(Phone.phoneID == request.POST['phoneID2']).one()
+                            phone2.phoneNumber = request.POST['phone2']
+                            phone2.phoneType = request.POST['phonetype2']
+                    if 'phone3' in request.POST:
+                        if request.POST['phone3']:
+                            phone3 = DBSession.query(Phone).filter(Phone.phoneID == request.POST['phoneID3']).one()
+                            phone3.phoneNumber = request.POST['phone3']
+                            phone3.phoneType = request.POST['phonetype3']
+
                         
                    
     return {'project': 'orange_system', 
