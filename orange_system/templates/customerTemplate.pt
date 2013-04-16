@@ -74,32 +74,13 @@
               </select>
               <br>
               </fieldset>
-              
-              <input id="phone2"  name="phone2" class="input-large" placeholder="Phone #1" type="text">
-              <select id="phonetype2" name="phonetype2">
-                <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-              </select>
-              <br>
-              <input id="phone3" name="phone3" class="input-large" placeholder="Phone #1" type="text">
-              <select id="phonetype3" name="phonetype3">
-               <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-              </select>
-              <br>
-              <input id="email1" name="email1" class="input-large" placeholder="Email #1" type="text">
-              <select id="emailtype1" name="emailtype1">
+              <fieldset tal:repeat="row customerEmail">
+              <input id="email{row.emailID}" name="email{row.emailID}" class="input-large" placeholder="Email #1" type="text" value="${row.emailAddress}">
+              <select id="emailtype{row.emailID}" name="emailtype{row.emailID}">
                 <option tal:repeat="row emailTypes">${row.emailType}</option>
               </select>
               <br>
-              <input id="email2" name="email2" class="input-large" placeholder="Email #2" type="text">
-              <select id="emailtype2" name="emailtype2">
-                <option tal:repeat="row emailTypes">${row.emailType}</option>
-              </select>
-              <br>
-              <input id="email3" name="email3" class="input-large" placeholder="Email #3" type="text">
-              <select id="emailtype3" name="emailtype3">
-                <option tal:repeat="row emailTypes">${row.emailType}</option>
-              </select>
-              <br>
+              </fieldset>
 
 
 
