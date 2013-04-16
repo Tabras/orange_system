@@ -14,6 +14,8 @@ from .models import (
     Orders,
     States,
     Services,
+    EmailType,
+    PhoneType
     )
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -48,17 +50,32 @@ def search_view(request):
         "c.stateCode LIKE '%" + search + "%' OR "+\
         "c.zipCode LIKE '%" + search + "%' OR "+\
         "e.emailAddress LIKE '%" + search + "%' OR "+\
-        "p.phoneNumber LIKE '%" + search + "%' "+\
+        "p.phoneNumber LIKE '%" + search + "%' AND "+\
+        "e.emailAddress != 'none' AND p.phoneNumber != 'none' "+\
         "GROUP BY c.customerID")
         
     return {'project': 'orange_system', 'result': result}
 
 @view_config(route_name='customer', renderer='templates/customerTemplate.pt')
 def customer_view(request):
+	# We need to fetch the states to populate the selection box
     states = DBSession.query(States).all()
+    # We also need to fetch phone type and email type descriptors
+    emailTypes = DBSession.query(EmailType).all()
+    phoneTypes = DBSession.query(PhoneType).all()
+    # We also need to initialize all of our return variables
     customer = None
+    newCustomer = None
+    customerEmail = None
+    customerPhone = None
     if 'customerID' in request.GET:
+		# Let's find the customer associated with the ID we passed from the search page
 		customer = DBSession.query(Customers).filter(Customers.customerID == request.GET['customerID']).first()
+		# As well as any email addresses and phone numbers associated with them.
+		customerEmail = DBSession.query(Email).filter(Email.custID == request.GET['customerID']).all()
+		customerPhone = DBSession.query(Phone).filter(Phone.custID == request.GET['customerID']).all() 
+		if customerPhone[0].phoneNumber:
+			print "passed check"
     if request.POST:
 
         # Check to see if the post data is present
@@ -66,13 +83,13 @@ def customer_view(request):
         and request.POST['address'] and request.POST['city'] \
         and request.POST['state'] and request.POST['zipcode']:
         # Create an instance of Customers with the post data
-            customer = Customers(
+            newCustomer = Customers(
             request.POST['firstname'], request.POST['lastname'],
             request.POST['address'], request.POST['city'],
             request.POST['state'], request.POST['zipcode'])
         # Instruct the server to notify us that we created the object
-            if customer:
-                DBSession.add(customer)
+            if newCustomer:
+                DBSession.add(newCustomer)
                 firstName = request.POST['firstname']
                 # Let's get the ID of our new customer
                 newCust = DBSession.query(Customers).filter(Customers.firstName == firstName).first()
@@ -88,10 +105,12 @@ def customer_view(request):
                 email2 = Email(newID,request.POST['email2'],
                 request.POST['emailtype2'])
                 DBSession.add(email2)
+				
             if request.POST['email3']:
                 email3 = Email(newID,request.POST['email3'],
                 request.POST['emailtype3'])
                 DBSession.add(email3)
+            
         # Let's do the same thing for phone numbers.
             if request.POST['phone1']:
                 phone1 = Phone(newID,request.POST['phone1'],
@@ -105,8 +124,13 @@ def customer_view(request):
                 phone3 = Phone(newID,request.POST['phone3'],
                 request.POST['phonetype3'])
                 DBSession.add(phone3)
-    
-    return {'project': 'orange_system', 'states': states, 'customer': customer}
+    return {'project': 'orange_system', 
+    'states': states,
+    'customer': customer,
+    'phoneTypes': phoneTypes,
+    'emailTypes': emailTypes,
+    'customerEmail': customerEmail,
+    'customerPhone': customerPhone,}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
