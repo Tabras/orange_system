@@ -49,7 +49,7 @@
       </div>
     </div>
     
-    <form method="POST" id="editCustomerForm" action="${request.route_url('customer')}" tal:condition="customer">
+    <form method="POST" id="updateCustomerForm" name="updateCustomerForm" action="${request.route_url('customer')}" tal:condition="customer">
     <div class="container-fluid">
       <div class="span-4">
         <div class="well">
@@ -77,7 +77,7 @@
 		<div class="well">
 		  <h4>Customer Contacts</h4>
           <fieldset tal:repeat="row customerPhone">
-            <input id="phone1" name="phone{row.phoneID}" class="input-large" placeholder="Phone #1" type="text" value="${row.phoneNumber}">
+            <input id="phone1" name="phone${row.phoneID}" class="input-large" placeholder="Phone #1" type="text" value="${row.phoneNumber}">
             <select id="phonetype1" name="phonetype1">
               <option tal:repeat="row phoneTypes">${row.phoneType}</option>
             </select>
@@ -85,8 +85,8 @@
           </fieldset>
           
           <fieldset tal:repeat="row customerEmail">
-            <input id="email{row.emailID}" name="email{row.emailID}" class="input-large" placeholder="Email #1" type="text" value="${row.emailAddress}">
-            <select id="emailtype{row.emailID}" name="emailtype{row.emailID}">
+            <input id="email${row.emailID}" name="email${row.emailID}" class="input-large" placeholder="Email #1" type="text" value="${row.emailAddress}">
+            <select id="emailtype${row.emailID}" name="emailtype${row.emailID}">
               <option tal:repeat="row emailTypes">${row.emailType}</option>
             </select>
             <br>
@@ -97,7 +97,7 @@
     </div>
     </form>
 			  
-	<form method="POST" id="addCustomerForm" action="${request.route_url('customer')}" tal:condition="not customer">
+	<form method="POST" id="addCustomerForm" name="addCustomerForm" action="${request.route_url('customer')}" tal:condition="not customer">
 	  <div class="container-fluid">
 		<div class="span-6">
 		  <div class="well">
