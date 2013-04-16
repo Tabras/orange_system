@@ -57,7 +57,6 @@ def search_view(request):
 def customer_view(request):
     states = DBSession.query(States).all()
     customer = None
-    print request.GET
     if 'customerID' in request.GET:
 		customer = DBSession.query(Customers).filter(Customers.customerID == request.GET['customerID']).first()
     if request.POST:

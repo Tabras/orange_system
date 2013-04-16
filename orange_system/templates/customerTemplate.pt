@@ -52,7 +52,66 @@
   
       <div>
             <div class="well">
-		     <form method="POST" id="customerForm" action="${request.route_url('customer')}">
+			 <form method="POST" id="editCustomerForm" action="${request.route_url('customer')}" tal:condition="customer">
+			 <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!"
+              type="text" value="${customer.firstName}">
+              <br>
+              <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text">
+              <br>
+              <input id="address" name="address" class="input-large" placeholder="Address #!" type="text">
+              <br>
+              <input id="city" name="city" class="input-large" placeholder="City #!" type="text">
+              <br>
+              <select id="state" name="state">
+                <option tal:repeat="state states" value="${state.stateCode}" name="stateName">${state.stateName}</option>
+              </select>
+              <br>
+              <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text">
+              <input id="phone1" name="phone1" class="input-large" placeholder="Phone #1" type="text">
+              <select id="phonetype1" name="phonetype1">
+                <option>Cell</option>
+                <option>Work</option>
+                <option>Home</option>
+              </select>
+              <br>
+              <input id="phone2"  name="phone2" class="input-large" placeholder="Phone #1" type="text">
+              <select id="phonetype2" name="phonetype2">
+                <option>Cell</option>
+                <option>Work</option>
+                <option>Home</option>
+              </select>
+              <br>
+              <input id="phone3" name="phone3" class="input-large" placeholder="Phone #1" type="text">
+              <select id="phonetype3" name="phonetype3">
+                <option>Cell</option>
+                <option>Work</option>
+                <option>Home</option>
+              </select>
+              <br>
+              <input id="email1" name="email1" class="input-large" placeholder="Email #1" type="text">
+              <select id="emailtype1" name="emailtype1">
+                <option>Work</option>
+                <option>Home</option>
+              </select>
+              <br>
+              <input id="email2" name="email2" class="input-large" placeholder="Email #2" type="text">
+              <select id="emailtype2" name="emailtype2">
+                <option>Work</option>
+                <option>Home</option>
+              </select>
+              <br>
+              <input id="email3" name="email3" class="input-large" placeholder="Email #3" type="text">
+              <select id="emailtype3" name="emailtype3">
+                <option>Work</option>
+                <option>Home</option>
+              </select>
+              <br>
+
+
+
+              <input type="submit" id="btnAdd" name="btnAdd" value="Edit Customer #!"> 
+			 </form>
+		     <form method="POST" id="addCustomerForm" action="${request.route_url('customer')}" tal:condition="not customer">
               <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!"
               type="text">
               <br>
