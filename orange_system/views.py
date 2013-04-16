@@ -69,19 +69,16 @@ def customer_view(request):
     newCustomer = None
     customerEmail = None
     customerPhone = None
-    custID = 0
     if 'customerID' in request.GET:
                 # We're going to store this in a local variable to make our life easier when updating the customer
-                custID = request.GET['customerID']
 		# Let's find the customer associated with the ID we passed from the search page
-		customer = DBSession.query(Customers).filter(Customers.customerID == custID).first()
+		customer = DBSession.query(Customers).filter(Customers.customerID == request.GET['customerID']).first()
 		# As well as any email addresses and phone numbers associated with them.
-		customerEmail = DBSession.query(Email).filter(Email.custID == custID).all()
-		customerPhone = DBSession.query(Phone).filter(Phone.custID == custID).all() 
+		customerEmail = DBSession.query(Email).filter(Email.custID == request.GET['customerID']).all()
+		customerPhone = DBSession.query(Phone).filter(Phone.custID == request.GET['customerID']).all() 
     # We first need to check if the POST data actually exists.  Checking if a name is #in# the post data will pass
     # as long as the request method is POST.
     if request.POST:
-
         # Check to see if the post data is present
         if request.POST['firstname'] and request.POST['lastname'] \
         and request.POST['address'] and request.POST['city'] \
@@ -138,9 +135,8 @@ def customer_view(request):
                     if request.POST['firstname'] and request.POST['lastname'] \
                          and request.POST['address'] and request.POST['city'] \
                          and request.POST['state'] and request.POST['zipcode']:
-                        print "in update, ID is: " + str(custID)
                         # If so then we update, starting with assigning our local customer.
-                        newCust = DBSession.query(Customers).filter(Customers.customerID == custID).first()
+                        newCust = DBSession.query(Customers).filter(Customers.customerID == request.POST['customerID']).one()
                         # Now we need to update the values of the object before we commit.
                         newCust.firstName = request.POST['firstname']
                         newCust.lastName = request.POST['lastname']

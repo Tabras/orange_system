@@ -54,6 +54,7 @@
       <div class="span-4">
         <div class="well">
 		  <h4>Customer Information</h4>
+                  <input id="customerID" name="customerID" type="hidden" value="${customer.customerID}">
 		  <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!" type="text" value="${customer.firstName}">
           <br>
           <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text" value="${customer.lastName}">
