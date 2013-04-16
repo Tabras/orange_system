@@ -67,11 +67,14 @@
               </select>
               <br>
               <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text" value="${customer.zipCode}">
-              <input id="phone1" name="phone1" class="input-large" placeholder="Phone #1" type="text">
+              <fieldset tal:repeat="row customerPhone">
+              <input id="phone1" name="phone{row.phoneID}" class="input-large" placeholder="Phone #1" type="text" value="${row.phoneNumber}">
               <select id="phonetype1" name="phonetype1">
                 <option tal:repeat="row phoneTypes">${row.phoneType}</option>
               </select>
               <br>
+              </fieldset>
+              
               <input id="phone2"  name="phone2" class="input-large" placeholder="Phone #1" type="text">
               <select id="phonetype2" name="phonetype2">
                 <option tal:repeat="row phoneTypes">${row.phoneType}</option>
