@@ -147,15 +147,18 @@ def service_view(request):
 	serviceAdd = None
 	name = None
 	cost = None
-	serviceList = DBSession.execute(\
-	"SELECT serviceID, serviceName, serviceCost "+\
-	"FROM tblServices")
-	
-	if 'servicename' in request.POST and 'servicecost' in request.POST:
-		name = request.POST.get('servicename')
-		cost = request.POST.get('servicecost')
-        service = Services(name, cost)
-        DBSession.add(service)
+	serviceList = DBSession.query(Services).all()
+	#serviceList = DBSession.execute(\
+	#"SELECT serviceID, serviceName, serviceCost "+\
+	#"FROM tblServices")
+	if request.POST:
+		if request.POST['servicename'] and request.POST['servicecost']:
+			name = request.POST['servicename']
+			cost = request.POST['servicecost']
+			service = Services(name, cost)
+			print service.serviceName
+			if service:
+				DBSession.add(service)
         #	serviceAdd = DBSession.execute(\
 		#	"INSERT INTO tblServices (serviceName, serviceCost) "+\
 		#	"VALUES ('" + name + "', '" + cost + "' )")
@@ -165,15 +168,17 @@ def service_view(request):
 def part_view(request):
 	partList = None
 	partAdd = None
+	part = None
 	partList = DBSession.execute(\
 	"SELECT * "+\
 	"FROM tblParts")
 	
-	if 'partname' in request.POST and 'partcost' in request.POST:
-		name = request.POST.get('partname')
-		cost = request.POST.get('partcost')
+	if request.POST:
+		name = request.POST['partname']
+		cost = request.POST['partcost']
 		part = Parts(name, cost)
-		DBSession.add(part)
+		if part:
+		    DBSession.add(part)
 		#	partAdd = DBSession.execute(\
 		#	"INSERT INTO tblParts (partName, partCost) "+\
 		#	"VALUES ('" + name + "', '" + cost + "' )")
