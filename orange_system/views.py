@@ -74,10 +74,7 @@ def customer_view(request):
 		# As well as any email addresses and phone numbers associated with them.
 		customerEmail = DBSession.query(Email).filter(Email.custID == request.GET['customerID']).all()
 		customerPhone = DBSession.query(Phone).filter(Phone.custID == request.GET['customerID']).all() 
-		if customerPhone[0].phoneNumber:
-			print "passed check"
     if request.POST:
-
         # Check to see if the post data is present
         if request.POST['firstname'] and request.POST['lastname'] \
         and request.POST['address'] and request.POST['city'] \
