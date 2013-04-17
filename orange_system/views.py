@@ -70,11 +70,14 @@ def customer_view(request):
     customerEmail = None
     customerPhone = None
     if 'customerID' in request.GET:
+                # We're going to store this in a local variable to make our life easier when updating the customer
 		# Let's find the customer associated with the ID we passed from the search page
 		customer = DBSession.query(Customers).filter(Customers.customerID == request.GET['customerID']).first()
 		# As well as any email addresses and phone numbers associated with them.
 		customerEmail = DBSession.query(Email).filter(Email.custID == request.GET['customerID']).all()
 		customerPhone = DBSession.query(Phone).filter(Phone.custID == request.GET['customerID']).all() 
+    # We first need to check if the POST data actually exists.  Checking if a name is #in# the post data will pass
+    # as long as the request method is POST.
     if request.POST:
         # Check to see if the post data is present
         if request.POST['firstname'] and request.POST['lastname'] \
@@ -87,41 +90,101 @@ def customer_view(request):
             request.POST['state'], request.POST['zipcode'])
         # Instruct the server to notify us that we created the object
             if newCustomer:
-                DBSession.add(newCustomer)
-                firstName = request.POST['firstname']
-                # Let's get the ID of our new customer
-                newCust = DBSession.query(Customers).filter(Customers.firstName == firstName).first()
-                newID = newCust.customerID
-        # Check to see if there is email information in POST
-            if request.POST['email1']:
-            # Instantiate an email object with the fetched ID
-                email1 = Email(newID,request.POST['email1'],
-                request.POST['emailtype1'])
-            # And add the new object to our database
-                DBSession.add(email1)
-            if request.POST['email2']:
-                email2 = Email(newID,request.POST['email2'],
-                request.POST['emailtype2'])
-                DBSession.add(email2)
+                # If we're in add mode, AKA the add customer button is in post, we want to process this block.
+                # The reason this works here is because of the chameleon syntax that's causing btnAdd to only be rendered in HTML
+                # in add mode, vice versa for btnEdit.  Because of that, we can check for the presence of these names in our POST.
+                if 'btnAdd' in request.POST:
+                    DBSession.add(newCustomer)
+                    firstName = request.POST['firstname']
+                    # Let's get the ID of our new customer
+                    newCust = DBSession.query(Customers).filter(Customers.firstName == firstName).first()
+                    newID = newCust.customerID
+                    # Check to see if there is email information in POST
+                    if request.POST['email1']:
+                    # Instantiate an email object with the fetched ID
+                        email1 = Email(newID,request.POST['email1'],
+                        request.POST['emailtype1'])
+                    # And add the new object to our database
+                        DBSession.add(email1)
+                    if request.POST['email2']:
+                        email2 = Email(newID,request.POST['email2'],
+                        request.POST['emailtype2'])
+                        DBSession.add(email2)
 				
-            if request.POST['email3']:
-                email3 = Email(newID,request.POST['email3'],
-                request.POST['emailtype3'])
-                DBSession.add(email3)
+                    if request.POST['email3']:
+                        email3 = Email(newID,request.POST['email3'],
+                        request.POST['emailtype3'])
+                        DBSession.add(email3)
             
-        # Let's do the same thing for phone numbers.
-            if request.POST['phone1']:
-                phone1 = Phone(newID,request.POST['phone1'],
-                request.POST['phonetype1'])
-                DBSession.add(phone1)
-            if request.POST['phone2']:
-                phone2 = Phone(newID,request.POST['phone2'],
-                request.POST['phonetype2'])
-                DBSession.add(phone2)
-            if request.POST['phone3']:
-                phone3 = Phone(newID,request.POST['phone3'],
-                request.POST['phonetype3'])
-                DBSession.add(phone3)
+                    # Let's do the same thing for phone numbers.
+                    if request.POST['phone1']:
+                        phone1 = Phone(newID,request.POST['phone1'],
+                        request.POST['phonetype1'])
+                        DBSession.add(phone1)
+                    if request.POST['phone2']:
+                        phone2 = Phone(newID,request.POST['phone2'],
+                        request.POST['phonetype2'])
+                        DBSession.add(phone2)
+                    if request.POST['phone3']:
+                        phone3 = Phone(newID,request.POST['phone3'],
+                        request.POST['phonetype3'])
+                        DBSession.add(phone3)
+                elif 'btnEdit' in request.POST:    
+                    # We're in edit mode if we get here, so let's go ahead and process information for the update.
+                    # Let's start by checking for the information to be stored in tblCustomers
+                    if request.POST['firstname'] and request.POST['lastname'] \
+                         and request.POST['address'] and request.POST['city'] \
+                         and request.POST['state'] and request.POST['zipcode']:
+                        # If so then we update, starting with assigning our local customer.
+                        newCust = DBSession.query(Customers).filter(Customers.customerID == request.POST['customerID']).one()
+                        # Now we need to update the values of the object before we commit.
+                        newCust.firstName = request.POST['firstname']
+                        newCust.lastName = request.POST['lastname']
+                        newCust.address = request.POST['address']
+                        newCust.city = request.POST['city']
+                        newCust.stateCode = request.POST['state']
+                        newCust.zipCode = request.POST['zipcode'] 
+                        # Here's the magical part.  When we add this customer, SQLAlchemy will know to use an update instead if the customer
+                        # already exists.
+                        DBSession.add(newCust)
+                    
+                    # So now we need to process contact information ie; phone numbers and email addresses.
+                    if 'email1' in request.POST:
+                        # Basically, our customer has an email, so if we're in here then we're checking the email1 field.
+                        # By nesting this if here, we can assure we will not get a name error when we check email1.
+                        if request.POST['email1']:
+                            email1 = DBSession.query(Email).filter(Email.emailID == request.POST['emailID1']).one()
+                            email1.emailAddress = request.POST['email1']
+                            email1.emailType = request.POST['emailtype1']
+                            DBSession.add(email1)
+                    if 'email2' in request.POST:
+                        if request.POST['email2']:
+                            email2 = DBSession.query(Email).filter(Email.emailID == request.POST['emailID2']).one()
+                            email2.emailAddress = request.POST['email2']
+                            email2.emailType = request.POST['emailtype2']
+                    if 'email3' in request.POST:
+                        if request.POST['email3']:
+                            email3 = DBSession.query(Email).filter(Email.emailID == request.POST['emailID3']).one()
+                            email3.emailAddress = request.POST['emailtype3']
+                            email3.emailType = request.POST['emailtype2']
+                    if 'phone1' in request.POST:
+                        if request.POST['phone1']:
+                            phone1 = DBSession.query(Phone).filter(Phone.phoneID == request.POST['phoneID1']).one()
+                            phone1.phoneNumber = request.POST['phone1']
+                            phone1.phoneType = request.POST['phonetype1']
+                    if 'phone2' in request.POST:
+                        if request.POST['phone2']:
+                            phone2 = DBSession.query(Phone).filter(Phone.phoneID == request.POST['phoneID2']).one()
+                            phone2.phoneNumber = request.POST['phone2']
+                            phone2.phoneType = request.POST['phonetype2']
+                    if 'phone3' in request.POST:
+                        if request.POST['phone3']:
+                            phone3 = DBSession.query(Phone).filter(Phone.phoneID == request.POST['phoneID3']).one()
+                            phone3.phoneNumber = request.POST['phone3']
+                            phone3.phoneType = request.POST['phonetype3']
+
+                        
+                   
     return {'project': 'orange_system', 
     'states': states,
     'customer': customer,
@@ -129,6 +192,7 @@ def customer_view(request):
     'emailTypes': emailTypes,
     'customerEmail': customerEmail,
     'customerPhone': customerPhone,}
+
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
@@ -144,15 +208,18 @@ def service_view(request):
 	serviceAdd = None
 	name = None
 	cost = None
-	serviceList = DBSession.execute(\
-	"SELECT serviceID, serviceName, serviceCost "+\
-	"FROM tblServices")
-	
-	if 'servicename' in request.POST and 'servicecost' in request.POST:
-		name = request.POST.get('servicename')
-		cost = request.POST.get('servicecost')
-        service = Services(name, cost)
-        DBSession.add(service)
+	serviceList = DBSession.query(Services).all()
+	#serviceList = DBSession.execute(\
+	#"SELECT serviceID, serviceName, serviceCost "+\
+	#"FROM tblServices")
+	if request.POST:
+		if request.POST['servicename'] and request.POST['servicecost']:
+			name = request.POST['servicename']
+			cost = request.POST['servicecost']
+			service = Services(name, cost)
+			print service.serviceName
+			if service:
+				DBSession.add(service)
         #	serviceAdd = DBSession.execute(\
 		#	"INSERT INTO tblServices (serviceName, serviceCost) "+\
 		#	"VALUES ('" + name + "', '" + cost + "' )")
@@ -162,15 +229,17 @@ def service_view(request):
 def part_view(request):
 	partList = None
 	partAdd = None
+	part = None
 	partList = DBSession.execute(\
 	"SELECT * "+\
 	"FROM tblParts")
 	
-	if 'partname' in request.POST and 'partcost' in request.POST:
-		name = request.POST.get('partname')
-		cost = request.POST.get('partcost')
+	if request.POST:
+		name = request.POST['partname']
+		cost = request.POST['partcost']
 		part = Parts(name, cost)
-		DBSession.add(part)
+		if part:
+		    DBSession.add(part)
 		#	partAdd = DBSession.execute(\
 		#	"INSERT INTO tblParts (partName, partCost) "+\
 		#	"VALUES ('" + name + "', '" + cost + "' )")

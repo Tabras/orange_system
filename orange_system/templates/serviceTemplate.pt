@@ -77,9 +77,9 @@
               <th> Service Cost </th>
             </tr>
             <tr tal:repeat="row serviceList">
-              <td>${row['serviceID']}</td>
-              <td>${row['serviceName']}</td>
-              <td>${row['serviceCost']}</td>
+              <td>${row.serviceID}</td>
+              <td>${row.serviceName}</td>
+              <td>${row.serviceCost}</td>
             </tr>
           </table>
         </div>
