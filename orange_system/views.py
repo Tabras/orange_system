@@ -193,6 +193,35 @@ def customer_view(request):
     'customerEmail': customerEmail,
     'customerPhone': customerPhone,}
 
+@view_config(route_name='addEmail', request_method="POST", renderer='json')
+def addEmail_view(request):
+    print request.POST
+    latestCustomer = DBSession.query(Customers).order_by(Customers.customerID.desc()).first()
+    latestID = latestCustomer.customerID
+    email = Email(latestID, request.POST['emailAddress'], request.POST['emailType'])
+    DBSession.add(email)
+    return {'data': 'test'}
+
+@view_config(route_name='addCust', request_method="POST", renderer='json')
+def addCust_view(request):
+    cust = Customers(
+    request.POST['firstName'],
+    request.POST['lastName'],
+    request.POST['address'],
+    request.POST['city'],
+    request.POST['stateCode'],
+    request.POST['zipCode'])
+ 
+    DBSession.add(cust)
+    return {'data': 'test'}
+
+@view_config(route_name='addPhone', request_method="POST", renderer='json')
+def addPhone_view(request):
+     latestCustomer = DBSession.query(Customers).order_by(Customers.customerID.desc()).first()
+     latestID = latestCustomer.customerID
+     phone = Phone(latestID, request.POST['phoneNumber'], request.POST['phoneType'])
+     DBSession.add(phone)
+     return {}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):

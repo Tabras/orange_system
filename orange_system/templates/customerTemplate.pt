@@ -12,15 +12,79 @@
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script>
-        $(function(){
-            $("#emailForm").submit(function(e){
-		        e.preventDefault();
-				alert("Attempting Post");
-               
-                     });
 
-                
-            });
+
+       function toggleControl(control, state){
+         document.getElementById(control).disabled = state;
+       }
+       
+
+        $(function(){
+            var custAdd = false;
+
+            $("form#addCustomerForm").submit(function(){
+              // We already know all the fields in the form, so we'll just manually set them to variables.
+              // I'm sure there's probably a faster way to do this, but it was the only way I could find that passes
+              // this information in a JSON object.
+
+              var firstName = $("input#firstname").val();
+              var lastName = $("input#lastname").val();
+              var address = $("input#address").val();
+              var city = $("input#city").val();
+              var stateCode = $("select#state").val();
+              var zipCode = $("input#zipcode").val();
+
+              // We're going to tell jQuery to make an AJAX call to post to the add customer view
+              $.post("${request.route_url('addCust')}",
+               {"firstName": firstName,
+                "lastName": lastName,
+                "address": address,
+                "city": city,
+                "stateCode": stateCode,
+                "zipCode": zipCode
+               }).success(function(){
+              // If the post was successful, we'll see a notification that our customer was saved.
+                toggleControl('firstname', true);
+                toggleControl('lastname', true);
+                toggleControl('address', true);
+                toggleControl('city', true);
+                toggleControl('state', true);
+                toggleControl('zipcode', true);
+                toggleControl('btnAdd', true);
+                toggleControl('email', false);
+                toggleControl('emailtype', false);
+                toggleControl('phone', false);
+                toggleControl('phonetype', false);
+                toggleControl('addEmail', false);
+                toggleControl('addPhone', false);
+                alert("Customer added successfuly!");
+              });
+               return false;
+               
+               });
+
+            // Add a new email to the customer with a jQuery POST
+            $("#addEmail").click(function(){
+               email = $("input#email").val();
+               type = $("select#emailtype").val();
+               $.post("${request.route_url('addEmail')}",
+               {"emailAddress": email, "emailType": type})
+               .success(function() { alert("Email Added Successfuly!"); });
+                 });
+            $("#addPhone").click(function(){
+               phone = $("input#phone").val();
+               phonetype = $("select#phonetype").val();
+               $.post("${request.route_url('addPhone')}",
+               {"phoneNumber": phone, "phoneType": phonetype})
+               .success(function() {
+                  alert("Phone number added successfuly!");
+                })
+               .fail(function() {
+                  alert("Phone number could not be added.");
+                });
+             });
+            });  
+             
    </script>
   </head>
   
@@ -60,7 +124,7 @@
       </div>
     </div>
     
-    <form method="POST" id="updateCustomerForm" name="updateCustomerForm" action="${request.route_url('customer')}" tal:condition="customer">
+    <form method="POST" id="updateCustomerForm" name="updateCustomerForm" action="${request.route_url('addCust')}" tal:condition="customer">
     <div class="container-fluid">
       <div class="span-4">
         <div class="well">
@@ -111,24 +175,24 @@
     </div>
     </form>
 			  
-	<form method="POST" id="addCustomerForm" name="addCustomerForm" action="${request.route_url('customer')}" tal:condition="not customer">
+	<form method="POST" id="addCustomerForm" name="addCustomerForm" action="${request.route_url('addCust')}" tal:condition="not customer">
 	  <div class="container-fluid">
 		<div class="span-6">
 		  <div class="well">
 			<h4>Customer Information</h4>
-            <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!" type="text">
+            <input id="firstname" name="firstname" class="input-large" placeholder="First Name #!" type="text" required>
             <br>
-            <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text">
+            <input id="lastname" name="lastname" class="input-large" placeholder="Last Name #!" type="text" required>
             <br>
-            <input id="address" name="address" class="input-large" placeholder="Address #!" type="text">
+            <input id="address" name="address" class="input-large" placeholder="Address #!" type="text" required>
             <br>
-            <input id="city" name="city" class="input-large" placeholder="City #!" type="text">
+            <input id="city" name="city" class="input-large" placeholder="City #!" type="text" required>
             <br>
-            <select id="state" name="state">
+            <select id="state" name="state" required>
               <option tal:repeat="state states" value="${state.stateCode}" name="stateName">${state.stateName}</option>
             </select>
             <br>
-            <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text">
+            <input id="zipcode" name="zipcode" class="input-large" placeholder="ZipCode #!" type="text" required>
             <br>
             <br>
             <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary">Save Customer</button>
@@ -140,40 +204,19 @@
 		<div class="span-4">
 		  <div class="well">
 			<h4>Customer Contacts</h4>
-            <input id="phone1" name="phone1" class="input-large" placeholder="Phone #1" type="text">
-            <select id="phonetype1" name="phonetype1">
+            <input id="phone" name="phone" class="input-large" placeholder="Phone #1" type="text" disabled=true required>
+            <select id="phonetype" name="phonetype" disabled=true required>
               <option tal:repeat="row phoneTypes">${row.phoneType}</option>
             </select>
-            <br>
-            <input id="phone2"  name="phone2" class="input-large" placeholder="Phone #1" type="text">
-            <select id="phonetype2" name="phonetype2">
-              <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-            </select>
-            <br>
-            <input id="phone3" name="phone3" class="input-large" placeholder="Phone #1" type="text">
-            <select id="phonetype3" name="phonetype3">
-              <option tal:repeat="row phoneTypes">${row.phoneType}</option>
-            </select>
-            <br>
-            <form id="emailForm" name="emailForm" method="POST">
-            <input id="email" name="email" class="input-large" placeholder="Email #1" type="text">
-            <select id="emailtype1" name="emailtype">
+            <button id="addPhone" name="addPhone" disabled=true required>Add Phone</button>
+                        <br>
+            <input id="email" name="email" class="input-large" placeholder="Email Address" type="email" disabled=true required>
+            <select id="emailtype" name="emailtype" disabled=true required>
               <option>Work</option>
               <option>Home</option>
             </select>
-            <button id="addEmail" name="addEmail">Add Email</button>
-            <br>
-            </form>
-            <input id="email2" name="email2" class="input-large" placeholder="Email #2" type="text">
-            <select id="emailtype2" name="emailtype2">
-              <option tal:repeat="row emailTypes">${row.emailType}</option>
-            </select>
-            <br>
-            <input id="email3" name="email3" class="input-large" placeholder="Email #3" type="text">
-            <select id="emailtype3" name="emailtype3">
-              <option tal:repeat="row emailTypes">${row.emailType}</option>
-            </select>
-          </div>
+            <button id="addEmail" name="addEmail" disabled=true>Add Email</button>
+                      </div>
         </div>
  
     
