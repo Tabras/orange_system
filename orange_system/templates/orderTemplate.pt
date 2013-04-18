@@ -12,44 +12,6 @@
     <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     
-    <script>
-	  function addService() {
-      // create a new select element
-      // and give it some content
-      newSel = document.createElement("select");
-      newOption = document.createElement("option");
-      newContent = document.createTextNode("Install Linux");
-      
-	  newOption.appendChild(newContent); //add text to the new option
-      newSel.appendChild(newOption); //add the text node to the newly created div.
-      
-      // add the newly created element and it's content into the DOM
-      insertpoint = document.getElementById("serviceselect");
-      // Get a reference to the parent element
-	  parentDiv = insertpoint.parentNode;
-      // now we use the information to place our select on the form
-	  parentDiv.insertBefore(newSel, insertpoint);
-	  }
-	  
-	  function addPart() {
-      // create a new select element
-      // and give it some content
-      newSel = document.createElement("select");
-      newOption = document.createElement("option");
-      newContent = document.createTextNode("Hard Drive");
-      
-	  newOption.appendChild(newContent); //add text to the new option
-      newSel.appendChild(newOption); //add the text node to the newly created div.
-      
-      // add the newly created element and it's content into the DOM
-      insertpoint = document.getElementById("partselect");
-      // Get a reference to the parent element
-	  parentDiv = insertpoint.parentNode;
-      // now we use the information to place our select on the form
-	  parentDiv.insertBefore(newSel, insertpoint);
-	  }
-    </script>
-    
   </head>
   
   <body>
@@ -92,29 +54,53 @@
       <div class="span4">
         <div class="well">
 		  <h2>Order Details</h2>
-		  <label>** Customer name here **</label>
-		  <label>** Customer phone here **</label>
-		  <label>** Customer email here **</label>
 		  <br>
+		  <input id="custID" name="custID" type="text" class="input-medium" placeholder="TEMPORARY, FOR TESTING ONLY">
 		  <br>
-          <label><b>Model</b></label>
-          <input type="text" class="input-medium" placeholder="Model Name">
-          <br>
-          <label><b>Notes</b></label>
-          <textarea placeholder="Enter notes here"></textarea>
-          <br>
-          <label><b>Status</b></label>
-          <select>
-			<option>In Progress</option>
-			<option>On Hold</option>
-			<option>Completed</option>
-			<option>Paid</option>
-          </select>
-          <br>
-          <br>
-          <button type="submit" class="btn btn-primary">Save Order</button>
-          <input type="reset" class="btn" value="Reset">
-        </div>
+		  
+		  <!-- Keep in mind only one of these forms (Add / Update) will be visible at a time.
+			   Their visibility is dependant on whether an order Id was passed
+			   to the page or not.
+		  -->
+		  
+		  <form method="POST" id="addOrder" name="addOrder" action="${request.route_url('addOrder')}" tal:condition="not order">
+            <label>** No Customer Selected **</label>
+            <br>
+            <br>
+            <label><b>Model</b></label>
+            <input id="model" name="model" type="text" class="input-medium" placeholder="Model Name">
+            <br>
+            <label><b>Notes</b></label>
+            <textarea id="notes" name="notes" placeholder="Enter notes here"></textarea>
+            <br>
+            <label><b>Status</b></label>
+            <select id="status" name="status">
+			  <option tal:repeat="progress descriptions" value="${progress.progressDescription}" name="progressDescription">${progress.progressDescription}</option>
+            </select>
+            <br>
+            <br>
+            <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary">Add Order</button>
+          </form>
+          
+          
+          <form method="POST" id="updateOrder" name="updateOrder" action="${request.route_url('updateOrder')}" tal:condition="order">
+			<label>${customer.firstName} ${customer.lastName}</label>
+		    <br>
+		    <br>
+            <label><b>Model</b></label>
+            <input id="model" name="model" type="text" class="input-medium" value="${order.modelName">
+            <br>
+            <label><b>Notes</b></label>
+            <textarea id="notes" name="notes" value="${order.orderNotes}"></textarea>
+            <br>
+            <label><b>Status</b></label>
+            <select id="status" name="status">
+			  <option tal:repeat="progress descriptions" value="${order.progressDescription}" name="progressDescription">${order.progressDescription}</option>
+            </select>
+            <br>
+            <br>
+            <button type="submit" id="btnUpdate" name="btnUpdate" class="btn btn-primary">Update Order</button>
+          </form>
       </div>
     
       <div class="span4">
