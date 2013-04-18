@@ -12,9 +12,7 @@
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script>
-
-
-       function toggleControl(control, state){
+    function toggleControl(control, state){
          document.getElementById(control).disabled = state;
        }
        
@@ -83,9 +81,36 @@
                   alert("Phone number could not be added.");
                 });
              });
-            });  
+            
+            $("#addNewPhone").click(function(){
+               custid = $("input#customerID").val();
+               phone = $("input#newPhone").val();
+               phonetype = $("select#newPhoneType").val();
+               $.post("${request.route_url('addPhoneExisting')}",
+               { "phoneNumber": phone,
+                 "phoneType": phonetype,
+                 "customerID": custid }
+               ).success(function (){
+   
+               alert("Phone number added successfuly!");
+               });
+               });
              
-   </script>
+            $("button#addNewEmail").click(function(){
+               custid = $("input#customerID").val();
+               email = $("input#newEmail").val();
+               emailtype = $("select#newEmailType").val();
+               $.post("${request.route_url('addEmailExisting')}",
+               { "emailAddress": email,
+                 "emailType": emailType,
+                 "customerID": custid }
+                 ).success(function (){
+					 alert("Email Added Successfuly!");
+				 });
+            });
+		});  
+
+    </script>
   </head>
   
   <body>
@@ -124,8 +149,8 @@
       </div>
     </div>
     
+     <div class="container-fluid">
     <form method="POST" id="updateCustomerForm" name="updateCustomerForm" action="${request.route_url('addCust')}" tal:condition="customer">
-    <div class="container-fluid">
       <div class="span-4">
         <div class="well">
 		  <h4>Customer Information</h4>
@@ -148,8 +173,10 @@
           <button type="submit" id="btnEdit" name="btnEdit" class="btn btn-primary">Save Customer</button>
         </div>
       </div>
+     
+    </form>
  
-      <div class="span-4">
+      <div class="span-4" tal:condition="customer">
 		<div class="well">
 		  <h4>Customer Contacts</h4>
           <fieldset tal:repeat="row customerPhone">
@@ -160,7 +187,13 @@
             </select>
             <br>
           </fieldset>
-          
+          <input id="newPhone" type="text">
+          <select id="newPhoneType">
+            <option tal:repeat="row phoneTypes">${row.phoneType}</option>
+          </select>
+          <button id="addNewPhone">Add Phone</button>
+          <br>
+         <hr> 
           <fieldset tal:repeat="row customerEmail">
             <input id="emailID${row.emailID}" name="emailID${row.emailID}" type="hidden" value="${row.emailID}">
             <input id="email${row.emailID}" name="email${row.emailID}" class="input-large" placeholder="Email #${row.emailID}" type="text" value="${row.emailAddress}">
@@ -169,11 +202,14 @@
             </select>
             <br>
           </fieldset>
-          
+          <input id="newEmail" type="text">
+             <select id="newEmailType">
+              <option tal:repeat="row emailTypes">
+             </select>
+          <button id="addNewEmail">Add Email</button>
         </div>
       </div>
     </div>
-    </form>
 			  
 	<form method="POST" id="addCustomerForm" name="addCustomerForm" action="${request.route_url('addCust')}" tal:condition="not customer">
 	  <div class="container-fluid">
@@ -201,7 +237,7 @@
         </div>
      </form>
 		
-		<div class="span-4">
+		<div class="span-4" tal:condition="not customer">
 		  <div class="well">
 			<h4>Customer Contacts</h4>
             <input id="phone" name="phone" class="input-large" placeholder="Phone #1" type="text" disabled=true required>

@@ -114,6 +114,26 @@ def addPhone_view(request):
      phone = Phone(latestID, request.POST['phoneNumber'], request.POST['phoneType'])
      DBSession.add(phone)
      return {}
+
+@view_config(route_name='addEmailExisting', request_method="POST", renderer='json')
+def addEmailExisting_view(request):
+     custID = request.POST['customerID']
+     email = request.POST['emailAddress']
+     emailtype = request.POST['emailType']
+     
+     newEmail = Email(custID, email, emailtype)
+     DBSession.add(newEmail)
+     return {}
+
+@view_config(route_name='addPhoneExisting', request_method="POST", renderer='json')
+def addPhoneExisting_view(request):
+    custID = request.POST['customerID']
+    phone = request.POST['phoneNumber']
+    phoneType = request.POST['phoneType']
+    
+    newPhone = Phone(custID, phone, phoneType)
+    DBSession.add(newPhone)
+    return {}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
