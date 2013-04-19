@@ -12,6 +12,44 @@
     <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     
+    <script>
+	  function toggleControl(control){
+		document.getElementById(control).disabled = state;
+	  }
+	  
+	  $(function(){
+		var orderAdd = false;
+		
+		$("form#addOrderForm").submit(function(){
+		  // here we will manually set some variables to the values inside each textbox on the form
+		  var custID = $("input#custID").val();
+		  var modelName = $("input#addmodel").val();
+		  var orderNotes = $("input#addnotes").val();
+		  var progressDescription = $("select#addstatus").val();
+		  var entryDate = new Date();
+		  
+		  // now we will create an AJAX call to post to addOrder_view
+		  $.post("${request.route_url('addOrder')}",
+           {"custID": custID,
+            "modelName": modelName,
+            "orderNotes": orderNotes,
+            "entryDate": entryDate,
+            "progressDescription": progressDescription
+           }).success(function(){
+		  // if the post was successful we will now allow the user to add services and parts
+		  toggleControl('model', true);
+		  toggleControl('notes', true);
+		  toggleControl('progress', true);
+		  alert("Order added successfully!");
+		  
+	      });
+	      
+	      return false;
+	      
+		});
+	  }
+    </script>
+    
   </head>
   
   <body>
@@ -55,47 +93,48 @@
         <div class="well">
 		  <h2>Order Details</h2>
 		  <br>
-		  <input id="custID" name="custID" type="text" class="input-medium" placeholder="TEMPORARY, FOR TESTING ONLY">
-		  <br>
 		  
 		  <!-- Keep in mind only one of these forms (Add / Update) will be visible at a time.
 			   Their visibility is dependant on whether an order Id was passed
 			   to the page or not.
 		  -->
 		  
-		  <form method="POST" id="addOrder" name="addOrder" action="${request.route_url('addOrder')}" tal:condition="not order">
+		  <!-- ADD CUSTOMER -->
+		  <form method="POST" id="addOrderForm" name="addOrderForm" action="${request.route_url('addOrder')}" tal:condition="not order">
+            <input id="custID" name="custID" type="text" class="input-medium" placeholder="TEMPORARY, FOR TESTING ONLY" required>
+		    <br>
             <label>** No Customer Selected **</label>
             <br>
             <br>
             <label><b>Model</b></label>
-            <input id="model" name="model" type="text" class="input-medium" placeholder="Model Name">
+            <input id="addmodel" name="addmodel" type="text" class="input-medium" placeholder="Model Name" required>
             <br>
             <label><b>Notes</b></label>
-            <textarea id="notes" name="notes" placeholder="Enter notes here"></textarea>
+            <textarea id="addnotes" name="addnotes" placeholder="Enter notes here" required></textarea>
             <br>
             <label><b>Status</b></label>
-            <select id="status" name="status">
-			  <option tal:repeat="progress descriptions" value="${progress.progressDescription}" name="progressDescription">${progress.progressDescription}</option>
+            <select id="addstatus" name="addstatus" required>
+			  <option tal:repeat="row progress" value="${row.progressDescription}" name="progressDescription">${row.progressDescription}</option>
             </select>
             <br>
             <br>
             <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary">Add Order</button>
           </form>
           
-          
+          <!-- UPDATE CUSTOMER -->
           <form method="POST" id="updateOrder" name="updateOrder" action="${request.route_url('updateOrder')}" tal:condition="order">
 			<label>${customer.firstName} ${customer.lastName}</label>
 		    <br>
 		    <br>
             <label><b>Model</b></label>
-            <input id="model" name="model" type="text" class="input-medium" value="${order.modelName">
+            <input id="model" name="model" type="text" class="input-medium" value="${order.modelName}">
             <br>
             <label><b>Notes</b></label>
             <textarea id="notes" name="notes" value="${order.orderNotes}"></textarea>
             <br>
             <label><b>Status</b></label>
             <select id="status" name="status">
-			  <option tal:repeat="progress descriptions" value="${order.progressDescription}" name="progressDescription">${order.progressDescription}</option>
+			  <option tal:repeat="row progress" value="${order.progressDescription}" name="progressDescription">${order.progressDescription}</option>
             </select>
             <br>
             <br>
@@ -125,6 +164,7 @@
           </table>
         </div>
       </div>
+      
       <div class="span4">
         <div class="well">
           <label><b>Parts</b></label>
@@ -136,6 +176,7 @@
       </div>
     </div>
   
+	<!-- ORDER LIST (bottom of page)-->
     <div class="container-fluid">
       <div class="well">
 		<br>

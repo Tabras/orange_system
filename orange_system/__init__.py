@@ -24,7 +24,7 @@ def main(global_config, **settings):
     config.add_route('addPhone','/Customers/addPhone')
     config.add_route('addPhoneExisting', '/Customers/addPhoneExisting')
     config.add_route('order','/Orders')
-    config.add_route('order','/Orders/addOrder')
+    config.add_route('addOrder','/Orders/addOrder')
     config.add_route('service','/Services')
     config.add_route('part','/Parts')
     config.add_route('report','/Reports')

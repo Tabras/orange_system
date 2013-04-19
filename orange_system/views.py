@@ -160,6 +160,18 @@ def order_view(request):
 	'services': services, 
 	'parts': parts, 
 	'progress': progress,}
+	
+@view_config(route_name='addOrder', request_method="POST", renderer='json')
+def addOrder_view(request):
+    order = Orders(
+    request.POST['custID'],
+    request.POST['modelName'],
+    request.POST['orderNotes'],
+    request.POST['entryDate'],
+    request.POST['progressDescription'])
+ 
+    DBSession.add(order)
+    return {'data': 'test'}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
 def service_view(request):
