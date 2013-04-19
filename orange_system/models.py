@@ -29,8 +29,6 @@ in the bin folder of your venv.  This is not the only way of doing this, as you 
 in its own script if you like.  However, our database is small so we'll just throw all the tables in here.
 """
 
-
-
 class States(Base):
     __tablename__ = 'tblStates'
     stateCode = Column(String(2), primary_key=True)
@@ -134,9 +132,6 @@ class Orders(Base):
 	self.completionDate = completionDate
 	self.progressDescription = progressDescription
 
-
-
-
 class Email(Base):
     __tablename__ = 'tblEmail'
     __tableargs__ = ({
@@ -165,16 +160,12 @@ class Phone(Base):
 	self.phoneNumber = phoneNumber
 	self.phoneType = phoneType
 
-
-
-
-
 class PartsByOrder(Base):
     __tablename__ = 'tblPartsByOrder'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    partID = Column(Integer, primary_key=True)
-    partName = Column(String(10), ForeignKey(Parts.partName))
+    rowID = Column(Integer, primary_key=True)
+    partID = Column(String(10), ForeignKey(Parts.partID))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
     def __init__(self,  partName, orderID):
@@ -185,8 +176,8 @@ class ServicesByOrder(Base):
     __tablename__ = 'tblServicesByOrder'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    serviceID = Column(Integer, primary_key=True)
-    serviceName = Column(String(10), ForeignKey(Services.serviceName))
+    rowID = Column(Integer, primary_key=True)
+    serviceID = Column(String(10), ForeignKey(Services.serviceID))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
     def __init__(self, serviceName, orderID):
