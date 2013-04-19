@@ -172,13 +172,12 @@ def order_view(request):
 	parts = DBSession.query(Parts).all()
 	progress = DBSession.query(Progress).all()
 	
-	print("<---Progress--->")
-	print(progress)
-	
 	# initializing necessary values before declaring them
 	order = None
 	orderServices = None
 	orderParts = None
+	orderServicesFull = None
+	orderPartsFull = None
 	
 	# looking for the order id to be passed
 	if 'orderID' in request.GET:
@@ -188,7 +187,9 @@ def order_view(request):
 		# we will also find all the services and parts associated with the selected order
 		orderServices = DBSession.query(ServicesByOrder).filter(ServicesByOrder.orderID == request.GET['orderID']).all()
 		orderParts = DBSession.query(PartsByOrder).filter(PartsByOrder.orderID == request.GET['orderID']).all()
-	
+		orderServicesFull = DBSession.query(Services).filter(Services.serviceID == 1).all()
+		orderPartsFull = DBSession.query(Parts).filter(Parts.partID == 1).all()
+		
 	# Then we return each of the objects containing data that we built to the order_view
 	return {'project': 'orange_system', 
 	'orders': orders, 
@@ -197,7 +198,10 @@ def order_view(request):
 	'parts': parts, 
 	'progress': progress,
 	'orderServices': orderServices,
-	'orderParts': orderParts,}
+	'orderParts': orderParts,
+	'orderServicesFull': orderServicesFull,
+	'orderPartsFull': orderPartsFull,
+	}
 	
 @view_config(route_name='addOrder', request_method="POST", renderer='json')
 def addOrder_view(request):

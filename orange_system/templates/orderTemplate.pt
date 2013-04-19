@@ -131,7 +131,7 @@
     </div>
     
     <div class="container-fluid">
-      <div class="span4">
+      <div class="span3">
         <div class="well">
 		  <h2>Order Details</h2>
 		  <br>
@@ -143,11 +143,8 @@
 		  
 		  <!-- ADD CUSTOMER -->
 		  <form method="POST" id="addOrderForm" name="addOrderForm" action="${request.route_url('addOrder')}" tal:condition="not order">
-            <input id="custID" name="custID" type="text" class="input-medium" placeholder="TEMPORARY, FOR TESTING ONLY" required>
+            <input id="custID" name="custID" type="text" class="input-medium" placeholder="CustID testing!" required>
 		    <br>
-            <label>** No Customer Selected **</label>
-            <br>
-            <br>
             <label><b>Model</b></label>
             <input id="addmodel" name="addmodel" type="text" class="input-medium" placeholder="Model Name" required>
             <br>
@@ -164,12 +161,12 @@
           </form>
           
           <!-- UPDATE CUSTOMER -->
-          <form method="POST" id="updateOrder" name="updateOrder" action="${request.route_url('updateOrder')}" tal:condition="order">
+          <form method="POST" id="updateOrderForm" name="updateOrder" action="${request.route_url('updateOrder')}" tal:condition="order">
 		    <label><b>Order ID</b></label>
-		    <input id="orderID" name="orderID" type="text" class="input-medium" value="${order.orderID}">
+		    <input id="orderID" name="orderID" type="text" class="input-medium" value="${order.orderID}" disabled>
 		    <br>
 		    <label><b>Customer ID</b></label>
-		    <input id="custID" name="custID" type="text" class="input-medium" value="${order.custID}">
+		    <input id="custID" name="custID" type="text" class="input-medium" value="${order.custID}" disabled>
 		    <br>
             <label><b>Model</b></label>
             <input id="modelName" name="modelName" type="text" class="input-medium" value="${order.modelName}">
@@ -197,45 +194,71 @@
         </div>
       </div>
     
-      <div class="span4">
-        <div class="well">
-          <label><b>Services</b></label>
-          <select id="serviceselect" name="serviceselect">
-            <option tal:repeat="row services">${row.serviceName}</option>
-          </select>
-          <button onclick="addService()"><b>+</b></button>
-          <br>
-          <h4>Current</h4>
-          <table class="table table-striped">
-            <tr>
-              <th>ID</th>
+      <div class="container">
+        <div class="span4">
+          <div class="well">
+            <label><h4>Services</h4></label>
+            <select id="serviceselect" name="serviceselect">
+              <option tal:repeat="row services">${row.serviceName}</option>
+            </select>
+            <button onclick="addService()"><b>+</b></button>
+            <br>
+            <h5>Current</h5>
+            <table class="table table-striped">
+              <tr>
                 <th>Service Name</th>
                 <th>Service Cost</th>
               </tr>
-            <tr tal:repeat="row orders">
-              <td>${row.modelName}</td>
-              <td>${row.orderCost}</td>
-            </tr>
-          </table>
+              <tr tal:repeat="row orderServicesFull">
+                <td>${row.serviceName}</td>
+                <td>${row.serviceCost}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      
+        <div class="span4">
+          <div class="well">
+            <label><h4>Parts</h4></label>
+            <select id="partselect" name="partselect">
+              <option tal:repeat="row parts">${row.partName}</option>
+            </select>
+            <button onclick="addPart()"><b>+</b></button>
+            <br>
+            <h5>Current</h5>
+            <table class="table table-striped">
+              <tr>
+                <th>Part Name</th>
+                <th>Part Cost</th>
+              </tr>
+              <tr tal:repeat="row orderPartsFull">
+                <td>${row.partName}</td>
+                <td>${row.partCost}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div class="span4">
+        <div class="well">
+          Service Total: $
+        </div>
+      </div>
+      <div class="span4">
+        <div class="well">
+          Parts Total: $
         </div>
       </div>
       
-      <div class="span4">
-        <div class="well">
-          <label><b>Parts</b></label>
-          <select id="partselect" name="partselect">
-            <option tal:repeat="row parts">${row.partName}</option>
-          </select>
-          <button onclick="addPart()"><b>+</b></button>
-        </div>
-      </div>
     </div>
   
   
 	<!-- ORDER LIST (bottom of page) -->
     <div class="container-fluid">
       <div class="well">
-		<br>
 		<h2>Orders List</h2>
 		<div tal:condition="orders" class="container-fluid">
 		  <ul class="nav nav-pills">
