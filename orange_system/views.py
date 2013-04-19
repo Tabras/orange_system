@@ -215,15 +215,19 @@ def addOrder_view(request):
     
 @view_config(route_name='updateOrder', request_method='POST', renderer='json')
 def updateOrder_view(request):
-	orderID = request.POST['orderID']
-	custID = request.POST['custID']
-	modelName = request.POST['modelName']
-	orderNotes = request.POST['orderNotes']
-	orderCost = request.POST['orderCost']
-	entryDate = request.POST['entryDate']
-	completionDate = request.POST['completionDate']
-	progressDescription = request.POST['progressDescription']
+	print("<---REQUEST--->")
+	print(request)
+	order = DBSession.query(Orders).filter(Orders.orderID == request.POST['orderID']).first()
+	order.orderID = request.POST['orderID']
+	order.custID = request.POST['custID']
+	order.modelName = request.POST['modelName']
+	order.orderNotes = request.POST['orderNotes']
+	order.orderCost = request.POST['orderCost']
+	order.entryDate = request.POST['entryDate']
+	order.completionDate = request.POST['completionDate']
+	order.progressDescription = request.POST['progressDescription']
 	
+	DBSession.add(order)
 	return{}
 	
     
