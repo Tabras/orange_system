@@ -23,6 +23,7 @@ def main(global_config, **settings):
     config.add_route('addCust','/Customers/addCust')
     config.add_route('addPhone','/Customers/addPhone')
     config.add_route('addPhoneExisting', '/Customers/addPhoneExisting')
+    config.add_route('updateCust', '/Customers/update')
     config.add_route('order','/Orders')
     config.add_route('addOrder','/Orders/addOrder')
     config.add_route('service','/Services')

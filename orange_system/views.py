@@ -117,6 +117,8 @@ def addPhone_view(request):
 
 @view_config(route_name='addEmailExisting', request_method="POST", renderer='json')
 def addEmailExisting_view(request):
+     print "test"
+     print request.POST
      custID = request.POST['customerID']
      email = request.POST['emailAddress']
      emailtype = request.POST['emailType']
@@ -135,6 +137,29 @@ def addPhoneExisting_view(request):
     DBSession.add(newPhone)
     return {}
     
+@view_config(route_name='updateCust', request_method="POST", renderer='json')
+def updateCust_view(request):
+	custID = request.POST['customerID']
+	firstName = request.POST['firstName']
+	lastName = request.POST['lastName']
+	address = request.POST['address']
+	city = request.POST['city']
+	stateCode = request.POST['stateCode']
+	zipCode = request.POST['zipCode']
+        
+        for i in range(0, int(request.POST['emailLength'])):
+            print request.POST['emailInfo['+str(i)+'][name]']
+            print request.POST['emailInfo['+str(i)+'][value]']
+	return {}
+    
+@view_config(route_name='deleteCust', request_method="POST", renderer='json')
+def deleteCust_view(request):
+    print request.POST
+    custID = request.POST['formData[0][value]']
+    DBSession.query(Email).filter(Email.custID == custID).delete()
+    DBSession.query(Phone).filter(Phone.custID == custID).delete()
+    DBSession.query(Customers).filter(Customers.customerID == custID).delete()
+    return {}
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
 	# here we are pulling in all the current orders for display
