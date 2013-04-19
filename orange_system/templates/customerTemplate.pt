@@ -11,6 +11,7 @@
     
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="${request.static_url('orange_system:static/js/serializeObject.js')}"></script>
     <script>
     function toggleControl(control, state){
          document.getElementById(control).disabled = state;
@@ -116,8 +117,13 @@
               var lastName = $("input#lastname").val();
               var address = $("input#address").val();
               var city = $("input#city").val();
-			  var stateCode = $("select#state").val();
-			  var zipCode = $("input#zipcode").val();
+              var stateCode = $("select#state").val();
+	      var zipCode = $("input#zipcode").val();
+	      var existingPhoneInfo = $("#existingPhoneInfo :input[value]").serializeArray();
+	      var existingEmailInfo = $("#existingEmailInfo :input[value]").serializeArray();
+              var phoneLen = existingPhoneInfo.length;
+              var emailLen = existingEmailInfo.length;
+		      
               $.post("${request.route_url('updateCust')}",
               { "customerID": customerID,
 				"firstName": firstName,
@@ -125,7 +131,11 @@
                 "address": address,
                 "city": city,
                 "stateCode": stateCode,
-                "zipCode": zipCode }
+                "zipCode": zipCode,
+                "phoneInfo": existingPhoneInfo,
+                "emailInfo": existingEmailInfo,
+                "emailLength": emailLen,
+                "phoneLength": phoneLen }
                 ).success(function(){
 					alert("Customer information saved!");
 				});
@@ -202,6 +212,7 @@
  
       <div class="span-4" tal:condition="customer">
 		<div class="well">
+			<form id="existingPhoneInfo">
 		  <h4>Customer Contacts</h4>
           <fieldset tal:repeat="row customerPhone">
             <input id="phoneID${row.phoneID}" name="phoneIDExisting${row.phoneID}" type="hidden" value="${row.phoneID}">
@@ -211,6 +222,7 @@
             </select>
             <br>
           </fieldset>
+          </form>
           <input id="newPhone" type="text">
           <select id="newPhoneType">
             <option tal:repeat="row phoneTypes">${row.phoneType}</option>
@@ -218,6 +230,7 @@
           <button id="addNewPhone">Add Phone</button>
           <br>
          <hr> 
+         <form id="existingEmailInfo">
           <fieldset tal:repeat="row customerEmail">
             <input id="emailIDExisting${row.emailID}" name="emailID${row.emailID}" type="hidden" value="${row.emailID}">
             <input id="emailExisting${row.emailID}" name="email${row.emailID}" class="input-large" placeholder="Email #${row.emailID}" type="text" value="${row.emailAddress}">
@@ -231,6 +244,7 @@
               <option tal:repeat="row emailTypes">${row.emailType}</option>
              </select>
           <button id="addNewEmail">Add Email</button>
+        </form>
         </div>
       </div>
     </div>

@@ -146,6 +146,9 @@ def updateCust_view(request):
 	city = request.POST['city']
 	stateCode = request.POST['stateCode']
 	zipCode = request.POST['zipCode']
+        
+        for i in range(0, int(request.POST['emailLength'])):
+            print request.POST['emailInfo['+str(i)+'][value]']
 	return {}
     
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
