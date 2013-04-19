@@ -219,8 +219,6 @@ def addOrder_view(request):
     
 @view_config(route_name='updateOrder', request_method='POST', renderer='json')
 def updateOrder_view(request):
-	print("<---REQUEST--->")
-	print(request)
 	order = DBSession.query(Orders).filter(Orders.orderID == request.POST['orderID']).first()
 	order.orderID = request.POST['orderID']
 	order.custID = request.POST['custID']
@@ -237,48 +235,96 @@ def updateOrder_view(request):
     
 @view_config(route_name='deleteOrder', request_method='POST', renderer='json')
 def deleteOrder_view(request):
-	print request.POST
 	orderID = request.POST['formData[0][value]']
 	DBSession.query(Orders).filter(Orders.orderID == orderID).delete()
 	return {}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
 def service_view(request):
-	serviceList = None
-	serviceAdd = None
-	name = None
-	cost = None
-	serviceList = DBSession.query(Services).all()
+	service = None
+	services = None
+	services = DBSession.query(Services).all()
 	
-	if request.POST:
-		if request.POST['servicename'] and request.POST['servicecost']:
-			name = request.POST['servicename']
-			cost = request.POST['servicecost']
-			service = Services(name, cost)
-			print service.serviceName
-			if service:
-				DBSession.add(service)
-       
-	return {'project': 'orange_system', 'serviceList': serviceList}
+	if 'serviceID' in request.GET:
+		# here we are finding the service associated with the id that was just passed from the service page
+		service = DBSession.query(Services).filter(Services.serviceID == request.GET['serviceID']).first()
+		
+    # then we return each of the objects containing  data that we built to the service_view
+	return {'project': 'orange_system', 
+	'services': services,
+	'service': service,
+	}
+	
+@view_config(route_name='addService', request_method='POST', renderer='json')
+def addService_view(request):
+	service = None
+	service = Services(
+	request.POST['serviceName'], 
+	request.POST['serviceCost'])
+	
+	DBSession.add(service)
+	return {}
+	
+@view_config(route_name='updateService', request_method='POST', renderer='json')
+def updateService_view(request):
+	service = None
+	service = DBSession.query(Services).filter(Services.serviceID == request.POST['serviceID']).first()
+	service.serviceID = request.POST['serviceID']
+	service.serviceName = request.POST['serviceName']
+	service.serviceCost = request.POST['serviceCost']
+	
+	DBSession.add(service)
+	return {}
+	
+@view_config(route_name='deleteService', request_method='POST', renderer='json')
+def deleteService_view(request):
+	serviceID = request.POST['formData[0][value]']
+	DBSession.query(Services).filter(Services.serviceID == serviceID).delete()
+	return {}
     
 @view_config(route_name='part', renderer='templates/partTemplate.pt')
 def part_view(request):
-	partList = None
-	partAdd = None
 	part = None
-	partList = DBSession.execute(\
-	"SELECT * "+\
-	"FROM tblParts")
+	parts = None
+	parts = DBSession.query(Parts).all()
 	
-	if request.POST:
-		name = request.POST['partname']
-		cost = request.POST['partcost']
-		part = Parts(name, cost)
-		if part:
-		    DBSession.add(part)
+	if 'partID' in request.GET:
+		# here we are finding the part associated with the id that was just passed from the part page
+		part = DBSession.query(Parts).filter(Parts.partID == request.GET['partID']).first()
 		
-	return {'project': 'orange_system', 'partList': partList}
-    
+    # then we return each of the objects containing  data that we built to the part_view
+	return {'project': 'orange_system', 
+	'parts': parts,
+	'part': part,
+	}
+	
+@view_config(route_name='addPart', request_method='POST', renderer='json')
+def addPart_view(request):
+	part = None
+	part = Parts(
+	request.POST['partName'], 
+	request.POST['partCost'])
+	
+	DBSession.add(part)
+	return {}
+	
+@view_config(route_name='updatePart', request_method='POST', renderer='json')
+def updatePart_view(request):
+	part = None
+	part = DBSession.query(Parts).filter(Parts.partID == request.POST['partID']).first()
+	part.partID = request.POST['partID']
+	part.partName = request.POST['partName']
+	part.partCost = request.POST['partCost']
+	
+	DBSession.add(part)
+	return {}
+	
+@view_config(route_name='deletePart', request_method='POST', renderer='json')
+def deletePart_view(request):
+	partID = request.POST['formData[0][value]']
+	DBSession.query(Parts).filter(Parts.partID == partID).delete()
+	return {}
+	
 @view_config(route_name='report', renderer='templates/reportTemplate.pt')
 def report_view(request):
     return {'project': 'orange_system'}

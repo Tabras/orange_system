@@ -18,7 +18,6 @@
 	  }
 	  
 	  $(function(){
-		var orderAdd = false;
 		
 		$("form#addOrderForm").submit(function(){
 		  // here we will manually set some variables to the values inside each textbox on the form
@@ -42,7 +41,6 @@
 		  toggleControl('progress', true);
 		  alert("Order added successfully!");
 	      });
-	      return false;
 		});
 		
 		$("form#updateOrderForm").submit(function(){
@@ -65,11 +63,12 @@
 			"completionDate": completionDate,
 			"progressDescription": progressDescription }).success(function(){alert("Order information saved!");
 		  });
-		  return false;
 	    });
 	  });
     </script>
     
+    
+    <!-- this bit of code controls the DELETE for orders -->
     <script>
         $(document).ready(function(){
           $("form > button").each(function(){
@@ -142,7 +141,7 @@
 		  -->
 		  
 		  <!-- ADD CUSTOMER -->
-		  <form method="POST" id="addOrderForm" name="addOrderForm" action="${request.route_url('addOrder')}" tal:condition="not order">
+		  <form method="POST" id="addOrderForm" name="addOrderForm" action="${request.route_url('order')}" tal:condition="not order">
             <input id="custID" name="custID" type="text" class="input-medium" placeholder="CustID testing!" required>
 		    <br>
             <label><b>Model</b></label>
@@ -161,7 +160,7 @@
           </form>
           
           <!-- UPDATE CUSTOMER -->
-          <form method="POST" id="updateOrderForm" name="updateOrder" action="${request.route_url('updateOrder')}" tal:condition="order">
+          <form method="POST" id="updateOrderForm" name="updateOrder" action="${request.route_url('order')}" tal:condition="order">
 		    <label><b>Order ID</b></label>
 		    <input id="orderID" name="orderID" type="text" class="input-medium" value="${order.orderID}" disabled>
 		    <br>
@@ -172,7 +171,7 @@
             <input id="modelName" name="modelName" type="text" class="input-medium" value="${order.modelName}">
             <br>
             <label><b>Notes</b></label>
-            <textarea id="orderNotes" name="orderNotes" value="${order.orderNotes}"></textarea>
+            <textarea id="orderNotes" name="orderNotes">{order.orderNotes}</textarea>
             <br>
             <label><b>Cost</b></label>
             <input id="orderCost" name="orderCost" type="text" class="input-medium" value="${order.orderCost}"></input>
@@ -280,8 +279,7 @@
 		  </ul>
 		  <hr>
 			<form type="GET" action="${request.route_url('order')}" tal:repeat="row orders" id="form${row.orderID}">
-			  <!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
-				  Probably not the smoothest way to handle this, but it works gosh darn it!-->
+			  <!--This loop makes a form for each order and prints plain text for the ID, as well as a hidden input for the submit handler-->
 			  <span class="span1">${row.orderID}<input type="hidden" value="${row.orderID}" name="orderID"> </span>
 			  <span class="span2">${row.modelName}</span>
 			  <span class="span2">${row.orderNotes}</span>
