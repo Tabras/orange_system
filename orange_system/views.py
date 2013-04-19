@@ -186,8 +186,10 @@ def order_view(request):
 		
 		# we will also find all the services and parts associated with the selected order
 		orderServices = DBSession.query(ServicesByOrder).filter(ServicesByOrder.orderID == request.GET['orderID']).all()
+		print("<----debug---->")
+		print(orderServices[0].serviceID)
 		orderParts = DBSession.query(PartsByOrder).filter(PartsByOrder.orderID == request.GET['orderID']).all()
-		orderServicesFull = DBSession.query(Services).filter(Services.serviceID == 1).all()
+		orderServicesFull = DBSession.query(Services).filter(Services.serviceID == int(orderServices[0].serviceID)).all()
 		orderPartsFull = DBSession.query(Parts).filter(Parts.partID == 1).all()
 		
 	# Then we return each of the objects containing data that we built to the order_view

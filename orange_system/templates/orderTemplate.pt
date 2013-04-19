@@ -171,7 +171,7 @@
             <input id="modelName" name="modelName" type="text" class="input-medium" value="${order.modelName}">
             <br>
             <label><b>Notes</b></label>
-            <textarea id="orderNotes" name="orderNotes">{order.orderNotes}</textarea>
+            <textarea id="orderNotes" name="orderNotes">${order.orderNotes}</textarea>
             <br>
             <label><b>Cost</b></label>
             <input id="orderCost" name="orderCost" type="text" class="input-medium" value="${order.orderCost}"></input>
