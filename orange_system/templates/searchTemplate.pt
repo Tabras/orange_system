@@ -18,6 +18,22 @@
           $("#q").blur(function(){
              $('#myForm').submit();
            });
+          $("form > button").each(function(){
+              if ($(this).attr('id') == 'deleteCust') {
+              $(this).click(function()
+              {
+                var formData = $("#form"+$(this).attr('name')).serializeArray();
+                if(confirm('Are you sure you want to delete this customer?')){
+                $.post("${request.route_url('deleteCust')}",
+                { "formData": formData }
+                ).success(function() {
+                 alert("Deleted customer");
+                });
+                }
+                return false;
+              });
+             }
+          });
          
 
         }); 
@@ -95,12 +111,12 @@
 				<!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
 				      Probably not the smoothest way to handle this, but it works gosh darn it!-->
 				<span class="span1">${row['customerID']}<input type="hidden" value="${row['customerID']}" name="customerID"> </span>
-				<span class="span2">${row['firstName']} ${row['lastName']}</span>
+				<span class="span2">${row['firstName']} ${row['lastName']} </span>
 				<span class="span2">${row['address']} ${row['city']}, ${row['stateCode']} ${row['zipCode']}</span>
-				<span class="span2">${row['emails']}</span>
-				<span class="span2 offset1">${row['Phone Number']}</span>
-				<span class="span1 align-right">
-				<button class="btn btn-primary" type="submit">Edit</button></span> <br><hr>
+				<span><textarea class="span3" disabled>${row['emails']}</textarea></span>
+				<span><textarea class="span3" disabled>${row['Phone Number']}</textarea></span>
+				<button class="btn btn-info" type="submit">Edit</button> 
+                                <button class="btn btn-danger" id="deleteCust" name="${row['customerID']}">Delete</button> <br><hr>
 			</form>
       
         </div>    

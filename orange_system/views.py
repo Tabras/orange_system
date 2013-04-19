@@ -148,9 +148,18 @@ def updateCust_view(request):
 	zipCode = request.POST['zipCode']
         
         for i in range(0, int(request.POST['emailLength'])):
+            print request.POST['emailInfo['+str(i)+'][name]']
             print request.POST['emailInfo['+str(i)+'][value]']
 	return {}
     
+@view_config(route_name='deleteCust', request_method="POST", renderer='json')
+def deleteCust_view(request):
+    print request.POST
+    custID = request.POST['formData[0][value]']
+    DBSession.query(Email).filter(Email.custID == custID).delete()
+    DBSession.query(Phone).filter(Phone.custID == custID).delete()
+    DBSession.query(Customers).filter(Customers.customerID == custID).delete()
+    return {}
 @view_config(route_name='order', renderer='templates/orderTemplate.pt')
 def order_view(request):
 	# here we are pulling in all the current orders for display
