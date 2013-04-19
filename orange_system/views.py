@@ -18,6 +18,8 @@ from .models import (
     EmailType,
     PhoneType,
     Progress,
+    ServicesByOrder,
+    PartsByOrder,
     )
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
@@ -71,7 +73,7 @@ def customer_view(request):
     customerEmail = None
     customerPhone = None
     if 'customerID' in request.GET:
-                # We're going to store this in a local variable to make our life easier when updating the customer
+        # We're going to store this in a local variable to make our life easier when updating the customer
 		# Let's find the customer associated with the ID we passed from the search page
 		customer = DBSession.query(Customers).filter(Customers.customerID == request.GET['customerID']).first()
 		# As well as any email addresses and phone numbers associated with them.
@@ -170,21 +172,32 @@ def order_view(request):
 	parts = DBSession.query(Parts).all()
 	progress = DBSession.query(Progress).all()
 	
+	print("<---Progress--->")
+	print(progress)
+	
 	# initializing necessary values before declaring them
 	order = None
-	newOrder = None
+	orderServices = None
+	orderParts = None
 	
 	# looking for the order id to be passed
 	if 'orderID' in request.GET:
 		# here we are finding the order associated with the id that was just passed from the order page
-		order = DBSession.query(Orders).filter(Orders.orderID == request.GET[orderID]).first()
+		order = DBSession.query(Orders).filter(Orders.orderID == request.GET['orderID']).first()
+		
+		# we will also find all the services and parts associated with the selected order
+		orderServices = DBSession.query(ServicesByOrder).filter(ServicesByOrder.orderID == request.GET['orderID']).all()
+		orderParts = DBSession.query(PartsByOrder).filter(PartsByOrder.orderID == request.GET['orderID']).all()
 	
+	# Then we return each of the objects containing data that we built to the order_view
 	return {'project': 'orange_system', 
 	'orders': orders, 
 	'order': order, 
 	'services': services, 
 	'parts': parts, 
-	'progress': progress,}
+	'progress': progress,
+	'orderServices': orderServices,
+	'orderParts': orderParts,}
 	
 @view_config(route_name='addOrder', request_method="POST", renderer='json')
 def addOrder_view(request):
@@ -192,11 +205,34 @@ def addOrder_view(request):
     request.POST['custID'],
     request.POST['modelName'],
     request.POST['orderNotes'],
+    "0.00", # This is a placeholder for orderCost since there is no cost yet
     request.POST['entryDate'],
+    " ", # This is a placeholder for completionDate since theres no data yet
     request.POST['progressDescription'])
  
     DBSession.add(order)
-    return {'data': 'test'}
+    return {}
+    
+@view_config(route_name='updateOrder', request_method='POST', renderer='json')
+def updateOrder_view(request):
+	orderID = request.POST['orderID']
+	custID = request.POST['custID']
+	modelName = request.POST['modelName']
+	orderNotes = request.POST['orderNotes']
+	orderCost = request.POST['orderCost']
+	entryDate = request.POST['entryDate']
+	completionDate = request.POST['completionDate']
+	progressDescription = request.POST['progressDescription']
+	
+	return{}
+	
+    
+@view_config(route_name='deleteOrder', request_method='POST', renderer='json')
+def deleteOrder_view(request):
+	print request.POST
+	orderID = request.POST['formData[0][value]']
+	DBSession.query(Orders).filter(Orders.orderID == orderID).delete()
+	return {}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
 def service_view(request):

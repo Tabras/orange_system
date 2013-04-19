@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
-    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     
     <script>
-	  function toggleControl(control){
+	  function toggleControl(control, state){
 		document.getElementById(control).disabled = state;
 	  }
 	  
@@ -24,7 +24,7 @@
 		  // here we will manually set some variables to the values inside each textbox on the form
 		  var custID = $("input#custID").val();
 		  var modelName = $("input#addmodel").val();
-		  var orderNotes = $("input#addnotes").val();
+		  var orderNotes = $("textarea#addnotes").val();
 		  var progressDescription = $("select#addstatus").val();
 		  var entryDate = new Date();
 		  
@@ -41,14 +41,58 @@
 		  toggleControl('notes', true);
 		  toggleControl('progress', true);
 		  alert("Order added successfully!");
-		  
 	      });
-	      
 	      return false;
-	      
 		});
-	  }
+		
+		$("form#updateOrderForm").submit(function(){
+		  var orderID = $("input#orderID").val();
+		  var custID = $("input#custID").val();
+		  var modelName = $("input#modelName").val();
+          var orderNotes = $("textarea#orderNotes").val();
+          var orderCost = $("input#orderCost").val();
+          var entryDate = $("input#entryDate").val();
+          var completionDate = $("input#completionDate").val();
+		  var progressDescription = $("select#progressDescription").val();
+		      
+          $.post("${request.route_url('updateOrder')}",
+          { "orderID": orderID,
+			"custID": custID,
+			"modelName": modelName,
+			"orderNotes": orderNotes,
+			"orderCost": orderCost,
+			"entryDate": entryDate,
+			"completionDate": completionDate,
+			"progressDescription": progressDescription }
+			).success(function(){
+				alert("Customer information saved!");
+		  });
+		  return false;
+	    });
+	  });
     </script>
+    
+    <script>
+        $(document).ready(function(){
+          $("form > button").each(function(){
+              if ($(this).attr('id') == 'deleteOrder') {
+              $(this).click(function()
+              {
+                var formData = $("#form"+$(this).attr('name')).serializeArray();
+                if(confirm('Are you sure you want to delete this Order?')){
+                $.post("${request.route_url('deleteOrder')}",
+                { "formData": formData }
+                ).success(function() {
+                 alert("Deleted Order");
+                });
+                }
+                return false;
+              });
+            }
+          });
+        }); 
+         
+     </script>
     
   </head>
   
@@ -123,23 +167,36 @@
           
           <!-- UPDATE CUSTOMER -->
           <form method="POST" id="updateOrder" name="updateOrder" action="${request.route_url('updateOrder')}" tal:condition="order">
-			<label>${customer.firstName} ${customer.lastName}</label>
+		    <label><b>Order ID</b></label>
+		    <input id="orderID" name="orderID" type="text" class="input-medium" value="${order.orderID}">
 		    <br>
+		    <label><b>Customer ID</b></label>
+		    <input id="custID" name="custID" type="text" class="input-medium" value="${order.custID}">
 		    <br>
             <label><b>Model</b></label>
-            <input id="model" name="model" type="text" class="input-medium" value="${order.modelName}">
+            <input id="modelName" name="modelName" type="text" class="input-medium" value="${order.modelName}">
             <br>
             <label><b>Notes</b></label>
-            <textarea id="notes" name="notes" value="${order.orderNotes}"></textarea>
+            <textarea id="orderNotes" name="orderNotes" value="${order.orderNotes}"></textarea>
+            <br>
+            <label><b>Cost</b></label>
+            <input id="orderCost" name="orderCost" type="text" class="input-medium" value="${order.orderCost}"></input>
+            <br>
+            <label><b>Entry Date</b></label>
+            <input id="entryDate" name="entryDate" type="text" class="input-medium" value="${order.entryDate}"></input disabled>
+            <br>
+            <label><b>Completion Date</b></label>
+            <input id="completionDate" name="completionDate" type="text" class="input-medium" value="${order.completionDate}"></input disabled>
             <br>
             <label><b>Status</b></label>
-            <select id="status" name="status">
-			  <option tal:repeat="row progress" value="${order.progressDescription}" name="progressDescription">${order.progressDescription}</option>
+            <select id="progressDescription" name="progressDescription">
+			  <option tal:repeat="row progress" value="${row.progressDescription}" name="progressDescription">${order.progressDescription}</option>
             </select>
             <br>
             <br>
             <button type="submit" id="btnUpdate" name="btnUpdate" class="btn btn-primary">Update Order</button>
           </form>
+        </div>
       </div>
     
       <div class="span4">
@@ -176,35 +233,46 @@
       </div>
     </div>
   
-	<!-- ORDER LIST (bottom of page)-->
+  
+	<!-- ORDER LIST (bottom of page) -->
     <div class="container-fluid">
       <div class="well">
 		<br>
 		<h2>Orders List</h2>
-        <table class="table table-striped">
-        <tr>
-          <th>ID</th>
-            <th>Customer</th>
-            <th>Model Name</th>
-            <th>Notes</th>
-            <th>Cost</th>
-            <th>Entry Date</th>
-            <th>Progress</th>
-            <th>Completion Date</th>
-          </tr>
-        <tr tal:repeat="row orders">
-          <td>${row.orderID}</td>
-          <td>${row.custID}</td>
-          <td>${row.modelName}</td>
-          <td>${row.orderNotes}</td>
-          <td>${row.orderCost}</td>
-          <td>${row.entryDate}</td>
-          <td>${row.progressDescription}</td>
-          <td>${row.completionDate}</td>
-        </tr>
-        </table>
-        </div>
-    </div>
+		<div tal:condition="orders" class="container-fluid">
+		  <ul class="nav nav-pills">
+		    <li>
+			  <b><a class="span1">Order ID</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Model Name</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Notes</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Cost</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Progress</a> </b>
+		    </li>
+		  </ul>
+		  <hr>
+			<form type="GET" action="${request.route_url('order')}" tal:repeat="row orders" id="form${row.orderID}">
+			  <!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
+				  Probably not the smoothest way to handle this, but it works gosh darn it!-->
+			  <span class="span1">${row.orderID}<input type="hidden" value="${row.orderID}" name="orderID"> </span>
+			  <span class="span2">${row.modelName}</span>
+			  <span class="span2">${row.orderNotes}</span>
+			  <span class="span2">${row.orderCost}</span>
+			  <span class="span2">${row.progressDescription}</span>
+			  <button class="btn btn-info" type="submit">Edit</button> 
+			  <button class="btn btn-danger" id="deleteOrder" name="${row.orderID}">Delete</button> <br>
+			</form>
+		  </hr>
+		</div>
+	  </div>
+	</div>
     
   </body>
 </html>
