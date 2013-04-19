@@ -173,7 +173,7 @@ class PartsByOrder(Base):
     __tablename__ = 'tblPartsByOrder'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    id = Column(Integer, primary_key=True)
+    partID = Column(Integer, primary_key=True)
     partName = Column(String(10), ForeignKey(Parts.partName))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
@@ -185,7 +185,7 @@ class ServicesByOrder(Base):
     __tablename__ = 'tblServicesByOrder'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    id = Column(Integer, primary_key=True)
+    serviceID = Column(Integer, primary_key=True)
     serviceName = Column(String(10), ForeignKey(Services.serviceName))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
