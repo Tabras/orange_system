@@ -75,7 +75,7 @@
             <br>
             <label><b>Status</b></label>
             <select id="status" name="status">
-			  <option tal:repeat="progress descriptions" value="${progress.progressDescription}" name="progressDescription">${progress.progressDescription}</option>
+			  <option tal:repeat="row progress" name="progressDescription">${row.progressDescription}</option>
             </select>
             <br>
             <br>
