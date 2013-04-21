@@ -27,6 +27,8 @@ def main(global_config, **settings):
     config.add_route('deleteCust', '/Customers/delete')
     config.add_route('order','/Orders')
     config.add_route('addOrder','/Orders/addOrder')
+    config.add_route('updateOrder','/Orders/updateOrder')
+    config.add_route('deleteOrder','/Orders/deleteOrder')
     config.add_route('service','/Services')
     config.add_route('part','/Parts')
     config.add_route('report','/Reports')
