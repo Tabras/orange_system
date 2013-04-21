@@ -27,7 +27,7 @@
 		  var orderNotes = $("textarea#addnotes").val();
 		  var progressDescription = $("select#addstatus").val();
 		  var entryDate = new Date();
-		  
+		  alert("in handler");
 		  // now we will create an AJAX call to post to addOrder_view
 		  $.post("${request.route_url('addOrder')}",
            {"custID": custID,
@@ -37,6 +37,7 @@
             "progressDescription": progressDescription
            }).success(function(){
 		  // if the post was successful we will now allow the user to add services and parts
+		  
 		  toggleControl('model', true);
 		  toggleControl('notes', true);
 		  toggleControl('progress', true);
@@ -54,7 +55,7 @@
           var entryDate = $("input#entryDate").val();
           var completionDate = $("input#completionDate").val();
 		  var progressDescription = $("select#progressDescription").val();
-		      
+		  alert($("#progressDescription").val());
           $.post("${request.route_url('updateOrder')}",
           { "orderID": orderID,
 			"custID": custID,
@@ -155,7 +156,7 @@
             <br>
             <label><b>Notes</b></label>
             <textarea id="addnotes" name="addnotes" placeholder="Enter notes here" required></textarea>
-            <br>
+            <br>	
             <label><b>Status</b></label>
             <select id="status" name="status">
 			  <option tal:repeat="row progress" name="progressDescription">${row.progressDescription}</option>

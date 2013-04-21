@@ -201,17 +201,18 @@ def order_view(request):
 	
 @view_config(route_name='addOrder', request_method="POST", renderer='json')
 def addOrder_view(request):
-    order = Orders(
-    request.POST['custID'],
-    request.POST['modelName'],
-    request.POST['orderNotes'],
-    "0.00", # This is a placeholder for orderCost since there is no cost yet
-    request.POST['entryDate'],
-    " ", # This is a placeholder for completionDate since theres no data yet
-    request.POST['progressDescription'])
+	print request.POST
+	order = Orders(
+	request.POST['custID'],
+	request.POST['modelName'],
+	request.POST['orderNotes'],
+	"0.00", # This is a placeholder for orderCost since there is no cost yet
+	request.POST['entryDate'],
+	" ", # This is a placeholder for completionDate since theres no data yet
+	request.POST['progressDescription'])
  
-    DBSession.add(order)
-    return {}
+	DBSession.add(order)
+	return {}
     
 @view_config(route_name='updateOrder', request_method='POST', renderer='json')
 def updateOrder_view(request):
