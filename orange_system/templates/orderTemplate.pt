@@ -64,9 +64,7 @@
 			"orderCost": orderCost,
 			"entryDate": entryDate,
 			"completionDate": completionDate,
-			"progressDescription": progressDescription }
-			).success(function(){
-				alert("Customer information saved!");
+			"progressDescription": progressDescription }).success(function(){alert("Order information saved!");
 		  });
 		  return false;
 	    });
@@ -191,7 +189,7 @@
             <br>
             <label><b>Status</b></label>
             <select id="progressDescription" name="progressDescription">
-			  <option tal:repeat="row progress" value="${row.progressDescription}" name="progressDescription">${order.progressDescription}</option>
+			  <option tal:repeat="row progress" value="${row.progressDescription}" name="progressDescription">${row.progressDescription}</option>
             </select>
             <br>
             <br>
