@@ -174,6 +174,7 @@ def order_view(request):
 	
 	# initializing necessary values before declaring them
 	order = None
+	customer = None
 	orderServicesList = None
 	orderServicesFull = None
 	orderPartsList = None
@@ -205,6 +206,9 @@ def order_view(request):
 		"WHERE po.orderID = " + request.GET['orderID']).fetchall()
 		orderPartsFull = [row for row in orderPartsList]
 		
+		# this bit of code uses the custID referenced from the order object made earlier to find the customer name for display
+		customer = DBSession.query(Customers).filter(Customers.customerID == order.custID).first()
+		
 		# now we are going to fill a dictionary so we can find the service total
 		for i in range(len(orderServicesList)):
 			serviceTotal['servicesTotal'] += float(orderServicesList[i].serviceCost)
@@ -228,6 +232,7 @@ def order_view(request):
 	'serviceTotal': serviceTotal,
 	'partTotal': partTotal,
 	'orderTotal': orderTotal,
+	'customer': customer,
 	}
 	
 @view_config(route_name='addOrder', request_method="POST", renderer='json')
@@ -296,6 +301,15 @@ def updateOrderParts_view(request):
 	partToOrder = PartsByOrder(part['partID'], request.POST['orderID'])
 	
 	DBSession.add(partToOrder)
+	return{}
+	
+@view_config(route_name='deleteOrderParts', request_method='POST', renderer='json')
+def deleteOrderParts_view(request):
+	print "<---ORDER PART DELETE DEBUG--->"
+	print request.POST['formData[0][value]']
+	
+	partID = request.POST['formData[0][value]']
+	DBSession.query(Parts).filter(Parts.partID == partID).delete()
 	return{}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')

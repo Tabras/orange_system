@@ -84,23 +84,34 @@
 	  });
     </script>
     
-    <!-- this bit of code controls the DELETE for orders -->
+    <!-- this bit of code controls the DELETE for orders its parts-->
     <script>
         $(document).ready(function(){
-			
           $("form > button").each(function(){
+			  
             if ($(this).attr('id') == 'deleteOrder') {
               $(this).click(function()
               {
                 var formData = $("#form"+$(this).attr('name')).serializeArray();
                 if(confirm('Are you sure you want to delete this Order?')){
-				  alert("delete called");
+				  alert("order delete called");
                   $.post("${request.route_url('deleteOrder')}",{ "formData": formData }).success(function(){alert("Deleted Order")});
                 };
               });
+              return false;
             }
+            
+            if ($(this).attr('id') == 'deletePart') {
+              $(this).click(function()
+              {
+                var formData = $("#form"+$(this).attr('name')).serializeArray();
+				alert("order delete called");
+                $.post("${request.route_url('deleteOrderParts')}",{"formData": formData});
+              });
+              return false;
+            }
+            
           });
-          
         }); 
      </script>
   </head>
@@ -175,14 +186,18 @@
           <form method="POST" id="updateOrderForm" name="updateOrder" action="${request.route_url('order')}" tal:condition="order">
 		    <input id="orderID" name="orderID" type="hidden" class="input-medium" value="${order.orderID}" disabled>
 		    <input id="custID" name="custID" type="hidden" class="input-medium" value="${order.custID}" disabled>
+            
+            <label><b>Customer</b></label>
+            <label id="custFirstName">${customer.firstName} ${customer.lastName}</label>
+            <br>
             <label><b>Model</b></label>
-            <input id="modelName" name="modelName" type="text" class="input-medium" value="${order.modelName}">
+            <input id="modelName" name="modelName" type="text" class="input-large" value="${order.modelName}">
             <br>
             <label><b>Entry Date</b></label>
-            <input id="entryDate" name="entryDate" type="text" class="input-medium" value="${order.entryDate}"></input disabled>
+            <input id="entryDate" name="entryDate" type="text" class="input-large" value="${order.entryDate}"></input disabled>
             <br>
             <label><b>Completion Date</b></label>
-            <input id="completionDate" name="completionDate" type="text" class="input-medium" value="${order.completionDate}"></input disabled>
+            <input id="completionDate" name="completionDate" type="text" class="input-large" value="${order.completionDate}"></input disabled>
             <br>
             <label><b>Notes</b></label>
             <textarea id="orderNotes" name="orderNotes">${order.orderNotes}</textarea>
