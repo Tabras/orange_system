@@ -165,7 +165,7 @@
 			  <span class="span2">${row.partName}</span>
 			  <span class="span2">${row.partCost}</span>
 			  <button class="btn btn-info" type="submit">Edit</button> 
-			  <button class="btn btn-danger" id="deleteService" name="${row.partID}">Delete</button> <br>
+			  <button class="btn btn-danger" id="deletePart" name="${row.partID}">Delete</button> <br>
 			</form>
 		  </hr>
 		</div>

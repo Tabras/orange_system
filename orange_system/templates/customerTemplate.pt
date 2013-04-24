@@ -58,9 +58,8 @@
                 toggleControl('addPhone', false);
                 alert("Customer added successfuly!");
               });
-               return false;
-               
-               });
+              return false;
+            });
 
             // Add a new email to the customer with a jQuery POST
             $("#addEmail").click(function(){
@@ -108,8 +107,8 @@
                  "customerID": custid }
                  ).success(function (){
 					 alert("Email Added Successfuly!");
-				 });
-            });
+			   });
+             });
             
             $("form#updateCustomerForm").submit(function(){
 			  var customerID = $("input#customerID").val();
@@ -118,9 +117,9 @@
               var address = $("input#address").val();
               var city = $("input#city").val();
               var stateCode = $("select#state").val();
-	      var zipCode = $("input#zipcode").val();
-	      var existingPhoneInfo = $("#existingPhoneInfo :input[value]").serializeArray();
-	      var existingEmailInfo = $("#existingEmailInfo :input[value]").serializeArray();
+			  var zipCode = $("input#zipcode").val();
+			  var existingPhoneInfo = $("#existingPhoneInfo :input[value]").serializeArray();
+			  var existingEmailInfo = $("#existingEmailInfo :input[value]").serializeArray();
               var phoneLen = existingPhoneInfo.length;
               var emailLen = existingEmailInfo.length;
 		      
@@ -138,10 +137,9 @@
                 "phoneLength": phoneLen }
                 ).success(function(){
 					alert("Customer information saved!");
-				});
-				return false;
+			  });
+			  return false;
 			});
-				
 		});  
 
     </script>

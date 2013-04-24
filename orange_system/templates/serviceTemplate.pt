@@ -13,7 +13,6 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     
     <script>
-	  
 	  $(function(){
 		
 		$("form#addServiceForm").submit(function(){
@@ -24,11 +23,7 @@
 		  // now we will create an AJAX call to post to addService_view
 		  $.post("${request.route_url('addService')}",
           {"serviceName": serviceName,
-            "serviceCost": serviceCost
-          }).success(function(){
-		  // if the post was successful we let the user know
-		    alert("Order added successfully!");
-	      });
+            "serviceCost": serviceCost})
 		});
 		
 		$("form#updateServiceForm").submit(function(){
@@ -40,36 +35,39 @@
           $.post("${request.route_url('updateService')}",
           {"serviceID": serviceID, 
           "serviceName": serviceName, 
-          "serviceCost": serviceCost
-		  }).success(function(){
-		    alert("Order information saved!");
-		  });
+          "serviceCost": serviceCost})
 	    });
 	  });
     </script>
     
-    <!-- this bit of code controls the DELETE for orders -->
+    <!-- This is the delete call for the services -->
     <script>
         $(document).ready(function(){
+			
+          $("#q").blur(function(){
+             $('#myForm').submit();
+           });
+           
           $("form > button").each(function(){
               if ($(this).attr('id') == 'deleteService') {
               $(this).click(function()
               {
                 var formData = $("#form"+$(this).attr('name')).serializeArray();
-                if(confirm('Are you sure you want to delete this Service?')){
+                if(confirm('Are you sure you want to delete this service?')){
                 $.post("${request.route_url('deleteService')}",
                 { "formData": formData }
                 ).success(function() {
                  alert("Deleted Service");
                 });
                 }
-                return false;
+                return true;
               });
             }
           });
         }); 
          
      </script>
+    
     
   </head>
   

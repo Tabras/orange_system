@@ -168,8 +168,8 @@ class PartsByOrder(Base):
     partID = Column(String(10), ForeignKey(Parts.partID))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
-    def __init__(self,  partName, orderID):
-	self.partName = partName
+    def __init__(self,  partID, orderID):
+	self.partID = partID
 	self.orderID = orderID
 
 class ServicesByOrder(Base):
@@ -180,8 +180,8 @@ class ServicesByOrder(Base):
     serviceID = Column(String(10), ForeignKey(Services.serviceID))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
-    def __init__(self, serviceName, orderID):
+    def __init__(self, serviceID, orderID):
         
-	self.serviceName = serviceName
+	self.serviceID = serviceID
 	self.orderID = orderID
 

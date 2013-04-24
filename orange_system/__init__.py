@@ -29,6 +29,8 @@ def main(global_config, **settings):
     config.add_route('addOrder','/Orders/addOrder')
     config.add_route('updateOrder','/Orders/updateOrder')
     config.add_route('deleteOrder','/Orders/deleteOrder')
+    config.add_route('updateOrderServices','Orders/updateOrderServices')
+    config.add_route('updateOrderParts','Orders/updateOrderParts')
     config.add_route('service','/Services')
     config.add_route('addService','/Services/addService')
     config.add_route('updateService','/Services/updateService')
