@@ -278,6 +278,9 @@ def deleteOrder_view(request):
 	print request.POST['formData[0][value]']
 	
 	orderID = request.POST['formData[0][value]']
+	#before we delete the order we ensure that both linking tables hold no data for that order
+	DBSession.query(PartsByOrder).filter(PartsByOrder.orderID == orderID).delete()
+	DBSession.query(ServicesByOrder).filter(ServicesByOrder.orderID == orderID).delete()
 	DBSession.query(Orders).filter(Orders.orderID == orderID).delete()
 	return {}
 	
@@ -428,6 +431,35 @@ def report_view(request):
 def checkout_view(request):
 	orderCheckout = DBSession.query(Orders).filter(Orders.progressDescription == "Completed").all()
 	return {'project': 'orange_system', 'orderCheckout': orderCheckout}
+	
+@view_config(route_name='checkoutAdd', renderer='json')
+def checkoutAdd_view(request):
+	orderID = None
+	orderCheckout = None
+	orderAdded = None
+	customerNum = None
+	orderCustomer = None
+	checkoutHtml = None
+	
+	orderID = request.POST['formData[0][value]']
+	
+	# this will grab the list of completed orders that are available to be paid for to be displayed in the list
+	#orderCheckout = DBSession.query(Orders).filter(Orders.progressDescription == "Completed").all()
+	
+	# here we are grabbing the specific order to start adding data to the checkout
+	orderAdded = DBSession.query(Orders).filter(Orders.orderID == orderID).first()
+	
+	# we will need a bit of customer data to display on the checkout page so we will find the customer associated with this order
+	customerNum = DBSession.query(Customers).filter(Customers.customerID == orderAdded.custID).first()
+	
+	# now that we have the customerID we can grab the customer information such as name or address
+	orderCustomer = DBSession.query(Customers).filter(Customers.customerID == customerNum.customerID).first()
+	
+	checkoutHtml = "<b>${orderCustomer.firstName}</b>"
+	
+	print "<---CHECKOUT DEBUG--->"
+	print checkoutHtml
+	return {'checkoutHtml': checkoutHtml}
     
 @view_config(route_name='todo', renderer='templates/todoTemplate.pt')
 def todo_view(request):
