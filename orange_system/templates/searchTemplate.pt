@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
+
     <script src="${request.static_url('orange_system:static/js/jquery-1.9.1.min.js')}"></script>
+
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
      <script>
         $(document).ready(function(){
@@ -108,7 +110,7 @@
 			</li>
 		  </ul>
 		  <hr>
-		  <form type="GET" action="${request.route_url('customer')}" tal:repeat="row result" id="form${row['customerID']}">
+		  <form method="GET" action="${request.route_url('customer')}" tal:repeat="row result" id="form${row['customerID']}">
 		    <!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
 				Probably not the smoothest way to handle this, but it works gosh darn it!-->
 			<span class="span1">${row['customerID']}<input type="hidden" value="${row['customerID']}" name="customerID"> </span>
@@ -117,9 +119,9 @@
 		    <span><textarea class="span3" disabled>${row['emails']}</textarea></span>
 			<span><textarea class="span3" disabled>${row['Phone Number']}</textarea></span>
 			<button class="btn btn-info" type="submit">Edit</button> 
-            <button class="btn btn-danger" id="deleteCust" name="${row['customerID']}">Delete</button> <br>
+            <button class="btn btn-danger" type="button" id="deleteCust" name="${row['customerID']}">Delete</button> <br>
 		  </form>
-		  </hr>
+		  
         </div>
             
       </div>

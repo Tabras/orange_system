@@ -13,9 +13,7 @@
     <script src="${request.static_url('orange_system:static/js/jquery-1.9.1.min.js')}"></script>
     
     <script>
-	  function toggleControl(control, state){
-		document.getElementById(control).disabled = state;
-	  }
+	  
 	  
 	  $(function(){
 		
@@ -61,59 +59,52 @@
 		  alert("Order Updated");
 	    });
 	    
-	    $("form#addServiceForm").submit(function(){
+	    $("form#addServiceForm").submit(function(event){
+		  event.preventDefault();
 		  var orderID = $("input#orderID").val()
 		  var serviceName = $("select#serviceselect").val();
-		      
           $.post("${request.route_url('updateOrderServices')}",{"orderID": orderID,"serviceName": serviceName});
-		  return true;
+		  location.reload();
+		  return false;
 	    });
 	    
-	    $("form#addPartForm").submit(function(){
+	    $("form#addPartForm").submit(function(e){
+		  e.preventDefault();
 		  var orderID = $("input#orderID").val();
 		  var partName = $("select#partselect").val();
 		      
           $.post("${request.route_url('updateOrderParts')}",{ "orderID": orderID,"partName": partName});
-          return true;
+          location.reload();
 	    });
-	    
-	    
-	    
-	  });
-    </script>
-    
-    <!-- this bit of code controls the DELETE for orders its parts / services-->
-    <script>
-        $(document).ready(function(){
+	   
           $("form > button").each(function(){
 			  
             if ($(this).attr('id') == 'deleteOrder') {
               $(this).click(function()
               {
+				
                 var formData = $("#form"+$(this).attr('name')).serializeArray();
                 if(confirm('Are you sure you want to delete this Order?')){
 				  alert("order delete called");
-                  $.post("${request.route_url('deleteOrder')}",{"formData": formData}).success(function(){alert("Deleted Order")});
-                };
+                  $.post("${request.route_url('deleteOrder')}",{"formData": formData})
+                  .success(function(){alert("Deleted Order")});
+                }
+                location.reload();
               });
-              return false;
             }
             
             if ($(this).attr('id') == 'deletePart') {
               $(this).click(function()
               {
-                var partID = $("#form"+$(this).attr('name')).serializeArray();
-                alert("about to attempt to fill orderID");
-               
+				alert('form'+ $(this).attr('name'));
+                var partID = $("#form"+$(this).attr('name')).serializeArray();     
                 var orderID = document.getElementById("labelOrderID").innerHTML;
-                
-                alert("part delete called");
-                
-                $.post("${request.route_url('deleteOrderParts')}",{'partID': partID});
-                
-                alert("part delete passed");
+                          
+                $.post("${request.route_url('deleteOrderParts')}",{"partID": partID});
+
+                return false;
               });
-              return false;
+              
             }
             
           });
@@ -226,7 +217,7 @@
         <div class="span4">
           <div class="well">
             <label><h4>Services</h4></label>
-            <form id="addServiceForm" name="addServiceForm" action="${request.route_url('order')}">
+            <form type="POST" id="addServiceForm" name="addServiceForm" action="${request.route_url('order')}">
 			  <!-- a hidden input to hold the orderID for form submit -->
 			  <input id="orderID" name="orderID" type="hidden" class="input-small" value="${order.orderID}"></input>
               <select id="serviceselect" name="serviceselect">
@@ -272,10 +263,10 @@
 		        </li>
 		      </ul>
 		      <hr>
-			    <form type="GET" action="${request.route_url('order')}" tal:repeat="row orderPartsFull" id="form${row.partID}" name="${row.partID}">
+			    <form method="POST" action="${request.route_url('order')}" tal:repeat="row orderPartsFull" id="form${row.partID}">
 			      <!--This loop makes a form for each part and prints plain text for the ID, as well as a hidden input for the submit handler-->
-			      <span class="span1">${row.partName}</span>
-			      <span class="span1">${row.partCost}</span>
+			      <span class="span1"><input type="hidden" value="${row.partName}" name="partName">${row.partName}</span>
+			      <span class="span1"><input type="hidden" value="${row.partCost}" name="partCost">${row.partCost}</span>
 			      <button class="btn btn-danger" id="deletePart" name="${row.partID}">-</button> <br>
 			    </form>
 		      </hr>
@@ -332,7 +323,7 @@
 		    </li>
 		  </ul>
 		  <hr>
-			<form type="GET" action="${request.route_url('order')}" tal:repeat="row orders" id="form${row.orderID}">
+			<form method="GET" action="${request.route_url('order')}" tal:repeat="row orders" id="form${row.orderID}">
 			  <!--This loop makes a form for each order and prints plain text for the ID, as well as a hidden input for the submit handler-->
 			  <span class="span1">${row.orderID}<input type="hidden" value="${row.orderID}" name="orderID"> </span>
 			  <span class="span2">${row.modelName}</span>
@@ -340,9 +331,8 @@
 			  <span class="span2">${row.orderCost}</span>
 			  <span class="span2">${row.progressDescription}</span>
 			  <button class="btn btn-info" type="submit">Edit</button> 
-			  <button class="btn btn-danger" id="deleteOrder" name="${row.orderID}">Delete</button> <br>
+			  <button class="btn btn-danger" type="button" id="deleteOrder" name="${row.orderID}">Delete</button> <br>
 			</form>
-		  </hr>
 		</div>
 	  </div>
 	</div>
