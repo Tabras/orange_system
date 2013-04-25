@@ -55,88 +55,59 @@
     
     <div class="container-fluid">
       <div class="well">
-        <h2>To-Do List</h2>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>
-                Order #
-               </th>
-               <th>
-                 Customer #
-               </th>
-               <th>
-                 Parts on Order
-               </th>
-               <th>
-                 Services on Order
-               </th>
-               <th>
-                 Entry Date
-               </th>
-               <th>
-                 Notes
-               </th>
-               <th>
-                  Progress
-                 </th>
-               </tr>
-               </thead>
-             <tbody>
-                <tr tal:condition="priorityList" 
-                    tal:repeat="row priorityList"
-                    class="warning">
-                <td>
-                   ${row['orderID']}
-                </td>
-                <td>
-                   ${row['custID']}
-                </td>
-                <td>
-                   ${row['partsOnOrder']}
-                </td>
-                <td>
-                   ${row['servicesOnOrder']}
-                </td>
-                <td>
-                   ${row['entryDate']}
-                </td>
-                <td>
-                   ${row['orderNotes']}
-                </td>
-                <td>
-                   ${row['progressDescription']}
-                </td>
-                </tr>
-                <tr tal:condition="todoList" 
-                    tal:repeat="row todoList">
-                    <td>
-                     ${row['orderID']}
-                    </td>
-                    <td>
-                     ${row['custID']}
-                    </td>
-                    <td>
-                     ${row['partsOnOrder']}
-                    </td>
-                    <td>
-                     ${row['servicesOnOrder']}
-                    </td>
-                    <td>
-                     ${row['entryDate']}
-                    </td>
-                    <td>
-                     ${row['orderNotes']}
-                    </td>
-                    <td>
-                     ${row['progressDescription']}
-                    </td>
-                 </tr>
-              </tbody>
-                     
-             </table>
+        <h4>To-Do List</h4>
+        
+        <div class="container-fluid">
+          <ul class="nav nav-pills">
+			<li>
+				<b><a class="span1">Order #</a> </b>
+			</li>
+			<li>
+				<b><a class="span2">Customer #</a> </b>
+			</li>
+			<li>
+				<b><a class="span2">Parts on Order</a> </b>
+			</li>
+			<li>
+				<b><a class="span2">Services on Order</a> </b>
+			</li>
+			<li>
+				<b><a class="span2">Entry Date</a> </b>
+			</li>
+			<li>
+				<b><a class="span2">Progress</a> </b>
+			</li>
+		  </ul>
+		  <hr>
+		  
+		  <form type="GET" action="${request.route_url('order')}" tal:repeat="row priorityList" id="form${row['orderID']}">
+		    <!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
+				Probably not the smoothest way to handle this, but it works gosh darn it!-->
+			<span class="span1">${row['orderID']}<input type="hidden" value="${row['orderID']}" name="orderID"> </span>
+			<span class="span2">${row['custID']}</span>
+			<span class="span2">${row['partsOnOrder']}</span>
+			<span class="span2">${row['servicesOnOrder']}</span>
+			<span class="span2">${row['entryDate']}</span>
+			<span class="span2">${row['progressDescription']}</span>
+			<button class="btn btn-info" type="submit">View</button> 
+		  </form>
+		  
+		  <form type="GET" action="${request.route_url('order')}" tal:repeat="row todoList" id="form${row['orderID']}">
+		    <!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
+				Probably not the smoothest way to handle this, but it works gosh darn it!-->
+			<span class="span1">${row['orderID']}<input type="hidden" value="${row['orderID']}" name="orderID"> </span>
+			<span class="span2">${row['custID']}</span>
+			<span class="span2">${row['partsOnOrder']}</span>
+			<span class="span2">${row['servicesOnOrder']}</span>
+			<span class="span2">${row['entryDate']}</span>
+			<span class="span2">${row['progressDescription']}</span>
+			<button class="btn btn-info" type="submit">View</button> 
+		  </form>
+		  
+		  </hr>
         </div>
-        <div class="row-fluid"></div>
+        
+      </div>
     </div>
   </body>
 
