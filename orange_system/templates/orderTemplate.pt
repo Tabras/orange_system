@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="${request.static_url('orange_system:static/js/jquery-1.9.1.min.js')}"></script>
     
     <script>
 	  function toggleControl(control, state){

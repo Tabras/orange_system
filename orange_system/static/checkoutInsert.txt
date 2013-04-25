@@ -1,0 +1,77 @@
+<div class="container-fluid">
+  <div class="span6">
+    <div class="well">
+      <label><b>Order #:</b></label>
+      <label>${order.orderID}</label>
+      <br>
+      <br>
+      <label><b>Customer Name:</b></label>
+      <label>${customer.firstName} ${customer.lastName}</label>
+      <br>
+      <label><b>Computer Model:</b></label>
+      <label>${order.modelName}</label>
+      <br>
+      <br>
+      <table class="servicesTable">
+        <col width="300">
+        <col width="200">
+        <thead>
+          <tr>
+            <th>Services</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${orderServices.serviceName}</td>
+            <td>${orderServices.serviceCost}</td>
+          </tr>
+        </tbody>
+        </table>
+        <br>
+        <br>
+        <table class="partsTable">
+          <col width="300">
+          <col width="200">
+          <thead>
+            <tr>
+              <th>Parts</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${orderParts.partName}</td>
+              <td>${orderParts.partCost}</td>
+            </tr>
+          </tbody>
+          </table>
+          <br>
+          <br>
+          <table class="totalsTable">
+            <col width="300">
+            <col width="200">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td>Subtotal: ${order.orderCost}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Tax: ${taxTotal}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Total: ${checkoutTotal}</td>
+              </tr>
+            </tbody>
+            </table>
+    </div>
+  </div>
+</div>

@@ -443,7 +443,7 @@ def todo_view(request):
     "FROM tblOrders AS o "+\
     "LEFT JOIN tblPartsByOrder AS p ON o.orderID = p.orderID "+\
     "LEFT JOIN tblServicesByOrder AS s ON o.orderID = p.orderID "+\
-    "WHERE o.progressDescription != 'Finished' "+\
+    "WHERE o.progressDescription != 'Completed' "+\
     "GROUP BY o.orderID").fetchall()
     # We want to filter out the high priority orders so we can push them
     # to the top and give them some nice visuals.  Sounds like a perfect
