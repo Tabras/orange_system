@@ -22,13 +22,8 @@
 		  var partCost = $("input#partCost").val();
 		  
 		  // now we will create an AJAX call to post to addPart_view
-		  $.post("${request.route_url('addPart')}",
-          {"partName": partName,
-            "partCost": partCost
-          }).success(function(){
-		  // if the post was successful we let the user know
-		    alert("Part added successfully!");
-	      });
+		  $.post("${request.route_url('addPart')}",{"partName": partName,"partCost": partCost});
+		  return true;
 		});
 		
 		$("form#updatePartForm").submit(function(){
@@ -37,13 +32,8 @@
 		  var partCost = $("input#partCost").val();
 		      
 		  // just like above we will create an AJAX call to post the changes to updateService_view
-          $.post("${request.route_url('updatePart')}",
-          {"partID": partID, 
-          "partName": partName, 
-          "partCost": partCost
-		  }).success(function(){
-		    alert("Part information saved!");
-		  });
+          $.post("${request.route_url('updatePart')}",{"partID": partID,"partName": partName, "partCost": partCost});
+		  return true;
 	    });
 	  });
     </script>
@@ -56,7 +46,7 @@
               $(this).click(function()
               {
                 var formData = $("#form"+$(this).attr('name')).serializeArray();
-                if(confirm('Are you sure you want to delete this Part?')){
+                if(confirm('Are you sure you want to delete this Part? Deleting it will remove it from all current customer orders as well as this list!')){
                 $.post("${request.route_url('deletePart')}",
                 { "formData": formData }
                 ).success(function() {
@@ -99,6 +89,9 @@
               </li>
               <li>
                 <a href="${request.route_url('report')}">Reports</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('checkout')}">Checkout</a> 
               </li>
               <li>
                 <a href="${request.route_url('todo')}">To-Do</a> 
