@@ -41,6 +41,9 @@
               <li>
                 <a href="${request.route_url('report')}">Reports</a> 
               </li>
+              <li>
+                <a href="${request.route_url('checkout')}">Checkout</a> 
+              </li>
               <li class="active">
                 <a href="${request.route_url('todo')}">To-Do #!</a> 
               </li>

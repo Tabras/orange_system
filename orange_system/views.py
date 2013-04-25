@@ -148,33 +148,10 @@ def updateCust_view(request):
 	city = request.POST['city']
 	stateCode = request.POST['stateCode']
 	zipCode = request.POST['zipCode']
-	customer = DBSession.query(Customers).filter(Customers.customerID == custID).first()
-	customer.firstName = firstName
-	customer.lastName = lastName
-	customer.address = address
-	customer.city = city
-	customer.stateCode = stateCode
-	customer.zipCode = zipCode
-	DBSession.add(customer)
         
-	for i in range(0, int(request.POST['emailLength'])):
-		name  = request.POST['emailInfo['+str(i)+'][name]']
-		value = request.POST['emailInfo['+str(i)+'][value]']
-		
-		if 'emailID' in name:
-			print name
-			email = DBSession.query(Email).filter(Email.emailID == value).first()
-			print email
-		elif 'emailtype' in name:
-			print 'emailtype'+ value
-			email.emailType = value
-		else:
-			print 'email:' + value
-			email.emailAddress = value
-		
-		print email.emailAddress
-		print email.emailType
-			
+        for i in range(0, int(request.POST['emailLength'])):
+            print request.POST['emailInfo['+str(i)+'][name]']
+            print request.POST['emailInfo['+str(i)+'][value]']
 	return {}
     
 @view_config(route_name='deleteCust', request_method="POST", renderer='json')
@@ -268,25 +245,20 @@ def order_view(request):
 	
 @view_config(route_name='addOrder', request_method="POST", renderer='json')
 def addOrder_view(request):
-	print("<---DEBUG--->")
-	print request.POST
-	order = Orders(
-	request.POST['custID'],
-	request.POST['modelName'],
-	request.POST['orderNotes'],
-	"0.00", # This is a placeholder for orderCost since there is no cost yet
-	request.POST['entryDate'],
-	" ", # This is a placeholder for completionDate since theres no data yet
-	request.POST['progressDescription'])
+    order = Orders(
+    request.POST['custID'],
+    request.POST['modelName'],
+    request.POST['orderNotes'],
+    "0.00", # This is a placeholder for orderCost since there is no cost yet
+    request.POST['entryDate'],
+    " ", # This is a placeholder for completionDate since theres no data yet
+    request.POST['progressDescription'])
  
-	DBSession.add(order)
-	return {}
+    DBSession.add(order)
+    return {}
     
 @view_config(route_name='updateOrder', request_method='POST', renderer='json')
 def updateOrder_view(request):
-
-	print("<---REQUEST--->")
-	print request.POST
 	order = DBSession.query(Orders).filter(Orders.orderID == request.POST['orderID']).first()
 	order.orderID = request.POST['orderID']
 	order.custID = request.POST['custID']
@@ -297,7 +269,7 @@ def updateOrder_view(request):
 	order.progressDescription = request.POST['progressDescription']
 	print "DEBUGGER!"
 	DBSession.add(order)
-	return {}
+	return{}
 	
     
 @view_config(route_name='deleteOrder', request_method='POST', renderer='json')

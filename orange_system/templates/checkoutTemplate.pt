@@ -54,7 +54,7 @@
     </div>
     <div class="container-fluid">
 	  <div class="well">
-	    <h3>Checkout</h3>
+	    <h4>Checkout</h4>
 	    <form>
 		  Model: bla bla bla
 		  <br>

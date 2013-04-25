@@ -26,24 +26,19 @@
 		  var orderNotes = $("textarea#addnotes").val();
 		  var progressDescription = $("select#addstatus").val();
 		  var entryDate = new Date();
-		  alert("in handler");
+		  
 		  // now we will create an AJAX call to post to addOrder_view
 		  $.post("${request.route_url('addOrder')}",
            {"custID": custID,
             "modelName": modelName,
             "orderNotes": orderNotes,
             "entryDate": entryDate,
-            "progressDescription": progressDescription
-           }).success(function(){
-		  // if the post was successful we will now allow the user to add services and parts
-		  
-		  toggleControl('model', true);
-		  toggleControl('notes', true);
-		  toggleControl('progress', true);
+            "progressDescription": progressDescription});
+          return true;
 		  alert("Order added successfully!");
 		});
 		
-		$("form#updateOrder").submit(function(){
+		$("form#updateOrderForm").submit(function(){
 		  var orderID = $("input#orderID").val();
 		  var custID = $("input#custID").val();
 		  var modelName = $("input#modelName").val();
@@ -52,7 +47,7 @@
           var entryDate = $("input#entryDate").val();
           var completionDate = $("input#completionDate").val();
 		  var progressDescription = $("select#progressDescription").val();
-		  alert("in update");
+		      
           $.post("${request.route_url('updateOrder')}",
           { "orderID": orderID,
 			"custID": custID,
@@ -62,7 +57,7 @@
 			"entryDate": entryDate,
 			"completionDate": completionDate,
 			"progressDescription": progressDescription});
-			
+		  return true;
 		  alert("Order Updated");
 	    });
 	    
@@ -109,7 +104,7 @@
               {
                 var partID = $("#form"+$(this).attr('name')).serializeArray();
                 alert("about to attempt to fill orderID");
-                
+               
                 var orderID = document.getElementById("labelOrderID").innerHTML;
                 
                 alert("part delete called");
@@ -168,7 +163,7 @@
     <div class="container-fluid">
       <div class="span3">
         <div class="well">
-		  <h2>Order Details</h2>
+		  <h4>Order Details</h4>
 		  <br>
 		  
 		  <!-- Keep in mind only one of these forms (Add / Update) will be visible at a time.
@@ -184,13 +179,12 @@
             <input id="addmodel" name="addmodel" type="text" class="input-medium" placeholder="Model Name" required></input>
             <br>
             <label><b>Notes</b></label>
-            <textarea id="addnotes" name="addnotes" placeholder="Enter notes here" required></textarea>
-            <br>	
-
+            <textarea id="addnotes" name="addnotes" placeholder="Enter notes here"></textarea>
+            <br>
             <label><b>Status</b></label>
-            <select id="status" name="status">
-			  <option tal:repeat="row progress" name="progressDescription">${row.progressDescription}</option>
-                        </select>
+            <select id="addstatus" name="addstatus" required>
+			  <option tal:repeat="row progress" value="${row.progressDescription}" name="progressDescription">${row.progressDescription}</option>
+            </select>
             <br>
             <br>
             <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary">Add Order</button>
@@ -318,7 +312,7 @@
 	<!-- ORDER LIST (bottom of page) -->
     <div class="container-fluid">
       <div class="well">
-		<h2>Orders List</h2>
+		<h4>Orders List</h4>
 		<div tal:condition="orders" class="container-fluid">
 		  <ul class="nav nav-pills">
 		    <li>
