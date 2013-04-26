@@ -201,6 +201,7 @@ def order_view(request):
 	
 @view_config(route_name='addOrder', request_method="POST", renderer='json')
 def addOrder_view(request):
+	print("<---DEBUG--->")
 	print request.POST
 	order = Orders(
 	request.POST['custID'],
@@ -217,7 +218,7 @@ def addOrder_view(request):
 @view_config(route_name='updateOrder', request_method='POST', renderer='json')
 def updateOrder_view(request):
 	print("<---REQUEST--->")
-	print(request)
+	print request.POST
 	order = DBSession.query(Orders).filter(Orders.orderID == request.POST['orderID']).first()
 	order.orderID = request.POST['orderID']
 	order.custID = request.POST['custID']
@@ -229,7 +230,7 @@ def updateOrder_view(request):
 	order.progressDescription = request.POST['progressDescription']
 	
 	DBSession.add(order)
-	return{}
+	return {}
 	
     
 @view_config(route_name='deleteOrder', request_method='POST', renderer='json')

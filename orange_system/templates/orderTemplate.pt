@@ -46,7 +46,7 @@
 	      return false;
 		});
 		
-		$("form#updateOrderForm").submit(function(){
+		$("form#updateOrder").submit(function(){
 		  var orderID = $("input#orderID").val();
 		  var custID = $("input#custID").val();
 		  var modelName = $("input#modelName").val();
@@ -55,7 +55,7 @@
           var entryDate = $("input#entryDate").val();
           var completionDate = $("input#completionDate").val();
 		  var progressDescription = $("select#progressDescription").val();
-		  alert($("#progressDescription").val());
+		  alert("in update");
           $.post("${request.route_url('updateOrder')}",
           { "orderID": orderID,
 			"custID": custID,

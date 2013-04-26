@@ -58,8 +58,8 @@ class Parts(Base):
     partCost = Column(String(5))
 
     def __init__(self, partName, partCost):
-	self.partName = partName
-	self.partCost = partCost
+		self.partName = partName
+		self.partCost = partCost
 
 class Services(Base):
     __tablename__ = 'tblServices'
@@ -70,8 +70,8 @@ class Services(Base):
     serviceCost = Column(String(5))
 
     def __init__(self, serviceName, serviceCost):
-	self.serviceName = serviceName
-	self.serviceCost = serviceCost
+		self.serviceName = serviceName
+		self.serviceCost = serviceCost
 	
 class EmailType(Base):
     __tablename__ = 'tblEmailType'
@@ -81,7 +81,7 @@ class EmailType(Base):
     emailType = Column(String(20), unique=True)
 
     def __init__(self, emailType):
-	self.emailType = emailType
+		self.emailType = emailType
 
 class PhoneType(Base):
     __tablename__= 'tblPhoneType'
@@ -104,19 +104,20 @@ class Customers(Base):
     city      = Column(String(15), unique=False)
     stateCode = Column(String(2), ForeignKey(States.stateCode), unique=False)
     zipCode   = Column(String(9), unique=False)
-    def __init__(self, firstName, lastName, address, city, stateCode, zipCode):
+    def __init__(self,firstName, lastName, address, city, stateCode, zipCode):
         self.firstName = firstName
-	self.lastName  = lastName
+        self.lastName  = lastName
         self.address   = address
-	self.city      = city
-	self.stateCode = stateCode
-	self.zipCode   = zipCode
+        self.city      = city
+        self.stateCode = stateCode
+        self.zipCode   = zipCode
 
 class Orders(Base):
     __tablename__ = 'tblOrders'
     __tableargs__ = ({
     'sqlite_autoincrement': True})
     orderID = Column(Integer, primary_key=True, unique=True)
+    oldOrderID = Column(Integer)
     custID  = Column(Integer(10), ForeignKey(Customers.customerID))
     modelName = Column(String(25))
     orderNotes = Column(String(200))
@@ -126,13 +127,13 @@ class Orders(Base):
     progressDescription = Column(String(10), ForeignKey(Progress.progressDescription))
 
     def __init__(self, custID, modelName, orderNotes, orderCost, entryDate, completionDate, progressDescription):
-	self.custID = custID
-	self.modelName = modelName
-	self.orderNotes = orderNotes
-	self.orderCost = orderCost
-	self.entryDate = entryDate
-	self.completionDate = completionDate
-	self.progressDescription = progressDescription
+		self.custID = custID
+		self.modelName = modelName
+		self.orderNotes = orderNotes
+		self.orderCost = orderCost
+		self.entryDate = entryDate
+		self.completionDate = completionDate
+		self.progressDescription = progressDescription
 
 
 
@@ -142,14 +143,14 @@ class Email(Base):
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
     emailID = Column(Integer, primary_key=True)
-    custID = Column(String(10), ForeignKey(Customers.customerID))
+    custID = Column(Integer, ForeignKey(Customers.customerID))
     emailAddress = Column(String(254), unique=True)
     emailType = Column(String(20), ForeignKey(EmailType.emailType))
 
     def __init__(self, custID, emailAddress, emailType):
-        self.custID = custID
-	self.emailAddress = emailAddress
-	self.emailType = emailType
+		self.custID = custID
+		self.emailAddress = emailAddress
+		self.emailType = emailType
 
 class Phone(Base):
     __tablename__ = 'tblPhone'
@@ -160,10 +161,10 @@ class Phone(Base):
     phoneNumber = Column(String(10))
     phoneType = Column(String(10), ForeignKey(PhoneType.phoneType))
 
-    def __init__(self, custID, phoneNumber, phoneType):
-	self.custID = custID
-	self.phoneNumber = phoneNumber
-	self.phoneType = phoneType
+    def __init__(self,custID, phoneNumber, phoneType):
+		self.custID = custID
+		self.phoneNumber = phoneNumber
+		self.phoneType = phoneType
 
 
 
@@ -177,9 +178,9 @@ class PartsByOrder(Base):
     partName = Column(String(10), ForeignKey(Parts.partName))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
-    def __init__(self,  partName, orderID):
-	self.partName = partName
-	self.orderID = orderID
+    def __init__(self, partName, orderID):
+		self.partName = partName
+		self.orderID = orderID
 
 class ServicesByOrder(Base):
     __tablename__ = 'tblServicesByOrder'
@@ -189,8 +190,7 @@ class ServicesByOrder(Base):
     serviceName = Column(String(10), ForeignKey(Services.serviceName))
     orderID = Column(String(10), ForeignKey(Orders.orderID))
 
-    def __init__(self, serviceName, orderID):
-        
-	self.serviceName = serviceName
-	self.orderID = orderID
+    def __init__(self, serviceName, orderID):   
+		self.serviceName = serviceName
+		self.orderID = orderID
 

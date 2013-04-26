@@ -77,10 +77,8 @@
                {"phoneNumber": phone, "phoneType": phonetype})
                .success(function() {
                   alert("Phone number added successfuly!");
-                })
-               .fail(function() {
-                  alert("Phone number could not be added.");
                 });
+                
              });
             
             $("#addNewPhone").click(function(){
@@ -95,6 +93,7 @@
    
                alert("Phone number added successfuly!");
                });
+               return false;
                });
              
             $("#addNewEmail").click(function(){
@@ -109,6 +108,7 @@
                  ).success(function (){
 					 alert("Email Added Successfuly!");
 				 });
+				 return false;
             });
             
             $("form#updateCustomerForm").submit(function(){
