@@ -42,5 +42,6 @@ def main(global_config, **settings):
     config.add_route('deletePart','/Parts/deletePart')
     config.add_route('report','/Reports')
     config.add_route('todo','/ToDo')
+    config.add_route('checkout','/Checkout')
     config.scan()
     return config.make_wsgi_app()

@@ -21,9 +21,8 @@
 		  var serviceCost = $("input#serviceCost").val();
 		  
 		  // now we will create an AJAX call to post to addService_view
-		  $.post("${request.route_url('addService')}",
-          {"serviceName": serviceName,
-            "serviceCost": serviceCost})
+		  $.post("${request.route_url('addService')}",{"serviceName": serviceName, "serviceCost": serviceCost});
+          return true;
 		});
 		
 		$("form#updateServiceForm").submit(function(){
@@ -32,10 +31,8 @@
 		  var serviceCost = $("input#serviceCost").val();
 		      
 		  // just like above we will create an AJAX call to post the changes to updateService_view
-          $.post("${request.route_url('updateService')}",
-          {"serviceID": serviceID, 
-          "serviceName": serviceName, 
-          "serviceCost": serviceCost})
+          $.post("${request.route_url('updateService')}",{"serviceID": serviceID, "serviceName": serviceName, "serviceCost": serviceCost});
+          return true;
 	    });
 	  });
     </script>
@@ -48,7 +45,7 @@
               $(this).click(function()
               {
                 var formData = $("#form"+$(this).attr('name')).serializeArray();
-                if(confirm('Are you sure you want to delete this service?')){
+                if(confirm('Are you sure you want to delete this service? Removing it will delete it from all current customer orders as well as this list!')){
                   $.post("${request.route_url('deleteService')}",{"formData": formData}).success(function(){alert("Deleted Service");
                 });
               }
@@ -89,6 +86,9 @@
               </li>
               <li>
                 <a href="${request.route_url('report')}">Reports</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('checkout')}">Checkout</a> 
               </li>
               <li>
                 <a href="${request.route_url('todo')}">To-Do</a> 

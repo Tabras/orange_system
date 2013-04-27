@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title>MainPage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    
+    <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
+    <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
+    
+    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
+    <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    
+  </head>
+  
+  <body>
+    <div class="navbar-inverse navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="navbar-content">
+            <ul class="nav">
+              <li>
+                <a href="${request.route_url('home')}">Home</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('search')}">Search</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('customer')}">Customers</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('order')}">Orders</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('service')}">Services</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('part')}">Parts</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('report')}">Reports</a> 
+              </li>
+              <li  class="active">
+                <a href="${request.route_url('checkout')}">Checkout #!</a> 
+              </li>
+              <li>
+                <a href="${request.route_url('todo')}">To-Do</a> 
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+	  <div class="well">
+	    <h3>Checkout</h3>
+	    <form>
+		  Model: bla bla bla
+		  <br>
+		  Services:
+		  <br>
+			-- bla bla  $0.00
+			<br>
+			-- bla bla  $0.00
+			<br>
+			<br>
+		  Parts:
+		  <br>
+		    -- bla bla  $0.00
+		    <br>
+		    -- bla bla  $0.00
+		    <br>
+		  --------------------
+		  <br>
+		  SubTotal:
+			
+	    </form>
+	  </div>
+    </div>
+    
+    <!-- ORDER LIST (bottom of page) -->
+    <div class="container-fluid">
+      <div class="well">
+		<h3>Completed Orders List</h3>
+		<div tal:condition="orderCheckout" class="container-fluid">
+		  <ul class="nav nav-pills">
+		    <li>
+			  <b><a class="span1">Order ID</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Model Name</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Notes</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Cost</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Progress</a> </b>
+		    </li>
+		  </ul>
+		  <hr>
+			<form type="GET" action="${request.route_url('checkout')}" tal:repeat="row orderCheckout" id="form${row.orderID}">
+			  <!--This loop makes a form for each order and prints plain text for the ID, as well as a hidden input for the submit handler-->
+			  <span class="span1">${row.orderID}<input type="hidden" value="${row.orderID}" name="orderID"></span>
+			  <span class="span2">${row.modelName}</span>
+			  <span class="span2">${row.orderNotes}</span>
+			  <span class="span2">${row.orderCost}</span>
+			  <span class="span2">${row.progressDescription}</span>
+			  <button class="btn btn-info" type="submit">Add to Checkout</button> 
+			</form>
+		  </hr>
+		</div>
+	  </div>
+	</div>
+    
+  </body>
+</html>

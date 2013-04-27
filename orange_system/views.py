@@ -241,6 +241,14 @@ def order_view(request):
 			
 		# finally we calculate the order total
 		orderTotal['ordersTotal'] = serviceTotal['servicesTotal'] + partTotal['partsTotal']
+		
+		# because this was the most logical place to update the order price we will overwrite it here
+		order.orderCost = orderTotal['ordersTotal']
+		print "<---ORDER COST OVERWRITTEN--->"
+		DBSession.add(order)
+		
+		# finally, because we just updated the orders we need to pull a fresh version to pass to the orderTemplate
+		order = DBSession.query(Orders).filter(Orders.orderID == request.GET['orderID']).first()
 			
 	# Then we return each of the objects containing data that we built to the order_view
 	return {'project': 'orange_system', 
@@ -333,10 +341,11 @@ def updateOrderParts_view(request):
 @view_config(route_name='deleteOrderParts', request_method='POST', renderer='json')
 def deleteOrderParts_view(request):
 	print "<---ORDER PART DELETE DEBUG--->"
-	print request.POST['formData[0][value]']
-	
-	partID = request.POST['formData[0][value]']
-	DBSession.query(Parts).filter(Parts.partID == partID).delete()
+	print request.POST
+	#partID = request.POST['formData[0][value]']
+	orderID = request.POST['orderID[0][value]']
+	DBSession.query(PartsByOrder).filter(PartsByOrder.partID == partID, PartsByOrder.orderID == orderID).delete()
+	print "COMPLETE"
 	return{}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
@@ -441,6 +450,11 @@ def deletePart_view(request):
 @view_config(route_name='report', renderer='templates/reportTemplate.pt')
 def report_view(request):
     return {'project': 'orange_system'}
+    
+@view_config(route_name='checkout', renderer='templates/checkoutTemplate.pt')
+def checkout_view(request):
+	orderCheckout = DBSession.query(Orders).filter(Orders.progressDescription == "Completed").all()
+	return {'project': 'orange_system', 'orderCheckout': orderCheckout}
     
 @view_config(route_name='todo', renderer='templates/todoTemplate.pt')
 def todo_view(request):
