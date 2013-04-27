@@ -165,12 +165,13 @@ def updateCust_view(request):
 			print name
 			email = DBSession.query(Email).filter(Email.emailID == value).first()
 			print email
-		elif 'email' and not 'emailID' and not 'emailtype' in name:
-			print 'email:' + value
-			email.emailAddress = value
 		elif 'emailtype' in name:
 			print 'emailtype'+ value
 			email.emailType = value
+		else:
+			print 'email:' + value
+			email.emailAddress = value
+		
 		print email.emailAddress
 		print email.emailType
 			
