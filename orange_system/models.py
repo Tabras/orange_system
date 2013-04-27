@@ -115,7 +115,6 @@ class Orders(Base):
     __tableargs__ = ({
     'sqlite_autoincrement': True})
     orderID = Column(Integer, primary_key=True, unique=True)
-    oldOrderID = Column(Integer)
     custID  = Column(Integer(10), ForeignKey(Customers.customerID))
     modelName = Column(String(25))
     orderNotes = Column(String(200))
