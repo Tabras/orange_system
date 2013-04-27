@@ -9,8 +9,57 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
-    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    
+    <script>
+	  $(function(){
+		
+		$("form#addServiceForm").submit(function(){
+		  // here we will manually set some variables to the values inside each textbox on the form
+		  var serviceName = $("input#serviceName").val();
+		  var serviceCost = $("input#serviceCost").val();
+		  
+		  // now we will create an AJAX call to post to addService_view
+		  $.post("${request.route_url('addService')}",
+          {"serviceName": serviceName,
+            "serviceCost": serviceCost})
+		});
+		
+		$("form#updateServiceForm").submit(function(){
+		  var serviceID = $("input#serviceID").val();
+		  var serviceName = $("input#serviceName").val();
+		  var serviceCost = $("input#serviceCost").val();
+		      
+		  // just like above we will create an AJAX call to post the changes to updateService_view
+          $.post("${request.route_url('updateService')}",
+          {"serviceID": serviceID, 
+          "serviceName": serviceName, 
+          "serviceCost": serviceCost})
+	    });
+	  });
+    </script>
+    
+    <!-- This is the delete call for the services -->
+    <script>
+        $(document).ready(function(){
+          $("form > button").each(function(){
+            if ($(this).attr('id') == 'deleteService') {
+              $(this).click(function()
+              {
+                var formData = $("#form"+$(this).attr('name')).serializeArray();
+                if(confirm('Are you sure you want to delete this service?')){
+                  $.post("${request.route_url('deleteService')}",{"formData": formData}).success(function(){alert("Deleted Service");
+                });
+              }
+              return false;
+            });
+          }
+        });
+        }); 
+         
+     </script>
+    
     
   </head>
   
@@ -55,36 +104,63 @@
         <h1>Service Maintenance</h1>
         <br>
         <br>
-        <form method="POST" id="Add">
-          <input id="servicename" name="servicename" type="text" class="input-large" placeholder="Service Name">
+        
+        <!-- Keep in mind only one of these forms (Add / Update) will be visible at a time.
+			   Their visibility is dependant on whether an serviceId was passed
+			   to the page or not.
+		-->
+		  
+        <form method="POST" id="addServiceForm" name="addServiceForm" action="${request.route_url('service')}" tal:condition="not service">
+          <input id="serviceName" name="serviceName" type="text" class="input-large" placeholder="Service Name">
           <br>
-          <input id="servicecost" name="servicecost" type="text" class="input-large" placeholder="Service Price">
+          <input id="serviceCost" name="serviceCost" type="text" class="input-large" placeholder="Service Cost">
           <br>
           <br>
-          <button type="submit" class="btn btn-primary">Save</button>
-          <input type="reset" class="btn" value="Reset">
+          <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary">Save</button>
         </form>
+        
+        <form method="POST" id="updateServiceForm" name="updateServiceForm" action="${request.route_url('service')}" tal:condition="service">
+          <input id="serviceID" name="serviceID" type="hidden" class="input-large" value="${service.serviceID}">
+          <input id="serviceName" name="serviceName" type="text" class="input-large" value="${service.serviceName}" placeholder="Service Name">
+          <br>
+          <input id="serviceCost" name="serviceCost" type="text" class="input-large" value="${service.serviceCost}" placeholder="Service Price">
+          <br>
+          <br>
+          <button type="submit" id="btnUpdate" name="btnUpdate" class="btn btn-primary">Save</button>
+        </form>
+        
       </div>
     </div>
     
+    <!-- SERVICE LIST (bottom of page) -->
     <div class="container-fluid">
       <div class="well">
-        <div tal:condition="serviceList">
-          <table class="table table-striped" id="Table">
-            <tr>
-              <th> Service Id</th>
-              <th> Service Name </th>
-              <th> Service Cost </th>
-            </tr>
-            <tr tal:repeat="row serviceList">
-              <td>${row.serviceID}</td>
-              <td>${row.serviceName}</td>
-              <td>${row.serviceCost}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
+		<h3>Service List</h3>
+		<div tal:condition="services" class="container-fluid">
+		  <ul class="nav nav-pills">
+		    <li>
+			  <b><a class="span1">Service ID</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Service Name</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Service Cost</a> </b>
+		    </li>
+		  </ul>
+		  <hr>
+			<form type="GET" action="${request.route_url('service')}" tal:repeat="row services" id="form${row.serviceID}">
+			  <!--This loop makes a form for each service and prints plain text for the ID, as well as a hidden input for the submit handler-->
+			  <span class="span1">${row.serviceID}<input type="hidden" value="${row.serviceID}" name="serviceID"> </span>
+			  <span class="span2">${row.serviceName}</span>
+			  <span class="span2">${row.serviceCost}</span>
+			  <button class="btn btn-info" type="submit">Edit</button> 
+			  <button class="btn btn-danger" id="deleteService" name="${row.serviceID}">Delete</button> <br>
+			</form>
+		  </hr>
+		</div>
+	  </div>
+	</div>
 
   </body>
 </html>

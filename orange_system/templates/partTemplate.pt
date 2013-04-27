@@ -9,8 +9,67 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
-    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    
+    <script>
+	  
+	  $(function(){
+		
+		$("form#addPartForm").submit(function(){
+		  // here we will manually set some variables to the values inside each textbox on the form
+		  var partName = $("input#partName").val();
+		  var partCost = $("input#partCost").val();
+		  
+		  // now we will create an AJAX call to post to addPart_view
+		  $.post("${request.route_url('addPart')}",
+          {"partName": partName,
+            "partCost": partCost
+          }).success(function(){
+		  // if the post was successful we let the user know
+		    alert("Part added successfully!");
+	      });
+		});
+		
+		$("form#updatePartForm").submit(function(){
+		  var partID = $("input#partID").val();
+		  var partName = $("input#partName").val();
+		  var partCost = $("input#partCost").val();
+		      
+		  // just like above we will create an AJAX call to post the changes to updateService_view
+          $.post("${request.route_url('updatePart')}",
+          {"partID": partID, 
+          "partName": partName, 
+          "partCost": partCost
+		  }).success(function(){
+		    alert("Part information saved!");
+		  });
+	    });
+	  });
+    </script>
+    
+    <!-- this bit of code controls the DELETE for parts -->
+    <script>
+        $(document).ready(function(){
+          $("form > button").each(function(){
+              if ($(this).attr('id') == 'deletePart') {
+              $(this).click(function()
+              {
+                var formData = $("#form"+$(this).attr('name')).serializeArray();
+                if(confirm('Are you sure you want to delete this Part?')){
+                $.post("${request.route_url('deletePart')}",
+                { "formData": formData }
+                ).success(function() {
+                 alert("Deleted Part");
+                });
+                }
+                return false;
+              });
+            }
+          });
+        }); 
+         
+     </script>
     
   </head>
   
@@ -55,36 +114,63 @@
         <h1>Part Maintenance</h1>
         <br>
         <br>
-        <form method="POST" id="Add">
-          <input id="partname" name="partname" type="text" class="input-large" placeholder="Part Name">
+        
+        <!-- Keep in mind only one of these forms (Add / Update) will be visible at a time.
+			   Their visibility is dependant on whether an partId was passed
+			   to the page or not.
+		-->
+		  
+        <form method="POST" id="addPartForm" name="addPartForm" action="${request.route_url('part')}" tal:condition="not part">
+          <input id="partName" name="partName" type="text" class="input-large" placeholder="Part Name">
           <br>
-          <input id="partcost" name="partcost" type="text" class="input-large" placeholder="Part Price">
+          <input id="partCost" name="partCost" type="text" class="input-large" placeholder="Part Cost">
           <br>
           <br>
-          <button type="submit" class="btn btn-primary">Save</button>
-          <input type="reset" class="btn" value="Reset">
+          <button type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary">Save</button>
         </form>
+        
+        <form method="POST" id="updatePartForm" name="updatePartForm" action="${request.route_url('part')}" tal:condition="part">
+          <input id="partID" name="partID" type="hidden" class="input-large" value="${part.partID}">
+          <input id="partName" name="partName" type="text" class="input-large" value="${part.partName}" placeholder="Part Name">
+          <br>
+          <input id="partCost" name="partCost" type="text" class="input-large" value="${part.partCost}" placeholder="Part Cost">
+          <br>
+          <br>
+          <button type="submit" id="btnUpdate" name="btnUpdate" class="btn btn-primary">Save</button>
+        </form>
+       
       </div>
     </div>
     
+    <!-- PART LIST (bottom of page) -->
     <div class="container-fluid">
       <div class="well">
-        <div tal:condition="partList">
-          <table class="table table-striped" id="Table">
-            <tr>
-              <th> Part Id</th>
-              <th> Part Name </th>
-              <th> Part Cost </th>
-            </tr>
-            <tr tal:repeat="row partList">
-              <td>${row['partID']}</td>
-              <td>${row['partName']}</td>
-              <td>${row['partCost']}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
+		<h3>Part List</h3>
+		<div tal:condition="parts" class="container-fluid">
+		  <ul class="nav nav-pills">
+		    <li>
+			  <b><a class="span1">Part ID</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Part Name</a> </b>
+		    </li>
+		    <li>
+			  <b><a class="span2">Part Cost</a> </b>
+		    </li>
+		  </ul>
+		  <hr>
+			<form type="GET" action="${request.route_url('part')}" tal:repeat="row parts" id="form${row.partID}">
+			  <!--This loop makes a form for each part and prints plain text for the ID, as well as a hidden input for the submit handler-->
+			  <span class="span1">${row.partID}<input type="hidden" value="${row.partID}" name="partID"> </span>
+			  <span class="span2">${row.partName}</span>
+			  <span class="span2">${row.partCost}</span>
+			  <button class="btn btn-info" type="submit">Edit</button> 
+			  <button class="btn btn-danger" id="deletePart" name="${row.partID}">Delete</button> <br>
+			</form>
+		  </hr>
+		</div>
+	  </div>
+	</div>
     
   </body>
 </html>

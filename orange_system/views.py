@@ -148,10 +148,32 @@ def updateCust_view(request):
 	city = request.POST['city']
 	stateCode = request.POST['stateCode']
 	zipCode = request.POST['zipCode']
+	customer = DBSession.query(Customers).filter(Customers.customerID == custID).first()
+	customer.firstName = firstName
+	customer.lastName = lastName
+	customer.address = address
+	customer.city = city
+	customer.stateCode = stateCode
+	customer.zipCode = zipCode
+	DBSession.add(customer)
         
-        for i in range(0, int(request.POST['emailLength'])):
-            print request.POST['emailInfo['+str(i)+'][name]']
-            print request.POST['emailInfo['+str(i)+'][value]']
+	for i in range(0, int(request.POST['emailLength'])):
+		name  = request.POST['emailInfo['+str(i)+'][name]']
+		value = request.POST['emailInfo['+str(i)+'][value]']
+		
+		if 'emailID' in name:
+			print name
+			email = DBSession.query(Email).filter(Email.emailID == value).first()
+			print email
+		elif 'email' and not 'emailID' and not 'emailtype' in name:
+			print 'email:' + value
+			email.emailAddress = value
+		elif 'emailtype' in name:
+			print 'emailtype'+ value
+			email.emailType = value
+		print email.emailAddress
+		print email.emailType
+			
 	return {}
     
 @view_config(route_name='deleteCust', request_method="POST", renderer='json')
@@ -172,23 +194,54 @@ def order_view(request):
 	parts = DBSession.query(Parts).all()
 	progress = DBSession.query(Progress).all()
 	
-	print("<---Progress--->")
-	print(progress)
-	
 	# initializing necessary values before declaring them
 	order = None
-	orderServices = None
-	orderParts = None
+	customer = None
+	orderServicesList = None
+	orderServicesFull = None
+	orderPartsList = None
+	orderPartsFull = None
+	serviceTotal = {'servicesTotal': 0}
+	partTotal = {'partsTotal': 0}
+	orderTotal = {'ordersTotal': 0}
 	
 	# looking for the order id to be passed
 	if 'orderID' in request.GET:
+		
 		# here we are finding the order associated with the id that was just passed from the order page
 		order = DBSession.query(Orders).filter(Orders.orderID == request.GET['orderID']).first()
-		
+
 		# we will also find all the services and parts associated with the selected order
-		orderServices = DBSession.query(ServicesByOrder).filter(ServicesByOrder.orderID == request.GET['orderID']).all()
-		orderParts = DBSession.query(PartsByOrder).filter(PartsByOrder.orderID == request.GET['orderID']).all()
-	
+		orderServicesList = DBSession.execute(\
+		"SELECT s.serviceID, s.serviceName, s.serviceCost "+\
+		"FROM tblServicesByOrder AS so "+\
+		"INNER JOIN tblServices AS s "+\
+		"ON so.serviceID = s.serviceID "+\
+		"WHERE so.orderID = " + request.GET['orderID']).fetchall()
+		orderServicesFull = [row for row in orderServicesList]
+		
+		orderPartsList = DBSession.execute(\
+		"SELECT p.partID, p.partName, p.partCost "+\
+		"FROM tblPartsByOrder AS po "+\
+		"INNER JOIN tblParts AS p "+\
+		"ON po.partID = p.partID "+\
+		"WHERE po.orderID = " + request.GET['orderID']).fetchall()
+		orderPartsFull = [row for row in orderPartsList]
+		
+		# this bit of code uses the custID referenced from the order object made earlier to find the customer name for display
+		customer = DBSession.query(Customers).filter(Customers.customerID == order.custID).first()
+		
+		# now we are going to fill a dictionary so we can find the service total
+		for i in range(len(orderServicesList)):
+			serviceTotal['servicesTotal'] += float(orderServicesList[i].serviceCost)
+			
+		# and do the same for parts
+		for i in range(len(orderPartsList)):
+			partTotal['partsTotal'] += float(orderPartsList[i].partCost)
+			
+		# finally we calculate the order total
+		orderTotal['ordersTotal'] = serviceTotal['servicesTotal'] + partTotal['partsTotal']
+			
 	# Then we return each of the objects containing data that we built to the order_view
 	return {'project': 'orange_system', 
 	'orders': orders, 
@@ -196,8 +249,13 @@ def order_view(request):
 	'services': services, 
 	'parts': parts, 
 	'progress': progress,
-	'orderServices': orderServices,
-	'orderParts': orderParts,}
+	'orderServicesFull': orderServicesFull,
+	'orderPartsFull': orderPartsFull,
+	'serviceTotal': serviceTotal,
+	'partTotal': partTotal,
+	'orderTotal': orderTotal,
+	'customer': customer,
+	}
 	
 @view_config(route_name='addOrder', request_method="POST", renderer='json')
 def addOrder_view(request):
@@ -217,6 +275,7 @@ def addOrder_view(request):
     
 @view_config(route_name='updateOrder', request_method='POST', renderer='json')
 def updateOrder_view(request):
+
 	print("<---REQUEST--->")
 	print request.POST
 	order = DBSession.query(Orders).filter(Orders.orderID == request.POST['orderID']).first()
@@ -224,59 +283,161 @@ def updateOrder_view(request):
 	order.custID = request.POST['custID']
 	order.modelName = request.POST['modelName']
 	order.orderNotes = request.POST['orderNotes']
-	order.orderCost = request.POST['orderCost']
 	order.entryDate = request.POST['entryDate']
 	order.completionDate = request.POST['completionDate']
 	order.progressDescription = request.POST['progressDescription']
-	
+	print "DEBUGGER!"
 	DBSession.add(order)
 	return {}
 	
     
 @view_config(route_name='deleteOrder', request_method='POST', renderer='json')
 def deleteOrder_view(request):
-	print request.POST
+	print "<---ORDER DELETE DEBUG--->"
+	print request.POST['formData[0][value]']
+	
 	orderID = request.POST['formData[0][value]']
 	DBSession.query(Orders).filter(Orders.orderID == orderID).delete()
 	return {}
+	
+@view_config(route_name='updateOrderServices', request_method='POST', renderer='json')
+def updateOrderServices_view(request):
+	service = None
+	serviceToOrder = None
+	
+	service = DBSession.execute(\
+	"SELECT serviceID "+\
+	"FROM tblServices "+\
+	"WHERE serviceName = " + "'" +request.POST['serviceName'] +"'").fetchone()
+	
+	serviceToOrder = ServicesByOrder(service['serviceID'], request.POST['orderID'])
+	
+	DBSession.add(serviceToOrder)
+	return{}
+	
+@view_config(route_name='updateOrderParts', request_method='POST', renderer='json')
+def updateOrderParts_view(request):
+	part = None
+	partToOrder = None
+
+	part = DBSession.execute(\
+	"SELECT partID "+\
+	"FROM tblParts "+\
+	"WHERE partName = " + "'" +request.POST['partName'] +"'").fetchone()
+	
+	partToOrder = PartsByOrder(part['partID'], request.POST['orderID'])
+	
+	DBSession.add(partToOrder)
+	return{}
+	
+@view_config(route_name='deleteOrderParts', request_method='POST', renderer='json')
+def deleteOrderParts_view(request):
+	print "<---ORDER PART DELETE DEBUG--->"
+	print request.POST['formData[0][value]']
+	
+	partID = request.POST['formData[0][value]']
+	DBSession.query(Parts).filter(Parts.partID == partID).delete()
+	return{}
     
 @view_config(route_name='service', renderer='templates/serviceTemplate.pt')
 def service_view(request):
-	serviceList = None
-	serviceAdd = None
-	name = None
-	cost = None
-	serviceList = DBSession.query(Services).all()
+	service = None
+	services = None
 	
-	if request.POST:
-		if request.POST['servicename'] and request.POST['servicecost']:
-			name = request.POST['servicename']
-			cost = request.POST['servicecost']
-			service = Services(name, cost)
-			print service.serviceName
-			if service:
-				DBSession.add(service)
-       
-	return {'project': 'orange_system', 'serviceList': serviceList}
+	print "<---SERVICE DEBUG--->"
+	services = DBSession.query(Services).all()
+	
+	print "<---SERVICE ID PULLED--->"
+	if 'serviceID' in request.GET:
+		# here we are finding the service associated with the id that was just passed from the service page
+		service = DBSession.query(Services).filter(Services.serviceID == request.GET['serviceID']).first()
+		
+	# then we return each of the objects containing  data that we built to the service_view
+	print "<---SERVICE VIEW RETURN--->"
+	return {'project': 'orange_system', 
+	'services': services,
+	'service': service,
+	}
+	
+@view_config(route_name='addService', request_method='POST', renderer='json')
+def addService_view(request):
+	service = None
+	service = Services(
+	request.POST['serviceName'], 
+	request.POST['serviceCost'])
+	print "<---SERVICE ADDED--->"
+	DBSession.add(service)
+	return {}
+	
+@view_config(route_name='updateService', request_method='POST', renderer='json')
+def updateService_view(request):
+	service = None
+	service = DBSession.query(Services).filter(Services.serviceID == request.POST['serviceID']).first()
+	service.serviceID = request.POST['serviceID']
+	service.serviceName = request.POST['serviceName']
+	service.serviceCost = request.POST['serviceCost']
+	print "<---SERVICE UPDATED--->"
+	DBSession.add(service)
+	return {}
+	
+@view_config(route_name='deleteService', request_method='POST', renderer='json')
+def deleteService_view(request):
+	print "<---SERVICE DELETE DEBUG--->"
+	print request.POST['formData[0][value]']
+	
+	serviceID = request.POST['formData[0][value]']
+	
+	print "<---SERVICE DELETED--->"
+	DBSession.query(Services).filter(Services.serviceID == serviceID).delete()
+	return {}
     
 @view_config(route_name='part', renderer='templates/partTemplate.pt')
 def part_view(request):
-	partList = None
-	partAdd = None
 	part = None
-	partList = DBSession.execute(\
-	"SELECT * "+\
-	"FROM tblParts")
+	parts = None
+	parts = DBSession.query(Parts).all()
 	
-	if request.POST:
-		name = request.POST['partname']
-		cost = request.POST['partcost']
-		part = Parts(name, cost)
-		if part:
-		    DBSession.add(part)
+	if 'partID' in request.GET:
+		# here we are finding the part associated with the id that was just passed from the part page
+		part = DBSession.query(Parts).filter(Parts.partID == request.GET['partID']).first()
 		
-	return {'project': 'orange_system', 'partList': partList}
-    
+    # then we return each of the objects containing  data that we built to the part_view
+	return {'project': 'orange_system', 
+	'parts': parts,
+	'part': part,
+	}
+	
+@view_config(route_name='addPart', request_method='POST', renderer='json')
+def addPart_view(request):
+	part = None
+	part = Parts(
+	request.POST['partName'], 
+	request.POST['partCost'])
+	
+	DBSession.add(part)
+	return {}
+	
+@view_config(route_name='updatePart', request_method='POST', renderer='json')
+def updatePart_view(request):
+	part = None
+	part = DBSession.query(Parts).filter(Parts.partID == request.POST['partID']).first()
+	part.partID = request.POST['partID']
+	part.partName = request.POST['partName']
+	part.partCost = request.POST['partCost']
+	
+	DBSession.add(part)
+	return {}
+	
+@view_config(route_name='deletePart', request_method='POST', renderer='json')
+def deletePart_view(request):
+	print "<---PART DELETE DEBUG--->"
+	print request.POST['formData[0][value]']
+	
+	partID = request.POST['formData[0][value]']
+	DBSession.query(Parts).filter(Parts.partID == partID).delete()
+	print "THIS ACTUALLY RAN"
+	return {}
+	
 @view_config(route_name='report', renderer='templates/reportTemplate.pt')
 def report_view(request):
     return {'project': 'orange_system'}
@@ -290,8 +451,8 @@ def todo_view(request):
     todoList = DBSession.execute(\
     "SELECT o.orderID, o.custID, o.modelName, o.orderNotes, o.orderCost, o.entryDate, "+\
     "o.progressDescription, "+\
-    "group_concat(DISTINCT p.partName) AS partsOnOrder, "+\
-    "group_concat(DISTINCT s.serviceName) AS servicesOnOrder "+\
+    "group_concat(DISTINCT p.partID) AS partsOnOrder, "+\
+    "group_concat(DISTINCT s.serviceID) AS servicesOnOrder "+\
     "FROM tblOrders AS o "+\
     "LEFT JOIN tblPartsByOrder AS p ON o.orderID = p.orderID "+\
     "LEFT JOIN tblServicesByOrder AS s ON o.orderID = p.orderID "+\
