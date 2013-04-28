@@ -9,8 +9,27 @@
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap.css')}"/>
     <link rel="stylesheet" href="${request.static_url('orange_system:static/bootstrap_css/bootstrap-responsive.css')}"/>
     
-    <script src="${request.static_url('orange_system:static/js/jquery.min.js')}"></script>
+    <script src="${request.static_url('orange_system:static/js/jquery-1.9.1.min.js')}"></script>
     <script src="${request.static_url('orange_system:static/js/bootstrap.min.js')}"></script>
+    
+    <script>
+	  function loadXMLDoc()
+      {
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+          {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+   
+        xmlhttp.open("POST","static/checkoutInsert.txt",false);
+        xmlhttp.send();
+        document.getElementById("checkoutForm1").innerHTML = xmlhttp.responseText;
+      }
+    </script>
     
   </head>
   
@@ -54,27 +73,13 @@
     </div>
     <div class="container-fluid">
 	  <div class="well">
-	    <h4>Checkout</h4>
-	    <form>
-		  Model: bla bla bla
-		  <br>
-		  Services:
-		  <br>
-			-- bla bla  $0.00
-			<br>
-			-- bla bla  $0.00
-			<br>
-			<br>
-		  Parts:
-		  <br>
-		    -- bla bla  $0.00
-		    <br>
-		    -- bla bla  $0.00
-		    <br>
-		  --------------------
-		  <br>
-		  SubTotal:
-			
+		<h4>Checkout</h4>
+	    <form id="checkoutForm1" name="checkoutForm1">
+		 
+	    </form>
+	    
+	    <form id="checkoutForm2" name="checkoutForm2">
+		 
 	    </form>
 	  </div>
     </div>
@@ -109,7 +114,7 @@
 			  <span class="span2">${row.orderNotes}</span>
 			  <span class="span2">${row.orderCost}</span>
 			  <span class="span2">${row.progressDescription}</span>
-			  <button class="btn btn-info" type="submit">Add to Checkout</button> 
+			  <button class="btn btn-info" type="button" onclick="loadXMLDoc()">Add to Checkout</button> 
 			</form>
 		  </hr>
 		</div>
