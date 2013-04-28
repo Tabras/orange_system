@@ -315,9 +315,10 @@ def updateOrderParts_view(request):
 def deleteOrderParts_view(request):
 	print "<---ORDER PART DELETE DEBUG--->"
 	print request.POST
-	#partID = request.POST['formData[0][value]']
-	orderID = request.POST['orderID[0][value]']
-	DBSession.query(PartsByOrder).filter(PartsByOrder.partID == partID, PartsByOrder.orderID == orderID).delete()
+	partID = request.POST['partID[0][value]']
+	print partID
+	#orderID = request.POST['orderID[0][value]']
+	#DBSession.query(PartsByOrder).filter(PartsByOrder.partID == partID, PartsByOrder.orderID == orderID).delete()
 	print "COMPLETE"
 	return{}
     
