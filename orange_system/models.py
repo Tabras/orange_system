@@ -30,12 +30,12 @@ in its own script if you like.  However, our database is small so we'll just thr
 """
 
 class States(Base):
-    __tablename__ = 'tblStates'
-    stateCode = Column(String(2), primary_key=True)
-    stateName = Column(String(25), nullable=False)
+    __tablename__ = 'states'
+    state_code = Column(String(2), primary_key=True)
+    state_name = Column(String(25), nullable=False)
     def __init__(self, stateCode, stateName):
-        self.stateCode = stateCode
-        self.stateName = stateName
+        self.state_code = stateCode
+        self.state_name = stateName
   
 class Progress(Base):
     __tablename__ = 'tblProgress'
@@ -48,80 +48,93 @@ class Progress(Base):
         self.progressDescription = progressDescription  
 
 class Parts(Base):
-    __tablename__ = 'tblParts'
+    __tablename__ = 'items'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    partID   = Column(Integer, primary_key=True)
-    partName = Column(String(20), unique=True)
-    partCost = Column(String(5))
+    id  = Column(Integer, primary_key=True)
+    name = Column(String(20), unique=True)
+    cost = Column(Integer())
 
     def __init__(self, partName, partCost):
-		self.partName = partName
-		self.partCost = partCost
+		self.name = partName
+		self.cost = partCost
 
 class Services(Base):
-    __tablename__ = 'tblServices'
+    __tablename__ = 'services'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    serviceID   = Column(Integer, primary_key=True)
-    serviceName = Column(String(20), unique=True)
-    serviceCost = Column(String(5))
+    id   = Column(Integer, primary_key=True)
+    name = Column(String(20), unique=True)
+    cost = Column(String(5))
 
     def __init__(self, serviceName, serviceCost):
-		self.serviceName = serviceName
-		self.serviceCost = serviceCost
+		self.name = serviceName
+		self.cost = serviceCost
 	
 class EmailType(Base):
-    __tablename__ = 'tblEmailType'
+    __tablename__ = 'email_type'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    emailID   = Column(Integer, primary_key=True)
-    emailType = Column(String(20), unique=True)
+    id   = Column(Integer, primary_key=True)
+    email_type = Column(String(20), unique=True)
 
     def __init__(self, emailType):
-		self.emailType = emailType
+		self.email_type = emailType
 
 class PhoneType(Base):
-    __tablename__= 'tblPhoneType'
+    __tablename__= 'phone_type'
     __tableargs__= ({
     'sqlite_autoincrement': True})
-    phoneTypeID = Column(Integer, primary_key=True)
-    phoneType = Column(String(20), unique=True)
+    id = Column(Integer, primary_key=True)
+    phone_type = Column(String(20), unique=True)
 
     def __init__(self, phoneType):
-    	self.phoneType = phoneType
+    	self.phone_type = phoneType
+
 
 class Customers(Base):
-    __tablename__ = 'tblCustomers'
+    __tablename__ = 'users'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    customerID    = Column(Integer, primary_key=True, unique = True)
-    firstName = Column(String(15), unique=False)
-    lastName  = Column(String(25), unique=False)
-    address   = Column(String(50))
-    city      = Column(String(15), unique=False)
-    stateCode = Column(String(2), ForeignKey(States.stateCode), unique=False)
-    zipCode   = Column(String(9), unique=False)
-    def __init__(self,firstName, lastName, address, city, stateCode, zipCode):
-        self.firstName = firstName
-        self.lastName  = lastName
-        self.address   = address
-        self.city      = city
-        self.stateCode = stateCode
-        self.zipCode   = zipCode
+    id    = Column(Integer, primary_key=True, unique = True)
+    first_name = Column(String(15), unique=False)
+    middle_name = Column(String(25))
+    last_name  = Column(String(25), unique=False)
+    def __init__(self,first_name, middle_name, last_name):
+        self.firstName = first_name
+        self.middle_name = middle_name
+        self.lastName  = last_name
+
+class Addresses(Base):
+    __tablename__ = 'addresses'
+    __tableargs__ = ({
+    'sqlite_autoincrement': True,})
+    id = Column(Integer(), primary_key=True, unique = True)
+    user_id = Column(Integer(), ForeignKey(Customers.id))
+    zip_code = Column(Integer(5))
+    city = Column(String())
+    state = Column(String(2), ForeignKey(States.state_code))
+    street = Column(String())
+
+    def __init__(self, user_id, zip_code, city, state, street):
+        self.user_id = user_id
+        self.zip_code = zip_code
+        self.city = city
+        self.state = state
+        self.street = street
+
 
 class Orders(Base):
-    __tablename__ = 'tblOrders'
+    __tablename__ = 'receipts'
     __tableargs__ = ({
     'sqlite_autoincrement': True})
-    orderID = Column(Integer, primary_key=True, unique=True)
-    custID  = Column(Integer(10), ForeignKey(Customers.customerID))
-    modelName = Column(String(25))
-    orderNotes = Column(String(200))
-    orderCost = Column(String(10))
-    entryDate = Column(String(10))
-    completionDate = Column(String(10))
-    progressDescription = Column(String(10), ForeignKey(Progress.progressDescription))
+    id = Column(Integer, primary_key=True, unique=True)
+    user_id  = Column(Integer(10), ForeignKey(Customers.id))
+    #model_name = Column(String(25)) <-- Not present in DB.  Needs to be added as a column in the future.
+    total_cost = Column(Integer())
+    created_at = Column(String())
+    updated_at = Column(String())
+    status  = Column(String(10), ForeignKey(Progress.progressDescription))
 
     def __init__(self, custID, modelName, orderNotes, orderCost, entryDate, completionDate, progressDescription):
 		self.custID = custID
@@ -133,57 +146,58 @@ class Orders(Base):
 		self.progressDescription = progressDescription
 
 class Email(Base):
-    __tablename__ = 'tblEmail'
+    __tablename__ = 'emails'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    emailID = Column(Integer, primary_key=True)
-    custID = Column(Integer, ForeignKey(Customers.customerID))
-    emailAddress = Column(String(254), unique=True)
-    emailType = Column(String(20), ForeignKey(EmailType.emailType))
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey(Customers.id))
+    email = Column(String(254), unique=True)
+    email_type = Column(String(20), ForeignKey(EmailType.email_type))
 
-    def __init__(self, custID, emailAddress, emailType):
-		self.custID = custID
-		self.emailAddress = emailAddress
-		self.emailType = emailType
+    def __init__(self, user_id, email, email_type):
+		self.user_id = user_id
+		self.emailAddress = email
+		self.email_type = email_type
 
 class Phone(Base):
-    __tablename__ = 'tblPhone'
+    __tablename__ = 'phones'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    phoneID = Column(Integer, primary_key=True)
-    custID = Column(String(10), ForeignKey(Customers.customerID))
-    phoneNumber = Column(String(10))
-    phoneType = Column(String(10), ForeignKey(PhoneType.phoneType))
+    id = Column(Integer, primary_key=True)
+    user_id = Column(String(10), ForeignKey(Customers.id))
+    number = Column(String(10))
+    phone_type = Column(String(10), ForeignKey(PhoneType.phone_type))
 
-    def __init__(self,custID, phoneNumber, phoneType):
-		self.custID = custID
+    def __init__(self,user_id, number, phone_type):
+		self.user_id = user_id
 		self.phoneNumber = phoneNumber
-		self.phoneType = phoneType
+		self.phone_type = phone_type
 
 class PartsByOrder(Base):
-    __tablename__ = 'tblPartsByOrder'
+    __tablename__ = 'itemorders'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    rowID = Column(Integer, primary_key=True)
-    partID = Column(String(10), ForeignKey(Parts.partID))
-    orderID = Column(String(10), ForeignKey(Orders.orderID))
+    id = Column(Integer, primary_key=True)
+    item_id = Column(String(10), ForeignKey(Parts.id))
+    receipt_id = Column(String(10), ForeignKey(Orders.id))
 
-    def __init__(self,  partID, orderID):
-		self.partID = partID
-		self.orderID = orderID
+    def __init__(self,  item_id, receipt_id):
+		self.item_id = item_id
+		self.receipt_id = receipt_id
+               
 
 
 class ServicesByOrder(Base):
-    __tablename__ = 'tblServicesByOrder'
+    __tablename__ = 'serviceorders'
     __tableargs__ = ({
     'sqlite_autoincrement': True,})
-    rowID = Column(Integer, primary_key=True)
-    serviceID = Column(String(10), ForeignKey(Services.serviceID))
-    orderID = Column(String(10), ForeignKey(Orders.orderID))
+    id = Column(Integer, primary_key=True)
+    service_id = Column(String(10), ForeignKey(Services.id))
+    receipt_id = Column(String(10), ForeignKey(Orders.id))
 
     def __init__(self, serviceID, orderID):
         
-		self.serviceID = serviceID
-		self.orderID = orderID
+		self.service_id = serviceID
+		self.receipt_id = orderID
 
 

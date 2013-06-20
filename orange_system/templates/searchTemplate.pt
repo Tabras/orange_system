@@ -110,16 +110,16 @@
 			</li>
 		  </ul>
 		  <hr>
-		  <form method="GET" action="${request.route_url('customer')}" tal:repeat="row result" id="form${row['customerID']}">
+		  <form method="GET" action="${request.route_url('customer')}" tal:repeat="row result" id="form${row['id']}">
 		    <!--! A bit of a hack here.  this loop makes a form for each customer which prints a plain text for the ID, as well as a hidden input for the submit handler 
 				Probably not the smoothest way to handle this, but it works gosh darn it!-->
-			<span class="span1">${row['customerID']}<input type="hidden" value="${row['customerID']}" name="customerID"> </span>
-			<span class="span2">${row['firstName']} ${row['lastName']} </span>
-			<span class="span2">${row['address']} ${row['city']}, ${row['stateCode']} ${row['zipCode']}</span>
+			<span class="span1">${row['id']}<input type="hidden" value="${row['id']}" name="customerID"> </span>
+			<span class="span2">${row['first_name']} ${row['last_name']} </span>
+                        <span><textarea class="span3" disabled>${row['street']}, ${row['city']}, ${row['state']} ${row['zip_code']}</textarea></span> 
 		    <span><textarea class="span3" disabled>${row['emails']}</textarea></span>
 			<span><textarea class="span3" disabled>${row['Phone Number']}</textarea></span>
 			<button class="btn btn-info" type="submit">Edit</button> 
-            <button class="btn btn-danger" type="button" id="deleteCust" name="${row['customerID']}">Delete</button> <br>
+            <button class="btn btn-danger" type="button" id="deleteCust" name="${row['id']}">Delete</button> <br>
 		  </form>
 		  
         </div>

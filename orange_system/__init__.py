@@ -43,5 +43,6 @@ def main(global_config, **settings):
     config.add_route('report','/Reports')
     config.add_route('todo','/ToDo')
     config.add_route('checkout','/Checkout')
+    config.add_route('checkoutAdd', '/Checkout/add')
     config.scan()
     return config.make_wsgi_app()

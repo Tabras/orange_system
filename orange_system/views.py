@@ -9,6 +9,7 @@ from pyramid.httpexceptions import HTTPFound
 from .models import (
     DBSession,
     Customers,
+    Addresses,
     Email,
     Phone,
     Orders,
@@ -35,28 +36,26 @@ def search_view(request):
         # Sqlite syntax, so using the ORM would require us to extend it a bit.
         # For simplicity sake, let's just execute raw SQL :)
         result = DBSession.execute(\
-        "SELECT c.customerID, c.firstName, c.lastName, c.address, c.city, c.stateCode,"+\
-        " c.zipCode, group_concat(DISTINCT e.emailAddress) AS 'emails', "+\
-        "group_concat(DISTINCT p.phoneNumber) AS 'Phone Number' "+\
-        "FROM tblCustomers AS c "+\
+        "SELECT c.id, c.first_name, c.last_name,"+\
+        "a.street, a.city, a.state, a.zip_code, " +\
+        "group_concat(DISTINCT e.email) AS 'emails', "+\
+        "group_concat(DISTINCT p.number) AS 'Phone Number' "+\
+        "FROM users AS c "+\
         # We're using a left join here because we need to pull in all
         # customers regardless of whether or not they have an email or phone
         # number.
-        "LEFT JOIN tblEmail AS e ON c.customerID = e.custID "+\
-        "LEFT JOIN tblPhone AS p ON c.customerID = p.custID "+\
+        "LEFT JOIN addresses AS a ON c.id = a.user_id "+\
+        "LEFT JOIN emails AS e ON c.id = e.user_id "+\
+        "LEFT JOIN phones AS p ON c.id = p.user_id "+\
         # Here's the magic of the query.  We're doing a wildcard search on all
         # fields we want to test against the search query.  This is how only
         # relevant data is extracted.
-        "WHERE c.firstName LIKE '%" + search + "%' OR "+\
-        "c.lastName LIKE '%" + search + "%' OR "+\
-        "c.address LIKE '%" + search + "%' OR "+\
-        "c.city LIKE '%" + search + "%' OR "+\
-        "c.stateCode LIKE '%" + search + "%' OR "+\
-        "c.zipCode LIKE '%" + search + "%' OR "+\
-        "e.emailAddress LIKE '%" + search + "%' OR "+\
-        "p.phoneNumber LIKE '%" + search + "%' AND "+\
-        "e.emailAddress != 'none' AND p.phoneNumber != 'none' "+\
-        "GROUP BY c.customerID")
+        "WHERE c.first_name LIKE '%" + search + "%' OR "+\
+        "c.last_name LIKE '%" + search + "%' OR "+\
+        "e.email LIKE '%" + search + "%' OR "+\
+        "p.number LIKE '%" + search + "%' AND "+\
+        "e.email != 'none' AND p.number != 'none' "+\
+        "GROUP BY c.id")
         
     return {'project': 'orange_system', 'result': result}
 
@@ -75,10 +74,10 @@ def customer_view(request):
     if 'customerID' in request.GET:
         # We're going to store this in a local variable to make our life easier when updating the customer
 		# Let's find the customer associated with the ID we passed from the search page
-		customer = DBSession.query(Customers).filter(Customers.customerID == request.GET['customerID']).first()
+		customer = DBSession.query(Customers).filter(Customers.id == request.GET['customerID']).first()
 		# As well as any email addresses and phone numbers associated with them.
-		customerEmail = DBSession.query(Email).filter(Email.custID == request.GET['customerID']).all()
-		customerPhone = DBSession.query(Phone).filter(Phone.custID == request.GET['customerID']).all() 
+		customerEmail = DBSession.query(Email).filter(Email.user_id == request.GET['customerID']).all()
+		customerPhone = DBSession.query(Phone).filter(Phone.user_id == request.GET['customerID']).all() 
     return {'project': 'orange_system', 
     'states': states,
     'customer': customer,
@@ -90,8 +89,8 @@ def customer_view(request):
 @view_config(route_name='addEmail', request_method="POST", renderer='json')
 def addEmail_view(request):
     print request.POST
-    latestCustomer = DBSession.query(Customers).order_by(Customers.customerID.desc()).first()
-    latestID = latestCustomer.customerID
+    latestCustomer = DBSession.query(Customers).order_by(Customers.id.desc()).first()
+    latestID = latestCustomer.id
     email = Email(latestID, request.POST['emailAddress'], request.POST['emailType'])
     DBSession.add(email)
     return {'data': 'test'}
